@@ -1,635 +1,608 @@
 <!DOCTYPE html>
-<html lang="bg">
+<html lang="bg" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>АПИМП Д-р Петя Маджарова ЕООД</title>
-    
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Tailwind CSS -->
+    <title>Клуб на Безупречните Жени | Elite Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
-    <!-- Phosphor Icons (Lucide alternative for easy web use) -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; }
-        .hero-pattern {
-            background-color: #3b82f6;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'perfect-pink': '#FCE7F3', // Rose 100
+                        'soft-rose': '#FBCFE8', // Rose 200
+                        'deep-rose': '#BE185D', // Rose 700
+                        'luxury-gold': '#D4AF37',
+                        'elegant-dark': '#831843', // Rose 900
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Lato"', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'shine': 'shine 2s linear infinite',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shine: {
+                            '0%': { backgroundPosition: '200% center' },
+                            '100%': { backgroundPosition: '-200% center' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
         }
-        .animate-fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </script>
+    <style>
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .card-hologram {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            background-size: 200% 200%;
+            transition: all 0.3s ease;
+        }
+
+        /* 3D Card Effect */
+        .membership-card-container {
+            perspective: 1000px;
+        }
+        .membership-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s;
+        }
+        
+        .quiz-option:checked + label {
+            background-color: #BE185D;
+            color: white;
+            border-color: #BE185D;
+            transform: scale(1.02);
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
-<body>
-    <div id="root"></div>
+<body class="bg-gradient-to-b from-perfect-pink via-white to-perfect-pink text-gray-800 antialiased overflow-x-hidden">
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-
-        // --- Data ---
-
-        const teamMembers = [
-            { 
-                name: "Д-р Петя Маджарова", 
-                role: "Общопрактикуващ лекар", 
-                location: ["Дебър", "МБАЛ Първомай"]
-            },
-            { 
-                name: "Д-р Янчо Маджаров", 
-                role: "Лекар", 
-                location: ["Дебър", "МБАЛ Първомай", "УМБАЛ Пълмед"]
-            },
-            { 
-                name: "Д-р Елис Фейзула - Маджарова", 
-                role: "Лекар", 
-                location: ["Дебър", "МБАЛ Първомай", "УМБАЛ Пълмед"]
-            },
-            { 
-                name: "Д-р Зюлейха Халил", 
-                role: "Лекар", 
-                location: ["Дебър"]
-            },
-            { 
-                name: "Д-р Васил Топлев", 
-                role: "Лекар", 
-                location: ["Дебър"]
-            },
-            { 
-                name: "Диана Михова", 
-                role: "Секретар", 
-                location: ["Дебър"], 
-                hideLocations: true
-            },
-            { 
-                name: "Пенка Недева", 
-                role: "Фелдшер", 
-                location: ["Дебър"], 
-                hideLocations: true
-            },
-            { 
-                name: "Гинка Колева", 
-                role: "Медицинска сестра", 
-                location: ["Дебър"], 
-                hideLocations: true
-            },
-        ];
-
-        const locations = [
-            {
-                id: "debar",
-                city: "Първомай (кв. Дебър)",
-                address: "ул. Цариградска 43",
-                mapQuery: "ул. Цариградска 43, Първомай",
-                hours: "Всеки ден: 08:00 - 14:00",
-                bookingLink: "https://superdoc.bg/lekar/petya-madzharova",
-                bookingLabel: "Запиши час в Superdoc",
-                doctors: [
-                    { day: "Всеки ден", docs: ["Д-р Петя Маджарова"] },
-                    { day: "Понеделник & Вторник", docs: ["Д-р Янчо Маджаров", "Д-р Елис Фейзула - Маджарова"] },
-                    { day: "Сряда & Четвъртък", docs: ["Д-р Васил Топлев"] },
-                    { day: "Петък", docs: ["Д-р Зюлейха Халил"] }
-                ]
-            },
-            {
-                id: "mbal",
-                city: "МБАЛ Първомай",
-                address: "МБАЛ Първомай, кабинет",
-                mapQuery: "МБАЛ Първомай",
-                hours: "Пон, Сря, Пет: 14:00 - 17:00",
-                bookingLink: "https://superdoc.bg/lekar/petya-madzharova",
-                bookingLabel: "Запиши час в Superdoc",
-                doctors: [
-                    { day: "Понеделник", docs: ["Д-р Янчо Маджаров", "Д-р Елис Фейзула - Маджарова"] },
-                    { day: "Сряда & Петък", docs: ["Д-р Петя Маджарова"] }
-                ]
-            },
-            {
-                id: "pulmed",
-                city: "Пловдив (УМБАЛ Пълмед)",
-                address: "ул. Перущица 1А, блок Д, кабинет 13",
-                mapQuery: "ул. Перущица 1А, Пловдив",
-                hours: "Вторник - Петък (различни часове)",
-                bookingLink: "https://doctors-viber-bot.docup.health/1525",
-                bookingLabel: "Запиши час в DocUp",
-                doctors: [
-                    { day: "Екип", docs: ["Д-р Янчо Маджаров", "Д-р Елис Фейзула - Маджарова"] },
-                    { day: "Вторник", docs: ["14:30 - 18:00"] },
-                    { day: "Сряда", docs: ["08:30 - 13:00"] },
-                    { day: "Четвъртък", docs: ["12:00 - 17:00"] },
-                    { day: "Петък", docs: ["08:30 - 13:00"] }
-                ]
-            }
-        ];
-
-        const immunizationCalendar = [
-            { age: "0 - 24 часа", vaccine: "Хепатит Б (първа доза)" },
-            { age: "от 48-ия час", vaccine: "БЦЖ (туберкулоза)" },
-            { age: "2 месец", vaccine: "Шествалентна ваксина (Дифтерия, Тетанус, Коклюш, Полиомиелит, Хемофилус, Хепатит Б), Пневмококи" },
-            { age: "3 месец", vaccine: "Шествалентна ваксина (втора доза), Пневмококи (втора доза)" },
-            { age: "4 месец", vaccine: "Шествалентна ваксина (трета доза), Пневмококи (трета доза)" },
-            { age: "13 месец", vaccine: "Морбили, Паротит, Рубеола (МПР), Пневмококи (реимунизация)" },
-            { age: "16 месец", vaccine: "Шествалентна ваксина (реимунизация)" },
-            { age: "6 години", vaccine: "Дифтерия, Тетанус, Коклюш, Полиомиелит (четиривалентна)" },
-            { age: "7 години", vaccine: "БЦЖ (след проба Манту)" },
-            { age: "12 години", vaccine: "Морбили, Паротит, Рубеола (втора доза), Тетанус/Дифтерия" },
-            { age: "17 години", vaccine: "Тетанус и Дифтерия (повторна)" },
-            { age: "На всеки 10 г. (25, 35, 45...)", vaccine: "Тетанус и Дифтерия (TD)" }
-        ];
-
-        // Данни за профилактични прегледи по Наредба № 8
-        const preventiveExamsData = [
-            // Деца (0-18) - опростен вариант
-            { minAge: 0, maxAge: 1, gender: 'all', exams: [{ name: "Ежемесечни профилактични прегледи", freq: "Всеки месец" }] },
-            { minAge: 2, maxAge: 7, gender: 'all', exams: [{ name: "Профилактичен преглед", freq: "Два пъти годишно (веднъж от ОПЛ)" }] },
-            { minAge: 8, maxAge: 18, gender: 'all', exams: [{ name: "Профилактичен преглед", freq: "Веднъж годишно" }] },
+    <!-- Sticky Nav -->
+    <nav class="fixed w-full z-50 glass-morphism transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-3xl font-serif font-bold italic text-deep-rose tracking-tighter hover:scale-105 transition-transform">
+                KБЖ
+            </a>
             
-            // Възрастни (над 18) - общи за всички
-            { minAge: 19, maxAge: 120, gender: 'all', exams: [
-                { name: "Анамнеза и обективен статус", freq: "Ежегодно" },
-                { name: "Измерване на артериално налягане", freq: "Ежегодно" },
-                { name: "ЕКГ (Електрокардиограма)", freq: "Ежегодно" },
-                { name: "Изследване на урина (химическо)", freq: "Ежегодно" }
-            ]},
+            <div class="hidden md:flex items-center space-x-8 text-sm font-bold tracking-widest uppercase text-elegant-dark">
+                <a href="#founders" class="hover:text-deep-rose transition-colors relative group">
+                    Основатели
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-rose transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#manifesto" class="hover:text-deep-rose transition-colors relative group">
+                    Кодекс
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-rose transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#entrance-exam" class="px-6 py-2 bg-deep-rose text-white rounded-full hover:bg-elegant-dark transition-all shadow-lg hover:shadow-rose-300/50 transform hover:-translate-y-0.5">
+                    Кандидатствай
+                </a>
+            </div>
 
-            // Специфични по възраст и пол за над 18г.
-            { minAge: 30, maxAge: 45, gender: 'female', exams: [
-                { name: "Мануално изследване на млечни жлези", freq: "Ежегодно" }
-            ]},
-            { minAge: 30, maxAge: 120, gender: 'all', exams: [
-                 { name: "Пълна кръвна картина (ПКК)", freq: "На всеки 5 години" }
-            ]},
-            { minAge: 40, maxAge: 120, gender: 'male', exams: [
-                { name: "Общ холестерол, триглицериди, HDL/LDL холестерол", freq: "На всеки 5 години" }
-            ]},
-            { minAge: 40, maxAge: 120, gender: 'female', exams: [
-                { name: "Общ холестерол, триглицериди, HDL/LDL холестерол", freq: "На всеки 5 години" }
-            ]},
-            { minAge: 46, maxAge: 65, gender: 'all', exams: [
-                { name: "Пълна кръвна картина (ПКК)", freq: "Ежегодно (при риск) / На 5 г." }
-            ]},
-             { minAge: 46, maxAge: 65, gender: 'female', exams: [
-                { name: "Мануално изследване на млечни жлези", freq: "Ежегодно" }
-            ]},
-            { minAge: 50, maxAge: 120, gender: 'male', exams: [
-                { name: "PSA (Простатно-специфичен антиген)", freq: "На всеки 2 години" }
-            ]},
-            { minAge: 50, maxAge: 69, gender: 'female', exams: [
-                 { name: "Мамография на млечни жлези", freq: "На всеки 2 години" }
-            ]},
-            { minAge: 65, maxAge: 120, gender: 'all', exams: [
-                { name: "Пълна кръвна картина (ПКК)", freq: "Ежегодно" },
-                { name: "Общ холестерол, триглицериди, HDL/LDL холестерол", freq: "Ежегодно (при риск)" }
-            ]}
-        ];
+            <button class="md:hidden text-deep-rose text-2xl" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-white/95 z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col justify-center items-center space-y-8">
+            <button class="absolute top-6 right-6 text-3xl text-deep-rose" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+            <a href="#founders" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Основатели</a>
+            <a href="#manifesto" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Кодекс</a>
+            <a href="#entrance-exam" onclick="toggleMobileMenu()" class="text-xl bg-deep-rose text-white px-8 py-3 rounded-full">Кандидатствай</a>
+        </div>
+    </nav>
 
-        // --- Components ---
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Abstract Shapes -->
+        <div class="absolute top-20 right-[10%] w-72 h-72 bg-pink-300/30 rounded-full blur-[100px] animate-pulse"></div>
+        <div class="absolute bottom-20 left-[10%] w-96 h-96 bg-rose-400/20 rounded-full blur-[120px] animate-pulse" style="animation-delay: 1s;"></div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10 animate-fade-in">
+            <div class="inline-flex items-center space-x-2 bg-white/50 px-4 py-1 rounded-full border border-pink-200 mb-6 backdrop-blur-sm">
+                <i class="fas fa-crown text-luxury-gold"></i>
+                <span class="text-xs font-bold tracking-[0.2em] uppercase text-deep-rose">Exclusive Membership</span>
+            </div>
+            
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-deep-rose to-purple-900 drop-shadow-sm">
+                Клуб на<br>
+                <span class="italic font-light">Безупречните</span> Жени
+            </h1>
+            
+            <p class="text-lg md:text-xl font-light text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Затворено общество за дами с кариотип 44XX, които отказват да правят компромис с качеството на живот, съня си и естетиката.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#entrance-exam" class="group relative px-8 py-4 bg-deep-rose text-white rounded-full overflow-hidden transition-all shadow-xl hover:shadow-2xl hover:shadow-rose-400/40">
+                    <span class="relative z-10 font-bold tracking-wider">ЗАПОЧНИ ТЕСТА</span>
+                    <div class="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-300 group-hover:scale-150 group-hover:bg-elegant-dark/20"></div>
+                </a>
+                <a href="#manifesto" class="px-8 py-4 bg-white text-deep-rose border border-pink-200 rounded-full font-bold hover:bg-pink-50 transition-colors">
+                    Виж Правилата
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-deep-rose/50">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </header>
 
-        const Navbar = ({ activeTab, setActiveTab }) => (
-            <nav className="bg-white shadow-md sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-20">
-                        <div className="flex items-center">
-                            <i className="ph ph-first-aid text-blue-600 text-3xl mr-3"></i>
+    <!-- Founders -->
+    <section id="founders" class="py-24 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="font-serif text-5xl text-elegant-dark mb-4">Визионерите</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-deep-rose to-transparent mx-auto"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-16 max-w-5xl mx-auto">
+                <!-- Elis -->
+                <div class="group relative">
+                    <div class="absolute inset-0 bg-rose-200 rounded-[2rem] rotate-3 group-hover:rotate-6 transition-transform opacity-50"></div>
+                    <div class="relative bg-white p-8 rounded-[2rem] shadow-xl border border-pink-100 text-center transition-transform group-hover:-translate-y-2">
+                        <div class="w-32 h-32 mx-auto -mt-16 mb-6 rounded-full border-4 border-white shadow-lg bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center text-white text-3xl font-serif">
+                            ЕФ
+                        </div>
+                        <h3 class="font-serif text-3xl font-bold text-gray-800 mb-2">Елис Фейзула</h3>
+                        <p class="text-deep-rose font-bold text-xs uppercase tracking-widest mb-6">Съосновател & Президент</p>
+                        <p class="text-gray-600 italic leading-relaxed">"Истинската жена знае кога да каже 'не' – на нощната смяна, на стреса и на грозните аксесоари."</p>
+                    </div>
+                </div>
+
+                <!-- Maria -->
+                <div class="group relative mt-12 md:mt-0">
+                    <div class="absolute inset-0 bg-purple-200 rounded-[2rem] -rotate-3 group-hover:-rotate-6 transition-transform opacity-50"></div>
+                    <div class="relative bg-white p-8 rounded-[2rem] shadow-xl border border-pink-100 text-center transition-transform group-hover:-translate-y-2">
+                        <div class="w-32 h-32 mx-auto -mt-16 mb-6 rounded-full border-4 border-white shadow-lg bg-gradient-to-br from-rose-400 to-purple-600 flex items-center justify-center text-white text-3xl font-serif">
+                            МК
+                        </div>
+                        <h3 class="font-serif text-3xl font-bold text-gray-800 mb-2">Мария Кацарова</h3>
+                        <p class="text-deep-rose font-bold text-xs uppercase tracking-widest mb-6">Съосновател & Президент</p>
+                        <p class="text-gray-600 italic leading-relaxed">"Животът до 100 изисква стратегия. Моята включва много розе и никакво Лабубу."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Manifesto Cards -->
+    <section id="manifesto" class="py-24 bg-gradient-to-b from-white to-pink-50">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 px-4 border-b border-pink-200 pb-8">
+                <div>
+                    <h2 class="font-serif text-4xl md:text-5xl text-elegant-dark mb-2">Кодекс на Честта</h2>
+                    <p class="text-gray-500">4-те неприкосновени закона</p>
+                </div>
+                <div class="hidden md:block text-4xl text-deep-rose/20">
+                    <i class="fas fa-quote-right"></i>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-pink-200 group">
+                    <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center text-2xl text-deep-rose mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-venus"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-3">Кариотип 44XX</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Нашият клуб е светилище на женската енергия. Биологията е нашата сила и привилегия.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-pink-200 group">
+                    <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center text-2xl text-deep-rose mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-3">Anti-Hustle</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Уикендите и нощите са за възстановяване. Работата е средство, а не цел.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-pink-200 group">
+                    <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center text-2xl text-deep-rose mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-3">Проект: Век</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Ние планираме да сме тук дълго. Грижата за себе си днес е инвестиция в нашия 100-тен рожден ден.
+                    </p>
+                </div>
+
+                <!-- Card 4 (Special) -->
+                <div class="bg-gradient-to-br from-deep-rose to-purple-900 text-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-2xl text-white mb-6 backdrop-blur-sm">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-3">Zero Labubu</h3>
+                    <p class="text-sm text-white/80 leading-relaxed">
+                        Абсолютна нулева толерантност към инфантилни трендове. Класата не носи плюшени играчки на чантата си.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Entrance Exam -->
+    <section id="entrance-exam" class="py-24 relative overflow-hidden">
+        <div class="container mx-auto px-6 max-w-4xl relative z-10">
+            
+            <!-- Intro Text -->
+            <div id="quiz-intro" class="text-center mb-12 transition-opacity duration-500">
+                <span class="text-deep-rose font-bold tracking-widest uppercase text-sm mb-2 block">Процедура по кандидатстване</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-elegant-dark mb-6">Тест за Съвместимост</h2>
+                <p class="text-gray-600 mb-8 max-w-lg mx-auto">Отговорете честно. Изкуственият интелект на Клуба ще прецени дали сте достойни за членство.</p>
+                <button onclick="startQuiz()" class="bg-deep-rose text-white px-10 py-4 rounded-full font-bold shadow-lg hover:bg-elegant-dark transition-all transform hover:scale-105">
+                    ЗАПОЧНИ ТЕСТА
+                </button>
+            </div>
+
+            <!-- Quiz Container (Hidden initially) -->
+            <div id="quiz-container" class="hidden bg-white rounded-3xl shadow-2xl overflow-hidden border border-pink-100 min-h-[400px] relative">
+                
+                <!-- Progress Bar -->
+                <div class="w-full h-2 bg-pink-100">
+                    <div id="progress-bar" class="h-full bg-deep-rose transition-all duration-500 w-0"></div>
+                </div>
+
+                <div class="p-8 md:p-12">
+                    <!-- Question 1 -->
+                    <div class="quiz-step hidden" id="step-1">
+                        <h3 class="font-serif text-2xl font-bold mb-6 text-gray-800">1. Събота сутрин е. Телефонът звъни - шефът ви е. Вашата реакция?</h3>
+                        <div class="space-y-4">
                             <div>
-                                <h1 className="text-xl font-bold text-gray-900 leading-tight">АПИМП Д-р Петя Маджарова</h1>
+                                <input type="radio" name="q1" id="q1a" value="fail" class="hidden quiz-option">
+                                <label for="q1a" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
+                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
+                                    Вдигам веднага, работата е всичко!
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" name="q1" id="q1b" value="pass" class="hidden quiz-option">
+                                <label for="q1b" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
+                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
+                                    Телефонът е на "Do Not Disturb". Аз съм на спа.
+                                </label>
                             </div>
                         </div>
-                        <div className="hidden md:flex space-x-8 items-center">
-                            {['Начало', 'Екип', 'График & Локации', 'Пациенти'].map((tab) => (
-                                <button
-                                    key={tab}
-                                    onClick={() => setActiveTab(tab)}
-                                    className={`${activeTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-blue-500'} px-3 py-2 text-sm font-medium transition-colors`}
-                                >
-                                    {tab}
-                                </button>
-                            ))}
-                            <a href="#booking" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-bold transition-colors">
-                                Запази час
-                            </a>
-                        </div>
-                         {/* Mobile menu button could go here */}
-                         <div className="md:hidden flex items-center">
-                            <button className="text-gray-500 hover:text-blue-600" onClick={() => document.getElementById('mobile-menu').classList.toggle('hidden')}>
-                                <i className="ph ph-list text-2xl"></i>
-                            </button>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="quiz-step hidden" id="step-2">
+                        <h3 class="font-serif text-2xl font-bold mb-6 text-gray-800">2. Биологична проверка. Вашият кариотип?</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <input type="radio" name="q2" id="q2a" value="pass" class="hidden quiz-option">
+                                <label for="q2a" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
+                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
+                                    44XX
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" name="q2" id="q2b" value="fail" class="hidden quiz-option">
+                                <label for="q2b" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
+                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
+                                    44XY
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" name="q2" id="q2c" value="fail" class="hidden quiz-option">
+                                <label for="q2c" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
+                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
+                                    Не съм сигурна / Друго
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {/* Mobile Menu */}
-                <div id="mobile-menu" className="hidden md:hidden bg-gray-50 border-t">
-                     {['Начало', 'Екип', 'График & Локации', 'Пациенти'].map((tab) => (
-                        <button
-                            key={tab}
-                            onClick={() => { setActiveTab(tab); document.getElementById('mobile-menu').classList.add('hidden'); }}
-                            className="block w-full text-left px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-100"
-                        >
-                            {tab}
-                        </button>
-                    ))}
-                </div>
-            </nav>
-        );
 
-        const Hero = ({ setActiveTab }) => (
-            <div className="hero-pattern text-white pb-20 pt-10 px-4">
-                <div className="max-w-4xl mx-auto text-center animate-fade-in">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-6">Грижа за вашето здраве с професионализъм и внимание</h2>
-                    <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                        Екип от специалисти в Първомай и Пловдив, посветени на профилактиката, диагностиката и лечението на цялото семейство.
-                    </p>
-                    <div className="flex flex-col sm:flex-row justify-center gap-4">
-                        <button onClick={() => setActiveTab('График & Локации')} className="bg-white text-blue-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
-                            Виж графика
+                    <!-- Question 3 -->
+                    <div class="quiz-step hidden" id="step-3">
+                        <h3 class="font-serif text-2xl font-bold mb-6 text-gray-800">3. Колко време планирате да живеете?</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <input type="radio" name="q3" id="q3a" value="fail" class="hidden quiz-option">
+                                <label for="q3a" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
+                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
+                                    Колкото дойде.
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" name="q3" id="q3b" value="pass" class="hidden quiz-option">
+                                <label for="q3b" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
+                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
+                                    Минимум 100 години. Имам планове.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 4 (The Trap) -->
+                    <div class="quiz-step hidden" id="step-4">
+                        <h3 class="font-serif text-2xl font-bold mb-6 text-gray-800">4. Притежавате ли артикул от серията "Labubu"?</h3>
+                        <p class="text-sm text-gray-500 mb-4 italic">Бъдете искрени.</p>
+                        <div class="space-y-4">
+                            <div>
+                                <input type="radio" name="q4" id="q4a" value="fail" class="hidden quiz-option">
+                                <label for="q4a" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
+                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
+                                    Да, много са сладки!
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" name="q4" id="q4b" value="pass" class="hidden quiz-option">
+                                <label for="q4b" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
+                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
+                                    Категорично не. Това е обида за естетиката ми.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Final Input -->
+                    <div class="quiz-step hidden" id="step-final">
+                        <h3 class="font-serif text-2xl font-bold mb-6 text-gray-800">Последна стъпка</h3>
+                        <p class="mb-4">Въведете името си, за да генерираме резултата.</p>
+                        <input type="text" id="applicant-name" placeholder="Вашето Име" class="w-full p-4 border-2 border-pink-200 rounded-xl focus:border-deep-rose outline-none text-lg mb-6">
+                        <button onclick="calculateResult()" class="w-full bg-deep-rose text-white py-4 rounded-xl font-bold text-lg hover:bg-elegant-dark transition-all">
+                            ПРОВЕРИ СТАТУС
                         </button>
-                        <button onClick={() => setActiveTab('Пациенти')} className="bg-blue-700 border border-blue-400 text-white hover:bg-blue-800 font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105">
-                            Инструменти за пациента
-                        </button>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="mt-8 flex justify-between" id="quiz-nav">
+                        <button onclick="prevStep()" id="prev-btn" class="text-gray-400 hover:text-gray-600 font-medium hidden">Назад</button>
+                        <button onclick="nextStep()" id="next-btn" class="ml-auto bg-gray-900 text-white px-8 py-2 rounded-lg hover:bg-gray-700 transition-all">Напред</button>
                     </div>
                 </div>
             </div>
-        );
 
-        const TeamSection = () => (
-            <div className="py-12 bg-white animate-fade-in">
-                <div className="max-w-7xl mx-auto px-4">
-                    <h3 className="text-2xl font-bold text-center text-gray-800 mb-10">Нашият Екип</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {teamMembers.map((member, idx) => (
-                            <div key={idx} className="bg-slate-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-slate-100">
+            <!-- Result: REJECTED -->
+            <div id="result-rejected" class="hidden text-center mt-8 p-8 bg-gray-100 rounded-3xl border-2 border-gray-300">
+                <i class="fas fa-times-circle text-6xl text-gray-400 mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-600 mb-2">Отхвърлена</h3>
+                <p class="text-gray-500">За съжаление, не покривате високите стандарти на клуба. Вероятно притежавате Лабубу или работите през уикенда.</p>
+                <button onclick="location.reload()" class="mt-6 text-deep-rose underline">Опитай пак (ако промениш живота си)</button>
+            </div>
+
+            <!-- Result: ACCEPTED (The Card) -->
+            <div id="result-accepted" class="hidden mt-8 perspective-container">
+                <div class="text-center mb-8">
+                    <i class="fas fa-check-circle text-5xl text-green-500 mb-4 animate-bounce"></i>
+                    <h3 class="font-serif text-3xl font-bold text-deep-rose">Добре дошла в елита!</h3>
+                    <p class="text-gray-600">Вашата дигитална карта е генерирана.</p>
+                </div>
+
+                <!-- THE CARD -->
+                <div class="membership-card-container w-full max-w-md mx-auto h-64 relative cursor-pointer" id="tilt-card">
+                    <div class="membership-card w-full h-full rounded-2xl shadow-2xl relative overflow-hidden bg-gradient-to-r from-gray-900 to-gray-800 text-white border border-gray-600">
+                        <!-- Holographic Overlay -->
+                        <div class="absolute inset-0 card-hologram opacity-30 z-10 pointer-events-none"></div>
+                        
+                        <!-- Card Content -->
+                        <div class="relative z-20 p-6 h-full flex flex-col justify-between">
+                            <div class="flex justify-between items-start">
                                 <div>
-                                    <h4 className="font-bold text-gray-900 text-lg leading-tight mb-1">
-                                        {member.name}
-                                    </h4>
-                                    <p className="text-sm text-blue-600 font-medium mb-3">{member.role}</p>
-                                    
-                                    {!member.hideLocations && (
-                                        <div className="text-sm text-gray-600">
-                                            <div className="flex flex-wrap gap-2">
-                                                {member.location.map((loc, i) => (
-                                                    <span key={i} className="bg-white border border-blue-100 text-gray-600 px-2 py-1 rounded text-xs">{loc}</span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
+                                    <div class="text-xs text-gray-400 tracking-[0.3em] uppercase mb-1">Клуб на Безупречните Жени</div>
+                                    <div class="font-serif text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-200 to-rose-400">FLAWLESS MEMBER</div>
+                                </div>
+                                <i class="fas fa-gem text-3xl text-pink-300"></i>
+                            </div>
+
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-8 bg-yellow-200/20 rounded border border-yellow-200/40 backdrop-blur-sm"></div> <!-- Chip -->
+                                <i class="fas fa-wifi text-gray-500 rotate-90"></i>
+                            </div>
+
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <div class="text-[10px] text-gray-400 uppercase mb-1">Член</div>
+                                    <div class="font-mono text-lg tracking-widest uppercase" id="card-name-display">IMETO VI</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-[10px] text-gray-400 uppercase mb-1">ID</div>
+                                    <div class="font-mono text-sm tracking-widest text-pink-300" id="card-id-display">0000</div>
                                 </div>
                             </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
-
-        const LocationCard = ({ loc }) => (
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden border-t-4 border-blue-500 flex flex-col h-full animate-fade-in">
-                <div className="p-6 flex-grow">
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">{loc.city}</h3>
-                    <p className="text-gray-600 mb-4 flex items-start">
-                        <i className="ph ph-map-pin text-blue-500 mt-1 mr-2 flex-shrink-0"></i>
-                        {loc.address}
-                    </p>
-                    
-                    <div className="mb-6">
-                        <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">График на лекарите</h4>
-                        <div className="space-y-3">
-                            {loc.doctors.map((schedule, idx) => (
-                                <div key={idx} className="bg-blue-50 p-3 rounded-lg text-sm">
-                                    <span className="font-bold text-blue-800 block mb-1">{schedule.day}</span>
-                                    {schedule.docs.map((doc, dIdx) => (
-                                        <div key={dIdx} className="text-gray-700 pl-2 border-l-2 border-blue-200">{doc}</div>
-                                    ))}
-                                </div>
-                            ))}
                         </div>
+
+                        <!-- Shine Effect -->
+                        <div class="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 animate-shine" />
                     </div>
                 </div>
                 
-                {/* Карта */}
-                <div className="h-64 w-full bg-gray-100 border-t border-gray-200">
-                    <iframe 
-                        width="100%" 
-                        height="100%" 
-                        frameBorder="0" 
-                        scrolling="no" 
-                        marginHeight="0" 
-                        marginWidth="0" 
-                        src={`https://maps.google.com/maps?q=${encodeURIComponent(loc.mapQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                        title={`Карта за ${loc.city}`}
-                    ></iframe>
-                </div>
-
-                <div className="p-4 bg-gray-50 border-t border-gray-100">
-                    <a href={loc.bookingLink} target="_blank" rel="noreferrer" className="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
-                        <i className="ph ph-calendar-check text-xl"></i>
-                        {loc.bookingLabel}
-                    </a>
+                <div class="text-center mt-8">
+                    <button class="bg-gray-900 text-white px-6 py-2 rounded-lg text-sm hover:bg-gray-800 transition-colors">
+                        <i class="fas fa-download mr-2"></i> Запази в Wallet
+                    </button>
                 </div>
             </div>
-        );
 
-        const LocationsSection = () => (
-            <div id="booking" className="py-12 bg-slate-50">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="text-center mb-10">
-                        <h3 className="text-2xl font-bold text-gray-800">Локации и График</h3>
-                        <p className="text-gray-600">Изберете удобен за вас кабинет и запазете час онлайн</p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {locations.map(loc => <LocationCard key={loc.id} loc={loc} />)}
-                    </div>
-                </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-elegant-dark text-white py-12 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="font-serif text-2xl font-bold text-pink-200 mb-4">КБЖ</h3>
+            <p class="opacity-60 text-sm mb-6">Създадено за жени, които знаят цената си.</p>
+            <div class="flex justify-center space-x-6 text-pink-200 mb-8">
+                <i class="fab fa-instagram text-xl hover:text-white transition-colors cursor-pointer"></i>
+                <i class="fab fa-tiktok text-xl hover:text-white transition-colors cursor-pointer"></i>
             </div>
-        );
+            <p class="text-xs opacity-30">&copy; 2024 Клуб на Безупречните Жени. Strictly No-Labubu Zone.</p>
+        </div>
+    </footer>
 
-        const BMICalculator = () => {
-            const [weight, setWeight] = useState('');
-            const [height, setHeight] = useState('');
-            const [bmi, setBmi] = useState(null);
-            const [status, setStatus] = useState('');
+    <!-- JavaScript Logic -->
+    <script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('translate-x-full')) {
+                menu.classList.remove('translate-x-full');
+            } else {
+                menu.classList.add('translate-x-full');
+            }
+        }
 
-            const calculateBMI = () => {
-                if(weight && height) {
-                    const hInMeters = height / 100;
-                    const val = (weight / (hInMeters * hInMeters)).toFixed(1);
-                    setBmi(val);
-                    if(val < 18.5) setStatus('Поднормено тегло');
-                    else if(val < 25) setStatus('Нормално тегло');
-                    else if(val < 30) setStatus('Наднормено тегло');
-                    else setStatus('Затлъстяване');
+        // Quiz Logic
+        let currentStep = 1;
+        const totalSteps = 5; // 4 questions + final input
+
+        function startQuiz() {
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const percentage = ((currentStep - 1) / totalSteps) * 100;
+            document.getElementById('progress-bar').style.width = percentage + '%';
+        }
+
+        function nextStep() {
+            // Validate current step
+            if (currentStep < 5) {
+                const radios = document.getElementsByName('q' + currentStep);
+                let checked = false;
+                for (let radio of radios) {
+                    if (radio.checked) checked = true;
                 }
-            };
-
-            return (
-                <div className="bg-white p-6 rounded-xl shadow-md">
-                    <h4 className="text-lg font-bold text-blue-800 mb-4 flex items-center">
-                        <i className="ph ph-calculator mr-2"></i> BMI Калкулатор
-                    </h4>
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label className="block text-sm text-gray-600 mb-1">Тегло (кг)</label>
-                            <input type="number" value={weight} onChange={e=>setWeight(e.target.value)} className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-200 outline-none" placeholder="70" />
-                        </div>
-                        <div>
-                            <label className="block text-sm text-gray-600 mb-1">Ръст (см)</label>
-                            <input type="number" value={height} onChange={e=>setHeight(e.target.value)} className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-200 outline-none" placeholder="175" />
-                        </div>
-                    </div>
-                    <button onClick={calculateBMI} className="w-full bg-blue-600 text-white py-2 rounded font-semibold hover:bg-blue-700">Изчисли</button>
-                    {bmi && (
-                        <div className={`mt-4 p-3 rounded text-center ${bmi < 25 && bmi > 18.5 ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`}>
-                            <div className="text-2xl font-bold">{bmi}</div>
-                            <div className="text-sm">{status}</div>
-                        </div>
-                    )}
-                </div>
-            );
-        };
-        
-        // Нов компонент за интерактивен калкулатор на профилактични прегледи
-        const PreventiveCheckupCalculator = () => {
-            const [age, setAge] = useState('');
-            const [gender, setGender] = useState('male');
-            const [applicableExams, setApplicableExams] = useState(null);
-
-            const checkExams = () => {
-                if (!age) {
-                    setApplicableExams(null);
+                if (!checked) {
+                    alert("Моля, изберете отговор.");
                     return;
                 }
-                const ageNum = parseInt(age);
-                const results = [];
-                const addedExamNames = new Set();
+            }
 
-                preventiveExamsData.forEach(rule => {
-                    if (ageNum >= rule.minAge && ageNum <= rule.maxAge) {
-                        if (rule.gender === 'all' || rule.gender === gender) {
-                            rule.exams.forEach(exam => {
-                                // Избягване на дублиране, ако правилото се припокрива
-                                if (!addedExamNames.has(exam.name)) {
-                                    results.push(exam);
-                                    addedExamNames.add(exam.name);
-                                }
-                            });
-                        }
+            // Hide current
+            document.getElementById('step-' + (currentStep < 5 ? currentStep : 'final')).classList.add('hidden');
+            
+            // Increment
+            currentStep++;
+            
+            // Show next
+            if (currentStep <= 4) {
+                document.getElementById('step-' + currentStep).classList.remove('hidden');
+                document.getElementById('prev-btn').classList.remove('hidden');
+            } else if (currentStep === 5) {
+                document.getElementById('step-final').classList.remove('hidden');
+                document.getElementById('quiz-nav').classList.add('hidden'); // Hide nav buttons for final step
+            }
+            
+            updateProgress();
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById('step-' + currentStep).classList.add('hidden');
+                currentStep--;
+                document.getElementById('step-' + currentStep).classList.remove('hidden');
+                if (currentStep === 1) {
+                    document.getElementById('prev-btn').classList.add('hidden');
+                }
+                updateProgress();
+            }
+        }
+
+        function calculateResult() {
+            const name = document.getElementById('applicant-name').value;
+            if (!name) {
+                alert("Моля, въведете име.");
+                return;
+            }
+
+            // Check answers
+            let passed = true;
+            for (let i = 1; i <= 4; i++) {
+                const radios = document.getElementsByName('q' + i);
+                for (let radio of radios) {
+                    if (radio.checked && radio.value === 'fail') {
+                        passed = false;
                     }
-                });
-                setApplicableExams(results.length > 0 ? results : []);
-            };
+                }
+            }
 
-            return (
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h4 className="text-lg font-bold text-blue-800 mb-4 flex items-center">
-                        <i className="ph ph-heartbeat mr-2"></i> Проверете вашите профилактични прегледи
-                    </h4>
-                    <p className="text-sm text-gray-600 mb-4">Въведете вашата възраст и пол, за да видите какви изследвания ви се полагат по НЗОК.</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Възраст (години)</label>
-                            <input 
-                                type="number" 
-                                min="0" 
-                                max="120"
-                                value={age} 
-                                onChange={e => setAge(e.target.value)} 
-                                className="w-full border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" 
-                                placeholder="Напр. 45" 
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Пол</label>
-                            <select 
-                                value={gender} 
-                                onChange={e => setGender(e.target.value)} 
-                                className="w-full border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white"
-                            >
-                                <option value="male">Мъж</option>
-                                <option value="female">Жена</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button onClick={checkExams} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors">
-                        Провери
-                    </button>
+            // Hide quiz container
+            document.getElementById('quiz-container').classList.add('hidden');
 
-                    {/* Резултати */}
-                    {applicableExams && (
-                        <div className="mt-6 animate-fade-in">
-                            <h5 className="font-bold text-gray-800 mb-3">Полагащи се прегледи и изследвания:</h5>
-                            {applicableExams.length > 0 ? (
-                                <div className="bg-blue-50 rounded-lg border border-blue-100 overflow-hidden">
-                                    <ul className="divide-y divide-blue-100">
-                                        {applicableExams.map((exam, idx) => (
-                                            <li key={idx} className="p-3 flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm">
-                                                <span className="font-medium text-blue-900 mb-1 sm:mb-0">{exam.name}</span>
-                                                <span className="text-blue-700 bg-blue-100 px-2 py-1 rounded-full text-xs whitespace-nowrap">{exam.freq}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ) : (
-                                <p className="text-gray-600 bg-gray-100 p-3 rounded">Няма намерени специфични данни за тази възраст.</p>
-                            )}
-                            <p className="text-xs text-gray-500 mt-3 italic">* Информацията е базирана на Наредба № 8 за профилактичните прегледи и диспансеризацията. Моля, консултирайте се с вашия лекар за конкретни назначения.</p>
-                        </div>
-                    )}
-                </div>
-            );
-        };
+            if (passed) {
+                // Show Card
+                document.getElementById('result-accepted').classList.remove('hidden');
+                document.getElementById('card-name-display').textContent = name;
+                // Generate random elite ID
+                const randomId = 'KBJ-' + Math.floor(1000 + Math.random() * 9000);
+                document.getElementById('card-id-display').textContent = randomId;
+                
+                // Trigger confetti or something cool (optional, kept simple for file size)
+            } else {
+                // Show Rejection
+                document.getElementById('result-rejected').classList.remove('hidden');
+            }
+        }
 
-        const Accordion = ({ title, children, defaultOpen = false }) => {
-            const [isOpen, setIsOpen] = useState(defaultOpen);
-            return (
-                <div className="border border-gray-200 rounded-lg mb-3 overflow-hidden">
-                    <button onClick={() => setIsOpen(!isOpen)} className="w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 font-semibold text-gray-700 text-left">
-                        {title}
-                        <i className={`ph ph-caret-down transition-transform ${isOpen ? 'rotate-180' : ''}`}></i>
-                    </button>
-                    {isOpen && <div className="p-4 bg-white border-t border-gray-100">{children}</div>}
-                </div>
-            );
-        };
+        // 3D Tilt Effect for Card
+        const cardContainer = document.getElementById('tilt-card');
+        const card = document.querySelector('.membership-card');
 
-        const PatientTools = () => (
-            <div className="py-12 bg-white animate-fade-in">
-                <div className="max-w-7xl mx-auto px-4">
-                    <h3 className="text-2xl font-bold text-gray-800 mb-8 text-center">Полезна информация за пациента</h3>
-                    
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Column 1: BMI & Contacts */}
-                        <div className="space-y-8">
-                            <BMICalculator />
-                            <div className="bg-blue-50 p-6 rounded-xl border border-blue-100">
-                                <h4 className="font-bold text-blue-800 mb-3">Спешни случаи</h4>
-                                <p className="text-sm text-gray-700 mb-2">При животозастрашаващи състояния, моля незабавно позвънете на телефон 112.</p>
-                                <p className="text-sm text-gray-700">За прегледи извън работно време, моля свържете се с дежурния кабинет на съответното лечебно заведение.</p>
-                            </div>
-                        </div>
+        cardContainer.addEventListener('mousemove', (e) => {
+            const rect = cardContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg
+            const rotateY = ((x - centerX) / centerX) * 10;
 
-                        {/* Column 2: Checkups & Immunizations */}
-                        <div className="lg:col-span-2 space-y-6">
-                            {/* Нов интерактивен калкулатор за профилактични прегледи */}
-                            <PreventiveCheckupCalculator />
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
 
-                            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                                <h4 className="text-lg font-bold text-blue-800 mb-4 flex items-center">
-                                    <i className="ph ph-syringe mr-2"></i> Имунизационен календар
-                                </h4>
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-sm text-left text-gray-600">
-                                        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                                            <tr>
-                                                <th className="px-4 py-2">Възраст</th>
-                                                <th className="px-4 py-2">Имунизация</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {immunizationCalendar.map((row, idx) => (
-                                                <tr key={idx} className="border-b hover:bg-gray-50">
-                                                    <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap">{row.age}</td>
-                                                    <td className="px-4 py-2">{row.vaccine}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-
-        const Footer = ({ setActiveTab }) => (
-            <footer className="bg-gray-900 text-white py-12">
-                <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div>
-                        <h5 className="text-lg font-bold mb-4">АПИМП Д-р Петя Маджарова</h5>
-                        <p className="text-gray-400 text-sm">
-                            Професионална медицинска грижа за цялото семейство. 
-                            Кабинети в гр. Първомай и гр. Пловдив.
-                        </p>
-                    </div>
-                    <div>
-                        <h5 className="text-lg font-bold mb-4">Бързи връзки</h5>
-                        <ul className="space-y-2 text-sm text-gray-400">
-                            <li><button onClick={() => setActiveTab('Начало')} className="hover:text-blue-400">Начало</button></li>
-                            <li><button onClick={() => setActiveTab('График & Локации')} className="hover:text-blue-400">График</button></li>
-                            <li><button onClick={() => setActiveTab('Пациенти')} className="hover:text-blue-400">Профилактика</button></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h5 className="text-lg font-bold mb-4">Записване на час</h5>
-                        <div className="flex flex-col gap-2">
-                            <a href="https://superdoc.bg/lekar/petya-madzharova" target="_blank" className="text-sm bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-center">Superdoc (Първомай)</a>
-                            <a href="https://doctors-viber-bot.docup.health/1525" target="_blank" className="text-sm bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded text-center">DocUp (Пловдив)</a>
-                        </div>
-                    </div>
-                </div>
-                <div className="border-t border-gray-800 mt-8 pt-8 text-center text-xs text-gray-500">
-                    &copy; {new Date().getFullYear()} АПИМП Д-р Петя Маджарова ЕООД. Всички права запазени.
-                </div>
-            </footer>
-        );
-
-        const App = () => {
-            const [activeTab, setActiveTab] = useState('Начало');
-
-            // Scroll to top when tab changes
-            useEffect(() => {
-                window.scrollTo(0, 0);
-            }, [activeTab]);
-
-            return (
-                <div className="min-h-screen flex flex-col">
-                    <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
-                    
-                    <main className="flex-grow">
-                        {activeTab === 'Начало' && (
-                            <>
-                                <Hero setActiveTab={setActiveTab} />
-                                <div className="-mt-16 relative z-10 mb-10">
-                                    <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
-                                        <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-500">
-                                            <div className="text-2xl font-bold mb-1">Дебър</div>
-                                            <div className="text-gray-600 text-sm">Всеки ден: 08:00 - 14:00</div>
-                                        </div>
-                                        <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-blue-500">
-                                            <div className="text-2xl font-bold mb-1">Първомай</div>
-                                            <div className="text-gray-600 text-sm">Пон, Сря, Пет: 14:00 - 17:00</div>
-                                        </div>
-                                        <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-purple-500">
-                                            <div className="text-2xl font-bold mb-1">Пълмед</div>
-                                            <div className="text-gray-600 text-sm">По график (Вторник-Петък)</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <TeamSection />
-                                <div className="bg-blue-600 text-white text-center py-12 px-4">
-                                    <h3 className="text-2xl font-bold mb-4">Готови ли сте да запишете час?</h3>
-                                    <button onClick={() => setActiveTab('График & Локации')} className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full shadow hover:shadow-lg transition">Към Графика</button>
-                                </div>
-                            </>
-                        )}
-                        {activeTab === 'Екип' && <TeamSection />}
-                        {activeTab === 'График & Локации' && <LocationsSection />}
-                        {activeTab === 'Пациенти' && <PatientTools />}
-                    </main>
-
-                    <Footer setActiveTab={setActiveTab} />
-                </div>
-            );
-        };
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        cardContainer.addEventListener('mouseleave', () => {
+            card.style.transform = 'rotateX(0) rotateY(0)';
+        });
     </script>
 </body>
 </html>
