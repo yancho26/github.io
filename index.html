@@ -86,6 +86,31 @@
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
         }
+
+        /* Timeline styles */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: #FBCFE8;
+            transform: translateX(-50%);
+        }
+
+        /* SOS Button Pulse */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(190, 24, 93, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(190, 24, 93, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(190, 24, 93, 0); }
+        }
+        
+        /* Breathing Animation */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.5); opacity: 0.4; }
+        }
     </style>
 </head>
 <body class="bg-gradient-to-b from-perfect-pink via-white to-perfect-pink text-gray-800 antialiased overflow-x-hidden">
@@ -93,8 +118,20 @@
     <!-- Sticky Nav -->
     <nav class="fixed w-full z-50 glass-morphism transition-all duration-300" id="navbar">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-3xl font-serif font-bold italic text-deep-rose tracking-tighter hover:scale-105 transition-transform">
-                KБЖ
+            <!-- NEW COOLER LOGO -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="relative">
+                    <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-deep-rose to-elegant-dark text-white rounded-xl shadow-lg border border-pink-200 transform group-hover:rotate-6 transition-all duration-300">
+                        <span class="font-serif font-bold text-2xl italic">K</span>
+                    </div>
+                    <i class="fas fa-crown text-luxury-gold absolute -top-3 -right-2 text-lg drop-shadow-md animate-bounce" style="animation-duration: 3s;"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif font-bold text-2xl leading-none text-transparent bg-clip-text bg-gradient-to-r from-deep-rose to-purple-900 tracking-tight group-hover:text-deep-rose transition-colors">
+                        КБЖ
+                    </span>
+                    <span class="text-[0.6rem] uppercase tracking-[0.35em] text-luxury-gold font-bold">The Elite Club</span>
+                </div>
             </a>
             
             <div class="hidden md:flex items-center space-x-8 text-sm font-bold tracking-widest uppercase text-elegant-dark">
@@ -104,6 +141,14 @@
                 </a>
                 <a href="#manifesto" class="hover:text-deep-rose transition-colors relative group">
                     Кодекс
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-rose transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#lifestyle" class="hover:text-deep-rose transition-colors relative group">
+                    Лайфстайл
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-rose transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#vault" class="hover:text-deep-rose transition-colors relative group">
+                    Активи
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-rose transition-all group-hover:w-full"></span>
                 </a>
                 <a href="#entrance-exam" class="px-6 py-2 bg-deep-rose text-white rounded-full hover:bg-elegant-dark transition-all shadow-lg hover:shadow-rose-300/50 transform hover:-translate-y-0.5">
@@ -123,6 +168,8 @@
             </button>
             <a href="#founders" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Основатели</a>
             <a href="#manifesto" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Кодекс</a>
+            <a href="#lifestyle" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Лайфстайл</a>
+            <a href="#vault" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Активи</a>
             <a href="#entrance-exam" onclick="toggleMobileMenu()" class="text-xl bg-deep-rose text-white px-8 py-3 rounded-full">Кандидатствай</a>
         </div>
     </nav>
@@ -259,6 +306,258 @@
                     <p class="text-sm text-white/80 leading-relaxed">
                         Абсолютна нулева толерантност към инфантилни трендове. Класата не носи плюшени играчки на чантата си.
                     </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW MODULE: The Daily Ritual (Timeline) -->
+    <section id="lifestyle" class="py-24 bg-white relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-deep-rose font-bold tracking-widest uppercase text-sm mb-2 block">Рутина</span>
+                <h2 class="font-serif text-4xl text-elegant-dark mb-4">Денят на Безупречната</h2>
+                <p class="text-gray-500">Защото стресът причинява бръчки.</p>
+            </div>
+
+            <div class="relative timeline-line max-w-4xl mx-auto">
+                
+                <!-- Time Slot 1 -->
+                <div class="flex flex-col md:flex-row items-center justify-between mb-12 relative group">
+                    <div class="order-1 w-5/12 text-right pr-8 md:block hidden animate-fade-in">
+                        <h3 class="font-serif text-2xl font-bold text-gray-800">Естествено Събуждане</h3>
+                        <p class="text-gray-500 text-sm mt-2">Никакви аларми. Тялото се буди, когато е готово.</p>
+                    </div>
+                    <div class="z-20 flex items-center order-1 bg-deep-rose text-white w-16 h-16 rounded-full shadow-xl justify-center font-bold text-lg border-4 border-white group-hover:scale-110 transition-transform">
+                        10:00
+                    </div>
+                    <div class="order-1 w-5/12 pl-8">
+                        <div class="md:hidden mb-2">
+                            <h3 class="font-serif text-xl font-bold text-gray-800">Естествено Събуждане</h3>
+                        </div>
+                        <span class="bg-pink-100 text-deep-rose px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Утро</span>
+                    </div>
+                </div>
+
+                <!-- Time Slot 2 -->
+                <div class="flex flex-col md:flex-row items-center justify-between mb-12 relative group">
+                    <div class="order-1 w-5/12 text-right pr-8 md:block hidden">
+                        <span class="bg-pink-100 text-deep-rose px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Брънч</span>
+                    </div>
+                    <div class="z-20 flex items-center order-1 bg-white text-deep-rose w-16 h-16 rounded-full shadow-xl justify-center font-bold text-lg border-4 border-pink-100 group-hover:bg-deep-rose group-hover:text-white transition-colors">
+                        12:30
+                    </div>
+                    <div class="order-1 w-5/12 pl-8 animate-fade-in">
+                        <h3 class="font-serif text-2xl font-bold text-gray-800">Късна Закуска</h3>
+                        <p class="text-gray-500 text-sm mt-2">Тост с авокадо, матча лате и планиране на следващата ваканция.</p>
+                    </div>
+                </div>
+
+                <!-- Time Slot 3 -->
+                <div class="flex flex-col md:flex-row items-center justify-between mb-12 relative group">
+                    <div class="order-1 w-5/12 text-right pr-8 md:block hidden animate-fade-in">
+                        <h3 class="font-serif text-2xl font-bold text-gray-800">Bio-Hacking & Spa</h3>
+                        <p class="text-gray-500 text-sm mt-2">Криокамера, червена светлина или просто масаж. Инвестиция в ДНК-то.</p>
+                    </div>
+                    <div class="z-20 flex items-center order-1 bg-white text-deep-rose w-16 h-16 rounded-full shadow-xl justify-center font-bold text-lg border-4 border-pink-100 group-hover:bg-deep-rose group-hover:text-white transition-colors">
+                        15:00
+                    </div>
+                    <div class="order-1 w-5/12 pl-8">
+                         <div class="md:hidden mb-2">
+                            <h3 class="font-serif text-xl font-bold text-gray-800">Bio-Hacking & Spa</h3>
+                        </div>
+                        <span class="bg-pink-100 text-deep-rose px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Self-Care</span>
+                    </div>
+                </div>
+
+                 <!-- Time Slot 4 -->
+                 <div class="flex flex-col md:flex-row items-center justify-between relative group">
+                    <div class="order-1 w-5/12 text-right pr-8 md:block hidden">
+                        <span class="bg-pink-100 text-deep-rose px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Вечер</span>
+                    </div>
+                    <div class="z-20 flex items-center order-1 bg-elegant-dark text-white w-16 h-16 rounded-full shadow-xl justify-center font-bold text-lg border-4 border-white group-hover:scale-110 transition-transform">
+                        20:00
+                    </div>
+                    <div class="order-1 w-5/12 pl-8 animate-fade-in">
+                        <h3 class="font-serif text-2xl font-bold text-gray-800">Вечеря без Телефони</h3>
+                        <p class="text-gray-500 text-sm mt-2">Изискана храна, качествено вино и никакви работни имейли.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW MODULE: The Blacklist -->
+    <section class="py-24 bg-elegant-dark text-white relative">
+        <!-- Decoration -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
+            <i class="fas fa-ban absolute text-9xl -top-10 -left-10 rotate-12"></i>
+            <i class="fas fa-ban absolute text-9xl bottom-10 right-10 -rotate-12"></i>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <div class="inline-block border border-red-500 text-red-500 px-4 py-1 rounded uppercase tracking-widest text-xs font-bold mb-4">Strictly Prohibited</div>
+                <h2 class="font-serif text-4xl text-white mb-4">Черният Списък</h2>
+                <p class="text-pink-200/60">Нещата, които никога няма да намерите в чантата или живота ни.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <!-- Item 1 -->
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-red-900/40 transition-colors group">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🧸🚫</div>
+                    <h3 class="font-bold text-lg text-pink-100">Лабубу</h3>
+                    <p class="text-xs text-white/50 mt-2">Враг номер едно на елегантността.</p>
+                </div>
+                 <!-- Item 2 -->
+                 <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-red-900/40 transition-colors group">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">⏰</div>
+                    <h3 class="font-bold text-lg text-pink-100">Ранни Аларми</h3>
+                    <p class="text-xs text-white/50 mt-2">Преди 9:00 е насилие над организма.</p>
+                </div>
+                 <!-- Item 3 -->
+                 <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-red-900/40 transition-colors group">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">👕</div>
+                    <h3 class="font-bold text-lg text-pink-100">Полиестер</h3>
+                    <p class="text-xs text-white/50 mt-2">Кожата трябва да диша, както и ние.</p>
+                </div>
+                 <!-- Item 4 -->
+                 <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-red-900/40 transition-colors group">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">☕</div>
+                    <h3 class="font-bold text-lg text-pink-100">Разтворимо Кафе</h3>
+                    <p class="text-xs text-white/50 mt-2">Животът е твърде кратък за лошо кафе.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW INNOVATIVE MODULE: The Investment Vault -->
+    <section id="vault" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                
+                <!-- Text Content -->
+                <div class="lg:w-1/3 text-center lg:text-left">
+                    <span class="text-luxury-gold font-bold tracking-widest uppercase text-sm mb-2 block">Финансов Отчет</span>
+                    <h2 class="font-serif text-4xl text-gray-800 mb-6">Истинските Активи</h2>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        Ние не следим борсовите индекси. В Клуба на Безупречните инвестираме в неща, които имат реална възвръщаемост: младост, спокойствие и лични граници.
+                    </p>
+                    <div class="bg-pink-50 p-6 rounded-xl border border-pink-100">
+                        <div class="text-sm font-bold text-gray-500 uppercase mb-1">Текущ Индекс на Щастие</div>
+                        <div class="text-4xl font-serif font-bold text-deep-rose">▲ 98.4%</div>
+                        <div class="text-xs text-green-500 mt-1">+2.1% спрямо вчера</div>
+                    </div>
+                </div>
+
+                <!-- The Charts -->
+                <div class="lg:w-2/3 w-full bg-gray-50 p-8 rounded-3xl shadow-inner relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-200 opacity-20 rounded-full blur-3xl"></div>
+                    
+                    <!-- Asset 1 -->
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-bold text-gray-700">Нива на Колаген</span>
+                            <span class="font-bold text-deep-rose">High Yield</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                            <div class="bg-gradient-to-r from-pink-300 to-deep-rose h-4 rounded-full" style="width: 95%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Asset 2 -->
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-bold text-gray-700">Часове Сън (Неделна база)</span>
+                            <span class="font-bold text-deep-rose">10h Avg</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                            <div class="bg-gradient-to-r from-purple-300 to-purple-600 h-4 rounded-full" style="width: 88%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Asset 3 -->
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-bold text-gray-700">Толеранс към Драма</span>
+                            <span class="font-bold text-gray-400">Short Selling</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                            <div class="bg-gray-400 h-4 rounded-full" style="width: 2%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Asset 4 -->
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-bold text-gray-700">Качество на Гардероба</span>
+                            <span class="font-bold text-luxury-gold">Blue Chip</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                            <div class="bg-gradient-to-r from-yellow-300 to-luxury-gold h-4 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW MODULE: Upcoming Events -->
+    <section class="py-24 bg-pink-50">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="font-serif text-3xl md:text-4xl text-elegant-dark">Клубен Календар</h2>
+                <a href="#" class="text-deep-rose font-bold text-sm uppercase hover:underline">Виж всички</a>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Event 1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
+                    <div class="h-48 bg-gray-200 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                        <!-- Placeholder Pattern -->
+                        <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1569937756447-e19485c2c7de?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')] bg-cover bg-center group-hover:scale-110 transition-transform duration-700"></div>
+                        <div class="absolute bottom-4 left-4 z-20 text-white">
+                            <span class="bg-deep-rose px-2 py-1 text-xs font-bold rounded mb-2 inline-block">ЮНИ 15</span>
+                            <h3 class="font-serif text-xl font-bold">Лонгджевити Уикенд</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 text-sm mb-4">Ексклузивен семинар в Монако за най-новите методи за запазване на младостта.</p>
+                        <button class="text-deep-rose text-sm font-bold tracking-wide group-hover:translate-x-2 transition-transform">ЗАПАЗИ МЯСТО <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                 <!-- Event 2 -->
+                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
+                    <div class="h-48 bg-gray-200 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                         <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')] bg-cover bg-center group-hover:scale-110 transition-transform duration-700"></div>
+                        <div class="absolute bottom-4 left-4 z-20 text-white">
+                            <span class="bg-deep-rose px-2 py-1 text-xs font-bold rounded mb-2 inline-block">ЮЛИ 01</span>
+                            <h3 class="font-serif text-xl font-bold">Pink Tie Gala</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 text-sm mb-4">Годишната благотворителна вечеря. Дрес код: Безупречно розово.</p>
+                        <button class="text-deep-rose text-sm font-bold tracking-wide group-hover:translate-x-2 transition-transform">ЗАПАЗИ МЯСТО <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                 <!-- Event 3 -->
+                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
+                    <div class="h-48 bg-gray-200 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                        <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')] bg-cover bg-center group-hover:scale-110 transition-transform duration-700"></div>
+                        <div class="absolute bottom-4 left-4 z-20 text-white">
+                            <span class="bg-deep-rose px-2 py-1 text-xs font-bold rounded mb-2 inline-block">АВГ 20</span>
+                            <h3 class="font-serif text-xl font-bold">Detox & Champagne</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 text-sm mb-4">Оксиморон? Не и за нас. Научете как да балансирате удоволствието.</p>
+                        <button class="text-deep-rose text-sm font-bold tracking-wide group-hover:translate-x-2 transition-transform">ЗАПАЗИ МЯСТО <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -461,10 +760,54 @@
         </div>
     </section>
 
+    <!-- FLOATING SOS BUTTON MODULE -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <button onclick="activateSOS()" class="w-16 h-16 bg-deep-rose text-white rounded-full shadow-2xl flex items-center justify-center text-xl font-bold cursor-pointer hover:scale-110 transition-transform" style="animation: pulse-ring 2s infinite;">
+            SOS
+        </button>
+        <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-white text-gray-800 text-xs py-1 px-3 rounded-full shadow-md whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
+            Спешен Zen
+        </div>
+    </div>
+
+    <!-- SOS MODAL (Hidden Overlay) -->
+    <div id="sos-modal" class="fixed inset-0 bg-elegant-dark/95 z-50 hidden flex flex-col items-center justify-center text-center p-6 transition-opacity duration-500 opacity-0">
+        <button onclick="deactivateSOS()" class="absolute top-8 right-8 text-white/50 hover:text-white text-4xl">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <h2 class="text-pink-100 font-serif text-3xl md:text-5xl mb-12">Спешна Терапия</h2>
+        
+        <!-- Breathing Circle -->
+        <div class="relative w-64 h-64 mb-12">
+            <div class="absolute inset-0 bg-pink-400 rounded-full blur-xl animate-breathe" style="animation-duration: 4s;"></div>
+            <div class="absolute inset-4 bg-gradient-to-br from-deep-rose to-purple-800 rounded-full flex items-center justify-center text-white border border-white/20 shadow-2xl">
+                <span id="breath-text" class="font-serif text-2xl italic">Вдишай...</span>
+            </div>
+        </div>
+        
+        <p class="text-white/80 max-w-xl text-lg font-light" id="zen-mantra">
+            "Ти си твърде скъпа, за да се стресираш за евтини проблеми."
+        </p>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-elegant-dark text-white py-12 mt-12">
         <div class="container mx-auto px-6 text-center">
-            <h3 class="font-serif text-2xl font-bold text-pink-200 mb-4">КБЖ</h3>
+            <!-- Footer Logo Variant -->
+            <div class="inline-flex items-center gap-3 mb-6 opacity-90 hover:opacity-100 transition-opacity">
+                <div class="relative">
+                    <div class="w-10 h-10 flex items-center justify-center bg-white/10 text-pink-200 rounded-lg border border-white/20">
+                        <span class="font-serif font-bold text-xl italic">K</span>
+                    </div>
+                    <i class="fas fa-crown text-luxury-gold absolute -top-2 -right-2 text-sm"></i>
+                </div>
+                <div class="flex flex-col text-left">
+                    <span class="font-serif font-bold text-xl leading-none text-pink-100">КБЖ</span>
+                    <span class="text-[0.5rem] uppercase tracking-[0.3em] text-luxury-gold">Established 2024</span>
+                </div>
+            </div>
+
             <p class="opacity-60 text-sm mb-6">Създадено за жени, които знаят цената си.</p>
             <div class="flex justify-center space-x-6 text-pink-200 mb-8">
                 <i class="fab fa-instagram text-xl hover:text-white transition-colors cursor-pointer"></i>
@@ -476,6 +819,49 @@
 
     <!-- JavaScript Logic -->
     <script>
+        // SOS Button Logic
+        function activateSOS() {
+            const modal = document.getElementById('sos-modal');
+            const breathText = document.getElementById('breath-text');
+            const mantras = [
+                "Вдишай увереност, издишай драма.",
+                "Ти си безупречна.",
+                "Това не е твой проблем.",
+                "Запази си блясъка.",
+                "Нека кармата се погрижи."
+            ];
+            
+            // Random Mantra
+            document.getElementById('zen-mantra').textContent = mantras[Math.floor(Math.random() * mantras.length)];
+
+            modal.classList.remove('hidden');
+            // Trigger reflow
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0');
+            modal.classList.add('opacity-100');
+
+            // Breathing Text Animation Loop
+            window.breathInterval = setInterval(() => {
+                if(breathText.textContent === "Вдишай...") {
+                    breathText.textContent = "Издишай...";
+                } else {
+                    breathText.textContent = "Вдишай...";
+                }
+            }, 2000); // 4s total cycle matches CSS animation
+        }
+
+        function deactivateSOS() {
+            const modal = document.getElementById('sos-modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            
+            clearInterval(window.breathInterval);
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 500);
+        }
+
         // Mobile Menu Toggle
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
