@@ -29,6 +29,8 @@
                         'float': 'float 6s ease-in-out infinite',
                         'shine': 'shine 2s linear infinite',
                         'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'typewriter': 'typewriter 2s steps(40) 1s 1 normal both',
+                        'spin-slow': 'spin 3s linear infinite',
                     },
                     keyframes: {
                         float: {
@@ -134,25 +136,14 @@
                 </div>
             </a>
             
-            <div class="hidden md:flex items-center space-x-8 text-sm font-bold tracking-widest uppercase text-elegant-dark">
-                <a href="#founders" class="hover:text-deep-rose transition-colors relative group">
-                    Основатели
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-rose transition-all group-hover:w-full"></span>
-                </a>
-                <a href="#manifesto" class="hover:text-deep-rose transition-colors relative group">
-                    Кодекс
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-rose transition-all group-hover:w-full"></span>
-                </a>
-                <a href="#lifestyle" class="hover:text-deep-rose transition-colors relative group">
-                    Лайфстайл
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-rose transition-all group-hover:w-full"></span>
-                </a>
-                <a href="#vault" class="hover:text-deep-rose transition-colors relative group">
-                    Активи
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-deep-rose transition-all group-hover:w-full"></span>
-                </a>
+            <div class="hidden md:flex items-center space-x-6 text-sm font-bold tracking-widest uppercase text-elegant-dark">
+                <a href="#founders" class="hover:text-deep-rose transition-colors">Основатели</a>
+                <a href="#lifestyle" class="hover:text-deep-rose transition-colors">Лайфстайл</a>
+                <a href="#vault" class="hover:text-deep-rose transition-colors">Активи</a>
+                <a href="#sommelier" class="hover:text-deep-rose transition-colors">Сомелиер</a>
+                <a href="#destiny" class="hover:text-deep-rose transition-colors">Късмет</a>
                 <a href="#entrance-exam" class="px-6 py-2 bg-deep-rose text-white rounded-full hover:bg-elegant-dark transition-all shadow-lg hover:shadow-rose-300/50 transform hover:-translate-y-0.5">
-                    Кандидатствай
+                    Вход
                 </a>
             </div>
 
@@ -167,9 +158,9 @@
                 <i class="fas fa-times"></i>
             </button>
             <a href="#founders" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Основатели</a>
-            <a href="#manifesto" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Кодекс</a>
             <a href="#lifestyle" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Лайфстайл</a>
-            <a href="#vault" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Активи</a>
+            <a href="#sommelier" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Сомелиер</a>
+            <a href="#destiny" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Късмет</a>
             <a href="#entrance-exam" onclick="toggleMobileMenu()" class="text-xl bg-deep-rose text-white px-8 py-3 rounded-full">Кандидатствай</a>
         </div>
     </nav>
@@ -431,6 +422,48 @@
         </div>
     </section>
 
+    <!-- NEW MODULE: The Flawless Dictionary -->
+    <section id="dictionary" class="py-24 bg-gradient-to-r from-pink-50 to-white overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-deep-rose font-bold tracking-widest uppercase text-sm mb-2 block">Образование</span>
+                <h2 class="font-serif text-4xl text-elegant-dark mb-4">Безупречният Речник</h2>
+                <p class="text-gray-500">Защото думите имат значение, но нашето е по-важно.</p>
+            </div>
+            
+            <div class="flex overflow-x-auto gap-6 pb-8 hide-scrollbar snap-x">
+                <!-- Word 1 -->
+                <div class="min-w-[300px] bg-white p-8 rounded-2xl shadow-lg border border-pink-100 snap-center hover:shadow-xl transition-all">
+                    <h3 class="font-serif text-3xl font-bold text-deep-rose mb-2">Закъснение</h3>
+                    <span class="text-xs text-gray-400 italic mb-4 block">съществително</span>
+                    <p class="text-gray-600 italic border-l-2 border-luxury-gold pl-4">"Изкуството да пристигнеш точно в момента, в който публиката е емоционално готова за твоето присъствие."</p>
+                </div>
+                
+                <!-- Word 2 -->
+                <div class="min-w-[300px] bg-white p-8 rounded-2xl shadow-lg border border-pink-100 snap-center hover:shadow-xl transition-all">
+                    <h3 class="font-serif text-3xl font-bold text-deep-rose mb-2">Не</h3>
+                    <span class="text-xs text-gray-400 italic mb-4 block">частица</span>
+                    <p class="text-gray-600 italic border-l-2 border-luxury-gold pl-4">"Пълно изречение. Не изисква обяснения, извинения или допълнителен контекст."</p>
+                </div>
+                
+                <!-- Word 3 -->
+                <div class="min-w-[300px] bg-white p-8 rounded-2xl shadow-lg border border-pink-100 snap-center hover:shadow-xl transition-all">
+                    <h3 class="font-serif text-3xl font-bold text-deep-rose mb-2">Стрес</h3>
+                    <span class="text-xs text-gray-400 italic mb-4 block">архаизъм</span>
+                    <p class="text-gray-600 italic border-l-2 border-luxury-gold pl-4">"Митично състояние, което не съществува в нашия клуб. Обикновено се лекува с билет за Малдивите."</p>
+                </div>
+                
+                <!-- Word 4 -->
+                <div class="min-w-[300px] bg-white p-8 rounded-2xl shadow-lg border border-pink-100 snap-center hover:shadow-xl transition-all">
+                    <h3 class="font-serif text-3xl font-bold text-deep-rose mb-2">Диета</h3>
+                    <span class="text-xs text-gray-400 italic mb-4 block">съществително</span>
+                    <p class="text-gray-600 italic border-l-2 border-luxury-gold pl-4">"Процесът на изключване на токсични хора, лоши новини и евтино шампанско от менюто."</p>
+                </div>
+            </div>
+            <div class="text-center text-sm text-gray-400 mt-4 animate-pulse"><i class="fas fa-arrows-alt-h mr-2"></i> Плъзнете за още мъдрост</div>
+        </div>
+    </section>
+
     <!-- NEW INNOVATIVE MODULE: The Investment Vault -->
     <section id="vault" class="py-24 bg-white relative">
         <div class="container mx-auto px-6">
@@ -499,6 +532,104 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- NEW MODULE: Elite Excuse Generator -->
+    <section id="excuses" class="py-24 bg-gradient-to-b from-white to-pink-100">
+        <div class="container mx-auto px-6 text-center max-w-3xl">
+            <i class="fas fa-comment-dots text-5xl text-deep-rose mb-6"></i>
+            <h2 class="font-serif text-4xl text-elegant-dark mb-4">Генератор на Елитни Извинения</h2>
+            <p class="text-gray-600 mb-10">
+                Нямате желание за социализация? Не казвайте "не ми се ходи". Използвайте нашия AI генератор за валидни, елегантни и неоспорими причини да си останете вкъщи.
+            </p>
+            
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-2 border-white relative overflow-hidden min-h-[200px] flex flex-col justify-center items-center group">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-300 via-deep-rose to-purple-400"></div>
+                
+                <p id="excuse-text" class="font-serif text-2xl md:text-3xl text-gray-800 italic mb-8 min-h-[3em] flex items-center justify-center">
+                    "Натиснете бутона за спасение..."
+                </p>
+                
+                <button onclick="generateExcuse()" class="bg-elegant-dark text-white px-8 py-3 rounded-full font-bold hover:bg-deep-rose transition-all shadow-lg hover:shadow-pink-400/50 transform active:scale-95 group-hover:scale-105">
+                    <i class="fas fa-magic mr-2"></i> Генерирай Извинение
+                </button>
+            </div>
+            <p class="text-xs text-gray-400 mt-4">*Всички извинения са одобрени от Борда на Директорите.</p>
+        </div>
+    </section>
+
+    <!-- NEW: Mood Sommelier -->
+    <section id="sommelier" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="text-luxury-gold font-bold tracking-widest uppercase text-sm mb-2 block">Барът на Истината</span>
+                <h2 class="font-serif text-4xl text-elegant-dark mb-4">Еликсир за Душата</h2>
+                <p class="text-gray-600">Как се чувстваш днес? Ние имаме рецептата.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="recommendDrink('drama')" class="p-6 rounded-xl border border-pink-200 hover:bg-pink-50 hover:border-deep-rose transition-all text-left group">
+                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🎭</div>
+                        <h3 class="font-bold text-gray-800">Имам Драма</h3>
+                        <p class="text-xs text-gray-500 mt-1">Всичко е срещу мен.</p>
+                    </button>
+                    <button onclick="recommendDrink('party')" class="p-6 rounded-xl border border-pink-200 hover:bg-pink-50 hover:border-deep-rose transition-all text-left group">
+                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🥂</div>
+                        <h3 class="font-bold text-gray-800">Празнувам</h3>
+                        <p class="text-xs text-gray-500 mt-1">Аз съм кралицата.</p>
+                    </button>
+                    <button onclick="recommendDrink('relax')" class="p-6 rounded-xl border border-pink-200 hover:bg-pink-50 hover:border-deep-rose transition-all text-left group">
+                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🧖‍♀️</div>
+                        <h3 class="font-bold text-gray-800">Нуждая се от Дзен</h3>
+                        <p class="text-xs text-gray-500 mt-1">Изключи света.</p>
+                    </button>
+                    <button onclick="recommendDrink('fatal')" class="p-6 rounded-xl border border-pink-200 hover:bg-pink-50 hover:border-deep-rose transition-all text-left group">
+                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">💋</div>
+                        <h3 class="font-bold text-gray-800">Fatal Mode</h3>
+                        <p class="text-xs text-gray-500 mt-1">Опасна съм.</p>
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-br from-pink-50 to-white p-8 rounded-3xl shadow-lg border border-pink-100 text-center min-h-[300px] flex flex-col justify-center items-center relative overflow-hidden">
+                    <div id="drink-icon" class="text-6xl mb-4 transition-all duration-500 transform scale-0">🍸</div>
+                    <h3 id="drink-title" class="font-serif text-2xl font-bold text-deep-rose mb-3 opacity-0 transition-opacity duration-500">Избери настроение</h3>
+                    <p id="drink-desc" class="text-gray-600 italic opacity-0 transition-opacity duration-500">
+                        "Напитката е течна емоция. Избери мъдро."
+                    </p>
+                    <div class="absolute inset-0 bg-white/50 z-10 flex items-center justify-center" id="drink-placeholder">
+                        <span class="text-gray-400 font-serif text-xl">Очакваме поръчка...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Wheel of Destiny -->
+    <section id="destiny" class="py-24 bg-gradient-to-t from-pink-100 to-white overflow-hidden">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="font-serif text-4xl text-elegant-dark mb-4">Колелото на Съдбата</h2>
+            <p class="text-gray-500 mb-12">Завърти за доза луксозен късмет (VIP Edition).</p>
+            
+            <div class="relative w-72 h-72 mx-auto mb-10 group">
+                <!-- The Wheel Visual -->
+                <div id="fortune-wheel" class="w-full h-full rounded-full border-8 border-deep-rose bg-white shadow-2xl flex items-center justify-center relative transition-transform duration-[3s] ease-out">
+                    <div class="absolute inset-0 rounded-full border-4 border-dashed border-pink-200 opacity-50"></div>
+                    <span class="text-6xl">💎</span>
+                </div>
+                <!-- Pointer -->
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 text-luxury-gold text-4xl drop-shadow-lg z-10">▼</div>
+                
+                <!-- Result Display -->
+                <div id="fortune-result" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4 text-center opacity-0 transition-opacity duration-300 font-serif font-bold text-deep-rose text-lg">
+                    <!-- Text goes here -->
+                </div>
+            </div>
+
+            <button onclick="spinWheel()" class="bg-deep-rose text-white px-10 py-3 rounded-full font-bold shadow-lg hover:bg-elegant-dark transition-all transform hover:scale-105">
+                ЗАВЪРТИ СЪДБАТА
+            </button>
         </div>
     </section>
 
@@ -819,6 +950,110 @@
 
     <!-- JavaScript Logic -->
     <script>
+        // Excuse Generator Logic
+        function generateExcuse() {
+            const excuses = [
+                "Меркурий е ретрограден и стилистът ми забрани всякакви рискови движения.",
+                "Аурата ми в момента се калибрира и не мога да бъда сред хора с ниска вибрация.",
+                "Твърде съм заета да манифестирам следващата си ваканция на Малдивите.",
+                "Фън Шуй консултантът ми каза, че днес е ден за хоризонтално положение.",
+                "Имам среща с моето вътрешно дете, а то е много капризно днес.",
+                "Колагенът ми точно започна да действа, не мога да го стресирам.",
+                "Енергийният ми баланс е в дефицит, трябва да презаредя с шампанско.",
+                "Съжалявам, но днес съм в режим 'самолет' за драмата."
+            ];
+            
+            const excuseElement = document.getElementById('excuse-text');
+            const randomExcuse = excuses[Math.floor(Math.random() * excuses.length)];
+            
+            excuseElement.style.opacity = '0';
+            setTimeout(() => {
+                excuseElement.textContent = `"${randomExcuse}"`;
+                excuseElement.style.opacity = '1';
+                excuseElement.classList.add('transition-opacity', 'duration-500');
+            }, 200);
+        }
+
+        // NEW: Drink Sommelier Logic
+        function recommendDrink(mood) {
+            const drinkTitle = document.getElementById('drink-title');
+            const drinkDesc = document.getElementById('drink-desc');
+            const drinkIcon = document.getElementById('drink-icon');
+            const placeholder = document.getElementById('drink-placeholder');
+            
+            const drinks = {
+                'drama': { icon: '🍸', title: 'Двоен Еспресо Мартини', desc: 'Трябва ти енергия, за да ги игнорираш. Стилът е най-доброто отмъщение.' },
+                'party': { icon: '🥂', title: 'Vintage Champagne 2012', desc: 'Защото мехурчетата отиват на диамантите ти. Наздраве, кралице!' },
+                'relax': { icon: '🫖', title: 'Чай от Роза (с Джин)', desc: 'Ароматерапия в чаша. Сложи краставички на очите и забрави за света.' },
+                'fatal': { icon: '🥃', title: 'Negroni Sbagliato', desc: 'С пенливо вино. Опасно, горчиво-сладко и абсолютно незабравимо.' }
+            };
+
+            const selection = drinks[mood];
+            
+            placeholder.classList.add('hidden');
+            
+            drinkTitle.style.opacity = '0';
+            drinkDesc.style.opacity = '0';
+            drinkIcon.style.transform = 'scale(0)';
+            
+            setTimeout(() => {
+                drinkIcon.textContent = selection.icon;
+                drinkTitle.textContent = selection.title;
+                drinkDesc.textContent = selection.desc;
+                
+                drinkIcon.style.transform = 'scale(1)';
+                drinkTitle.style.opacity = '1';
+                drinkDesc.style.opacity = '1';
+            }, 300);
+        }
+
+        // NEW: Wheel of Destiny Logic
+        let isSpinning = false;
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            
+            const wheel = document.getElementById('fortune-wheel');
+            const resultText = document.getElementById('fortune-result');
+            const icon = wheel.querySelector('span');
+            
+            const fortunes = [
+                "Внезапно пътуване до Милано",
+                "Ще намериш 100 евро в старо палто",
+                "Комплимент от мистериозен непознат",
+                "Перфектна прическа без усилия",
+                "Безплатна бутилка шампанско",
+                "Всички ще ти завидят днес"
+            ];
+            
+            // Hide result and icon during spin
+            resultText.style.opacity = '0';
+            icon.style.opacity = '0';
+            
+            // Random rotations (min 5, max 10) + random angle
+            const rotations = 1800 + Math.random() * 1800; 
+            wheel.style.transform = `rotate(${rotations}deg)`;
+            
+            setTimeout(() => {
+                isSpinning = false;
+                const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+                
+                // Reset rotation visually but keep position (trick) or just leave it rotated
+                // For simplicity, we just show result
+                
+                icon.style.transform = `rotate(-${rotations}deg)`; // Counter-rotate icon so it's upright
+                icon.textContent = "🎁";
+                icon.style.opacity = '1';
+                icon.style.transition = 'opacity 0.5s';
+                
+                resultText.textContent = randomFortune;
+                resultText.style.opacity = '1';
+                
+                // Reset wheel rotation for next spin after delay? 
+                // We'll leave it for now to avoid jump cut
+            }, 3000);
+        }
+
         // SOS Button Logic
         function activateSOS() {
             const modal = document.getElementById('sos-modal');
@@ -960,8 +1195,6 @@
                 // Generate random elite ID
                 const randomId = 'KBJ-' + Math.floor(1000 + Math.random() * 9000);
                 document.getElementById('card-id-display').textContent = randomId;
-                
-                // Trigger confetti or something cool (optional, kept simple for file size)
             } else {
                 // Show Rejection
                 document.getElementById('result-rejected').classList.remove('hidden');
@@ -970,7 +1203,7 @@
 
         // 3D Tilt Effect for Card
         const cardContainer = document.getElementById('tilt-card');
-        const card = document.querySelector('.membership-card');
+        const card = document.querySelecotr('.membership-card');
 
         cardContainer.addEventListener('mousemove', (e) => {
             const rect = cardContainer.getBoundingClientRect();
