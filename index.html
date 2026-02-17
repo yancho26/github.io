@@ -3,369 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOMENO 1.0 - Genesis</title>
+    <title>NOMENO 2.0 - Nexus</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
 
         :root {
-            --bg-deep: #030712;
-            --glass-surface: rgba(30, 41, 59, 0.4);
+            --bg-deep: #0f172a;
+            --primary: #6366f1;
+            --accent: #ec4899;
+            --glass-bg: rgba(15, 23, 42, 0.6);
             --glass-border: rgba(255, 255, 255, 0.08);
-            --primary: #8b5cf6;
-            --accent: #06b6d4;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-deep);
             color: #f8fafc;
             overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99,102,241,0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(236,72,153,0.15) 0px, transparent 50%);
+            background-attachment: fixed;
         }
 
         .serif { font-family: 'Playfair Display', serif; }
 
-        /* --- COSMIC ENVIRONMENT --- */
-        .genesis-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: radial-gradient(circle at 50% 0%, #1e1b4b, #020617 80%);
-        }
-        
-        .particles {
-            position: absolute; inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
-
-        .glow-orb {
-            position: absolute; width: 600px; height: 600px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(139,92,246,0.15), transparent 70%);
-            top: -200px; left: 50%; transform: translateX(-50%);
-            animation: pulse 10s ease-in-out infinite alternate;
-        }
-        @keyframes pulse { 0% { opacity: 0.5; transform: translateX(-50%) scale(1); } 100% { opacity: 0.8; transform: translateX(-50%) scale(1.2); } }
-
         /* --- GLASS COMPONENTS --- */
-        .glass-panel {
-            background: var(--glass-surface);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .input-genesis {
-            background: rgba(0, 0, 0, 0.3);
+        /* --- INPUTS --- */
+        .input-nexus {
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
         }
-        .input-genesis:focus {
-            background: rgba(0, 0, 0, 0.5);
+        .input-nexus:focus {
+            background: rgba(255, 255, 255, 0.07);
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
             outline: none;
         }
-        select.input-genesis option { background: #0f172a; }
+        .input-nexus::placeholder { color: rgba(255, 255, 255, 0.3); }
+        select.input-nexus option { background: #1e293b; color: white; }
+
+        /* --- CONTROLS --- */
+        .gender-btn {
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            transition: all 0.3s;
+        }
+        .gender-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+        .gender-btn.active {
+            background: rgba(99, 102, 241, 0.15); 
+            border-color: var(--primary); 
+            color: white;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Range Slider */
+        input[type=range] {
+            -webkit-appearance: none; background: transparent; cursor: pointer;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            background: linear-gradient(90deg, #ec4899, #a855f7, #6366f1);
+            height: 4px; border-radius: 2px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 16px; width: 16px; 
+            background: white; border-radius: 50%; margin-top: -6px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5); transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
         /* --- ANIMATIONS --- */
-        .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; transform: translateY(20px); }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(10px); }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
-        /* --- CUSTOM CONTROLS --- */
-        .gender-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); transition: 0.2s;
+        .shimmer {
+            position: absolute; inset: 0; transform: skewX(-20deg);
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+            animation: shimmer 3s infinite linear; pointer-events: none;
         }
-        .gender-btn:hover { background: rgba(255,255,255,0.06); }
-        .gender-btn.active {
-            background: rgba(139, 92, 246, 0.2); border-color: var(--primary); color: white;
-        }
-
-        /* --- EXPLANATION MODAL --- */
-        #explainerModal {
-            transition: opacity 0.4s ease, visibility 0.4s;
-            opacity: 0; visibility: hidden;
-        }
-        #explainerModal.active { opacity: 1; visibility: visible; }
-        
-        #explainerContent {
-            transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        #explainerModal.active #explainerContent { transform: scale(1); }
+        @keyframes shimmer { 0% { transform: translateX(-150%) skewX(-20deg); } 100% { transform: translateX(150%) skewX(-20deg); } }
 
         /* DNA BARS */
-        .progress-bar-bg { background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; transition: width 1.5s ease-out; }
+        .dna-track { background: rgba(255,255,255,0.05); height: 6px; border-radius: 3px; overflow: hidden; }
+        .dna-fill { height: 100%; border-radius: 3px; transition: width 1s ease-out; }
 
+        /* --- DRAWER --- */
+        #favoritesDrawer {
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #favoritesDrawer.open { transform: translateX(0); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center">
 
-    <div class="genesis-bg">
-        <div class="particles"></div>
-        <div class="glow-orb"></div>
-    </div>
-
-    <!-- Header -->
-    <nav class="w-full max-w-6xl flex justify-between items-center p-6 md:p-8 fade-in-up" style="animation-delay: 0ms;">
+    <!-- Navbar -->
+    <nav class="w-full max-w-6xl flex justify-between items-center p-6 fade-in" style="animation-delay: 0ms;">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-                <i data-lucide="aperture" class="w-6 h-6 text-white"></i>
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                <i data-lucide="infinity" class="w-6 h-6 text-white"></i>
             </div>
             <div>
-                <h1 class="text-xl font-bold text-white tracking-tight">NOMENO <span class="text-violet-400 font-light">1.0</span></h1>
-                <p class="text-[10px] text-gray-400 uppercase tracking-[0.3em]">Genesis Algorithm</p>
+                <h1 class="text-lg font-bold tracking-tight text-white leading-none">NOMENO <span class="text-indigo-400">2.0</span></h1>
+                <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest">Nexus Engine</p>
             </div>
         </div>
-        <div class="flex gap-4">
-            <button onclick="toggleExplainer()" class="text-xs font-semibold text-gray-400 hover:text-white transition flex items-center gap-2">
-                <i data-lucide="info" class="w-4 h-4"></i> <span class="hidden sm:inline">Как работи?</span>
+        
+        <div class="flex gap-3">
+            <button onclick="toggleExplainer()" class="px-4 py-2 rounded-full border border-white/10 hover:bg-white/5 text-xs font-semibold text-slate-300 transition flex items-center gap-2">
+                <i data-lucide="help-circle" class="w-4 h-4"></i> <span class="hidden sm:inline">Логика</span>
             </button>
-            <button onclick="toggleFavorites()" class="px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition text-xs font-bold text-gray-300 flex items-center gap-2">
-                <i data-lucide="heart" class="w-4 h-4 text-pink-500"></i>
-                <span id="favCount" class="bg-violet-600 text-white px-1.5 py-0.5 rounded-full text-[10px] hidden">0</span>
+            <button onclick="toggleFavorites()" class="px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/20 text-indigo-300 text-xs font-bold flex items-center gap-2 transition group">
+                <i data-lucide="bookmark" class="w-4 h-4 group-hover:scale-110 transition"></i>
+                <span class="hidden sm:inline">Запазени</span>
+                <span id="favCount" class="bg-indigo-500 text-white px-1.5 rounded-full text-[10px] hidden">0</span>
             </button>
         </div>
     </nav>
 
-    <!-- Main Application -->
-    <main class="w-full max-w-5xl px-4 md:px-8 pb-12 flex-1 relative z-10">
+    <!-- Main Container -->
+    <main class="w-full max-w-5xl px-4 pb-12 flex-1 relative z-10">
         
-        <!-- INPUT STAGE -->
-        <div id="inputStage" class="glass-panel rounded-3xl p-8 md:p-12 fade-in-up" style="animation-delay: 100ms;">
+        <!-- INPUT VIEW -->
+        <div id="inputView" class="glass-card rounded-3xl p-6 md:p-10 fade-in" style="animation-delay: 100ms;">
             
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div class="mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-2 serif">Конфигурация</h2>
+                <p class="text-slate-400 text-sm max-w-lg">
+                    Алгоритъмът Nexus анализира фонетични структури, културен контекст и родова памет.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
                 
-                <!-- Left Column: Core Identity -->
-                <div class="lg:col-span-7 space-y-8">
-                    <div class="space-y-2">
-                        <h2 class="text-3xl md:text-5xl font-bold text-white serif">Създаване на <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">Идентичност</span></h2>
-                        <p class="text-gray-400 text-sm max-w-md leading-relaxed">
-                            Въведете параметри за анализ. Алгоритъмът Genesis ще изчисли перфектната фонетична и смислова хармония.
-                        </p>
-                    </div>
-
-                    <div class="space-y-6 bg-white/[0.02] p-6 rounded-2xl border border-white/5">
-                        <!-- Surname (Critical) -->
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-bold text-violet-300 uppercase tracking-widest flex justify-between">
-                                <span>Фамилия (За ритъм)</span>
-                                <i data-lucide="align-left" class="w-3 h-3"></i>
-                            </label>
-                            <input type="text" id="surname" placeholder="Напр. Иванов / Петрова" class="input-genesis w-full px-5 py-3 rounded-xl text-lg">
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <!-- Sibling -->
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Брат/Сестра</label>
-                                <input type="text" id="sibling" placeholder="Име..." class="input-genesis w-full px-4 py-2.5 rounded-xl text-sm">
-                            </div>
-                            <!-- Gender -->
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Пол</label>
-                                <div class="flex bg-black/20 rounded-xl p-1">
-                                    <button onclick="setGender('boy')" id="btn-boy" class="gender-btn flex-1 py-1.5 rounded-lg flex justify-center"><i data-lucide="zap" class="w-4 h-4 text-blue-400"></i></button>
-                                    <button onclick="setGender('girl')" id="btn-girl" class="gender-btn flex-1 py-1.5 rounded-lg flex justify-center"><i data-lucide="moon" class="w-4 h-4 text-pink-400"></i></button>
-                                    <button onclick="setGender('random')" id="btn-random" class="gender-btn active flex-1 py-1.5 rounded-lg flex justify-center"><i data-lucide="sparkles" class="w-4 h-4 text-violet-400"></i></button>
+                <!-- LEFT: CORE DATA -->
+                <div class="lg:col-span-7 space-y-6">
+                    
+                    <!-- Surname Block -->
+                    <div class="bg-white/[0.02] p-6 rounded-2xl border border-white/5 space-y-4 relative group">
+                        <div class="absolute -left-px top-6 bottom-6 w-0.5 bg-indigo-500 rounded-full"></div>
+                        <label class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest flex items-center gap-2">
+                            <i data-lucide="fingerprint" class="w-3 h-3"></i> Фамилия (Задължително)
+                        </label>
+                        <input type="text" id="surname" placeholder="напр. Маринов" class="input-nexus w-full px-5 py-3 rounded-xl text-lg font-medium">
+                        
+                        <div class="grid grid-cols-2 gap-4 pt-2">
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Пол</label>
+                                <div class="flex gap-1 bg-black/20 p-1 rounded-lg">
+                                    <button onclick="setGender('boy')" id="btn-boy" class="gender-btn flex-1 py-2 rounded-md flex justify-center"><i data-lucide="baby" class="w-4 h-4 text-blue-400"></i></button>
+                                    <button onclick="setGender('girl')" id="btn-girl" class="gender-btn flex-1 py-2 rounded-md flex justify-center"><i data-lucide="baby" class="w-4 h-4 text-pink-400"></i></button>
+                                    <button onclick="setGender('random')" id="btn-random" class="gender-btn active flex-1 py-2 rounded-md flex justify-center"><i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i></button>
                                 </div>
                                 <input type="hidden" id="selectedGender" value="random">
                             </div>
-                        </div>
-
-                         <!-- Vibe Control -->
-                         <div class="pt-4 border-t border-white/5">
-                            <div class="flex justify-between text-[10px] text-gray-400 uppercase font-bold mb-2">
-                                <span>Мекота (Soft)</span>
-                                <span id="vibeLabel">Баланс</span>
-                                <span>Сила (Hard)</span>
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Брат/Сестра</label>
+                                <input type="text" id="sibling" placeholder="Име..." class="input-nexus w-full px-3 py-2 rounded-lg text-sm">
                             </div>
-                            <input type="range" id="vibeSlider" min="0" max="100" value="50" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer">
                         </div>
                     </div>
+
+                    <!-- Vibe Control -->
+                    <div class="bg-white/[0.02] p-6 rounded-2xl border border-white/5 space-y-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-[10px] font-bold text-pink-300 uppercase tracking-widest flex items-center gap-2">
+                                <i data-lucide="activity" class="w-3 h-3"></i> Енергия на името
+                            </label>
+                            <span id="vibeLabel" class="text-xs font-mono text-white bg-white/5 px-2 py-0.5 rounded">Баланс</span>
+                        </div>
+                        <input type="range" id="vibeSlider" min="0" max="100" value="50" class="w-full">
+                        <div class="flex justify-between text-[9px] text-slate-500 uppercase font-bold px-1">
+                            <span>Мекота & Нежност</span>
+                            <span>Сила & Лидерство</span>
+                        </div>
+                    </div>
+
                 </div>
 
-                <!-- Right Column: Heritage -->
-                <div class="lg:col-span-5 flex flex-col justify-between space-y-8">
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-3 text-sm font-bold text-white uppercase tracking-widest border-b border-white/10 pb-3">
-                            <div class="p-1.5 bg-violet-500/20 rounded"><i data-lucide="git-merge" class="w-4 h-4 text-violet-400"></i></div>
-                            Родословие
+                <!-- RIGHT: HERITAGE -->
+                <div class="lg:col-span-5 flex flex-col h-full space-y-6">
+                    
+                    <div class="bg-white/[0.02] p-6 rounded-2xl border border-white/5 flex-1 space-y-6">
+                        <div class="flex items-center gap-2 border-b border-white/5 pb-3">
+                            <i data-lucide="git-merge" class="w-4 h-4 text-slate-400"></i>
+                            <span class="text-xs font-bold text-slate-300 uppercase tracking-widest">Произход & Корени</span>
                         </div>
-                        
-                        <!-- Mother Side -->
-                        <div class="relative pl-4 border-l border-pink-500/30 space-y-3">
-                            <span class="text-[9px] font-bold text-pink-400 uppercase absolute -top-2 left-4 bg-transparent px-1">Майчина линия</span>
+
+                        <!-- Mother -->
+                        <div class="space-y-2">
+                            <span class="text-[9px] font-bold text-pink-400 uppercase">Майчина Линия</span>
                             <div class="flex gap-2">
-                                <input type="text" id="parent1" placeholder="Майка" class="input-genesis flex-1 px-3 py-2 rounded-lg text-sm">
-                                <select id="originMother" class="input-genesis w-24 px-1 py-2 rounded-lg text-[10px]">
-                                    <option value="all">★ Всички</option>
+                                <input type="text" id="parent1" placeholder="Майка" class="input-nexus w-full px-3 py-2 rounded-lg text-sm">
+                                <select id="originMother" class="input-nexus w-full px-1 py-2 rounded-lg text-[11px] cursor-pointer">
                                     <option value="modern">Модерни</option>
-                                    <option value="christian">Традиция</option>
+                                    <option value="christian">Християнски</option>
                                     <option value="slavic">Български</option>
                                     <option value="nature">Природа</option>
+                                    <option value="royal">Царски</option>
+                                    <option value="all">Всички</option>
                                 </select>
                             </div>
-                            <div class="flex gap-2">
-                                <input type="text" id="grandMaM" placeholder="Баба" class="input-genesis flex-1 px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
-                                <input type="text" id="grandPaM" placeholder="Дядо" class="input-genesis flex-1 px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="grandMaM" placeholder="Баба" class="input-nexus px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
+                                <input type="text" id="grandPaM" placeholder="Дядо" class="input-nexus px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
                             </div>
                         </div>
 
-                        <!-- Father Side -->
-                        <div class="relative pl-4 border-l border-blue-500/30 space-y-3">
-                            <span class="text-[9px] font-bold text-blue-400 uppercase absolute -top-2 left-4 bg-transparent px-1">Бащина линия</span>
+                        <!-- Father -->
+                        <div class="space-y-2 pt-2 border-t border-white/5">
+                            <span class="text-[9px] font-bold text-blue-400 uppercase">Бащина Линия</span>
                             <div class="flex gap-2">
-                                <input type="text" id="parent2" placeholder="Баща" class="input-genesis flex-1 px-3 py-2 rounded-lg text-sm">
-                                <select id="originFather" class="input-genesis w-24 px-1 py-2 rounded-lg text-[10px]">
-                                    <option value="all">★ Всички</option>
+                                <input type="text" id="parent2" placeholder="Баща" class="input-nexus w-full px-3 py-2 rounded-lg text-sm">
+                                <select id="originFather" class="input-nexus w-full px-1 py-2 rounded-lg text-[11px] cursor-pointer">
                                     <option value="modern">Модерни</option>
-                                    <option value="christian">Традиция</option>
+                                    <option value="christian">Християнски</option>
                                     <option value="slavic">Български</option>
                                     <option value="nature">Природа</option>
+                                    <option value="royal">Царски</option>
+                                    <option value="all">Всички</option>
                                 </select>
                             </div>
-                            <div class="flex gap-2">
-                                <input type="text" id="grandMaD" placeholder="Баба" class="input-genesis flex-1 px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
-                                <input type="text" id="grandPaD" placeholder="Дядо" class="input-genesis flex-1 px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="grandMaD" placeholder="Баба" class="input-nexus px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
+                                <input type="text" id="grandPaD" placeholder="Дядо" class="input-nexus px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
                             </div>
                         </div>
                     </div>
 
-                    <button onclick="processData()" class="group w-full py-5 rounded-2xl bg-white text-black font-bold text-sm tracking-[0.2em] uppercase hover:shadow-[0_0_50px_rgba(255,255,255,0.4)] transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-3">
-                        <span>Генерирай 1.0</span> <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    <button onclick="processData()" class="relative w-full py-5 rounded-2xl bg-white text-slate-900 font-bold text-sm tracking-[0.2em] uppercase hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-3 overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-indigo-200 via-white to-purple-200 opacity-0 group-hover:opacity-50 transition duration-500"></div>
+                        <span class="relative flex items-center gap-2">Генерирай <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- LOADING VIEW -->
+        <div id="loadingView" class="hidden h-[600px] flex-col items-center justify-center fade-in">
+            <div class="relative w-32 h-32 mb-8">
+                <div class="absolute inset-0 rounded-full border border-indigo-500/20 animate-[spin_4s_linear_infinite]"></div>
+                <div class="absolute inset-2 rounded-full border border-t-indigo-500 border-r-transparent border-b-transparent border-l-transparent animate-[spin_1s_linear_infinite]"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-2xl font-mono font-bold text-white" id="loaderPercent">0%</span>
+                </div>
+            </div>
+            <p class="text-xs font-mono text-indigo-300 uppercase tracking-widest" id="loaderText">Инициализиране...</p>
+        </div>
+
+        <!-- RESULT VIEW -->
+        <div id="resultView" class="hidden glass-card rounded-3xl p-8 md:p-12 min-h-[600px] flex flex-col justify-between fade-in relative overflow-hidden">
+            <div class="shimmer"></div>
+            
+            <!-- Result Top -->
+            <div class="flex justify-between items-start mb-10 relative z-10">
+                <button onclick="showInput()" class="text-slate-500 hover:text-white transition flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
+                    <div class="p-1.5 rounded-full bg-white/5"><i data-lucide="chevron-left" class="w-3 h-3"></i></div>
+                    Редакция
+                </button>
+                <div class="text-right">
+                    <div class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Хармония</div>
+                    <div class="text-xl font-mono text-green-400 font-bold" id="resScore">99.4%</div>
+                </div>
+            </div>
+
+            <!-- Name Center -->
+            <div class="text-center mb-12 relative z-10">
+                <h2 id="resName" class="text-6xl md:text-8xl font-bold text-white mb-3 serif tracking-tight leading-none">Име</h2>
+                <p id="resSurname" class="text-xl md:text-3xl text-slate-400 font-light uppercase tracking-[0.4em] font-mono"></p>
+                <div class="mt-4 flex justify-center">
+                    <button onclick="speakName()" class="text-slate-500 hover:text-indigo-400 transition p-2 hover:bg-white/5 rounded-full">
+                        <i data-lucide="volume-2" class="w-5 h-5"></i>
                     </button>
                 </div>
             </div>
-        </div>
 
-        <!-- LOADING STAGE -->
-        <div id="loadingStage" class="hidden h-[600px] flex-col items-center justify-center fade-in-up">
-            <div class="relative w-40 h-40 mb-8">
-                <div class="absolute inset-0 rounded-full border border-violet-500/20 animate-[spin_3s_linear_infinite]"></div>
-                <div class="absolute inset-4 rounded-full border border-t-violet-500 border-r-transparent border-b-transparent border-l-transparent animate-[spin_1s_linear_infinite]"></div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="text-3xl font-mono font-bold text-white" id="loaderPercent">0%</span>
-                </div>
-            </div>
-            <p class="text-sm font-mono text-violet-300 uppercase tracking-widest animate-pulse" id="loaderText">Инициализиране...</p>
-        </div>
-
-        <!-- RESULT STAGE -->
-        <div id="resultStage" class="hidden glass-panel rounded-3xl p-8 md:p-12 min-h-[600px] flex flex-col justify-between fade-in-up">
-            
-            <!-- Top Controls -->
-            <div class="flex justify-between items-start mb-8">
-                <button onclick="showInput()" class="text-gray-500 hover:text-white transition flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
-                    <i data-lucide="chevron-left" class="w-4 h-4"></i> Назад
-                </button>
-                <div class="text-right">
-                    <div class="text-[9px] text-gray-500 uppercase tracking-widest font-bold">Хармоничен Индекс</div>
-                    <div class="text-2xl font-mono text-green-400 font-bold" id="resScore">99.4%</div>
-                </div>
-            </div>
-
-            <!-- Name Display -->
-            <div class="text-center mb-12 relative">
-                <div class="absolute inset-0 bg-violet-500/10 blur-[80px] rounded-full pointer-events-none"></div>
-                <h2 id="resName" class="relative text-6xl md:text-8xl font-bold text-white mb-2 serif tracking-tight">Име</h2>
-                <p id="resSurname" class="text-xl md:text-3xl text-gray-400 font-light uppercase tracking-[0.5em]"></p>
-                <button onclick="speakName()" class="absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition"><i data-lucide="volume-2" class="w-5 h-5"></i></button>
-            </div>
-
-            <!-- Logic Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <!-- Meaning -->
-                <div class="bg-white/5 p-6 rounded-2xl border border-white/5 hover:border-violet-500/30 transition">
-                    <div class="flex items-center gap-2 mb-3 text-violet-400 text-[10px] font-bold uppercase tracking-widest">
+            <!-- DNA Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 relative z-10">
+                <div class="bg-black/20 p-5 rounded-2xl border border-white/5 backdrop-blur-sm">
+                    <div class="flex items-center gap-2 mb-3 text-indigo-400 text-[10px] font-bold uppercase tracking-widest">
                         <i data-lucide="book" class="w-3 h-3"></i> Значение
                     </div>
-                    <p id="resMeaning" class="text-lg text-gray-200 serif italic">...</p>
+                    <p id="resMeaning" class="text-lg text-slate-200 serif italic">...</p>
                 </div>
-                <!-- Reason -->
-                <div class="bg-white/5 p-6 rounded-2xl border border-white/5 hover:border-pink-500/30 transition">
-                    <div class="flex items-center gap-2 mb-3 text-pink-400 text-[10px] font-bold uppercase tracking-widest">
-                        <i data-lucide="cpu" class="w-3 h-3"></i> Алгоритъм Genesis
+                
+                <div class="bg-black/20 p-5 rounded-2xl border border-white/5 backdrop-blur-sm space-y-4">
+                    <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase font-bold">
+                        <span>Мекота</span>
+                        <span id="dnaSoftVal" class="text-white">0%</span>
                     </div>
-                    <p id="resReason" class="text-sm text-gray-400 leading-relaxed">...</p>
+                    <div class="dna-track"><div id="dnaSoftBar" class="dna-fill bg-pink-500" style="width: 0%"></div></div>
+                    
+                    <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase font-bold mt-2">
+                        <span>Уникалност</span>
+                        <span id="dnaUniqueVal" class="text-white">0%</span>
+                    </div>
+                    <div class="dna-track"><div id="dnaUniqueBar" class="dna-fill bg-indigo-500" style="width: 0%"></div></div>
+                    
+                    <p id="resReason" class="text-xs text-slate-400 leading-relaxed mt-3 pt-3 border-t border-white/5">...</p>
                 </div>
             </div>
 
-            <!-- Action Bar -->
-            <div class="grid grid-cols-3 gap-4">
-                <button onclick="generateNew()" class="col-span-1 py-4 rounded-xl border border-white/10 hover:bg-white/5 text-gray-400 hover:text-white transition flex flex-col items-center justify-center gap-1">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                    <span class="text-[9px] uppercase font-bold">Пропусни</span>
+            <!-- Actions -->
+            <div class="grid grid-cols-3 gap-4 relative z-10">
+                <button onclick="generateNew()" class="col-span-1 py-4 rounded-xl border border-white/10 hover:border-red-500/30 hover:bg-red-500/10 text-slate-400 hover:text-red-400 transition flex flex-col items-center justify-center gap-1 group">
+                    <i data-lucide="x" class="w-4 h-4 group-hover:scale-110 transition"></i>
+                    <span class="text-[9px] uppercase font-bold tracking-wider">Скрий</span>
                 </button>
-                <button onclick="generateNew()" class="col-span-1 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white transition flex flex-col items-center justify-center gap-1">
-                    <i data-lucide="shuffle" class="w-5 h-5"></i>
-                    <span class="text-[9px] uppercase font-bold">Следващо</span>
+                <button onclick="generateNew()" class="col-span-1 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white transition flex flex-col items-center justify-center gap-1 group">
+                    <i data-lucide="shuffle" class="w-4 h-4 text-indigo-400 group-hover:rotate-180 transition duration-500"></i>
+                    <span class="text-[9px] uppercase font-bold tracking-wider">Следващо</span>
                 </button>
-                <button onclick="saveName()" class="col-span-1 py-4 rounded-xl bg-white text-black hover:bg-gray-200 transition flex flex-col items-center justify-center gap-1 shadow-lg shadow-white/10">
-                    <i data-lucide="heart" class="w-5 h-5 fill-black"></i>
-                    <span class="text-[9px] uppercase font-bold">Запази</span>
+                <button onclick="saveName()" class="col-span-1 py-4 rounded-xl bg-white text-slate-900 hover:bg-indigo-50 transition flex flex-col items-center justify-center gap-1 shadow-lg shadow-white/10 group">
+                    <i data-lucide="heart" class="w-4 h-4 group-hover:text-pink-500 group-hover:fill-pink-500 transition"></i>
+                    <span class="text-[9px] uppercase font-bold tracking-wider">Запази</span>
                 </button>
             </div>
-
         </div>
 
     </main>
 
-    <!-- EXPLANATION MODAL (Architecture) -->
-    <div id="explainerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <!-- EXPLAINER MODAL -->
+    <div id="explainerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden">
         <div id="explainerContent" class="bg-[#0f172a] border border-white/10 w-full max-w-2xl rounded-3xl p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <button onclick="toggleExplainer()" class="absolute top-6 right-6 text-gray-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
-            
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold text-white serif mb-2">Архитектура на Избора</h2>
-                <p class="text-gray-400 text-sm">Как алгоритъмът Genesis обработва данните.</p>
-            </div>
-
-            <div class="space-y-8">
-                <div class="flex gap-4">
-                    <div class="w-10 h-10 rounded-full bg-violet-500/10 flex items-center justify-center shrink-0 text-violet-400"><i data-lucide="waves" class="w-5 h-5"></i></div>
-                    <div>
-                        <h4 class="text-white font-bold text-sm uppercase tracking-wide mb-1">1. Фонетичен Резонанс</h4>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            Анализираме "твърдостта" на фамилията (струпване на съгласни) и предлагаме име, което я балансира. Проверяваме за "сблъсъци" (напр. името да завършва с буквата, с която започва фамилията) за гладко произнасяне.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="flex gap-4">
-                    <div class="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center shrink-0 text-pink-400"><i data-lucide="music" class="w-5 h-5"></i></div>
-                    <div>
-                        <h4 class="text-white font-bold text-sm uppercase tracking-wide mb-1">2. Сричков Ритъм</h4>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            Следваме принципа на "Златното сечение" в сричките. Ако фамилията е кратка, търсим по-дълго име за мелодичност. Ако е дълга, търсим кратко и ясно име.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="flex gap-4">
-                    <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0 text-blue-400"><i data-lucide="git-branch" class="w-5 h-5"></i></div>
-                    <div>
-                        <h4 class="text-white font-bold text-sm uppercase tracking-wide mb-1">3. Родова Памет</h4>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            Ако са въведени имена на предци, алгоритъмът дава приоритет на имена, започващи със същата буква, но *само ако* те преминат успешно фонетичния тест. Традицията не бива да компрометира звученето.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="flex gap-4">
-                    <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center shrink-0 text-green-400"><i data-lucide="network" class="w-5 h-5"></i></div>
-                    <div>
-                        <h4 class="text-white font-bold text-sm uppercase tracking-wide mb-1">4. Семантична Мрежа</h4>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            Анализираме значението на името на братчето/сестричето. Ако то означава "Цвете", алгоритъмът ще търси други "Природни" имена, дори да не са изрично избрани, за да създаде тематична връзка.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-8 pt-8 border-t border-white/10 text-center">
-                <button onclick="toggleExplainer()" class="px-8 py-3 bg-white text-black font-bold rounded-xl text-sm hover:bg-gray-200 transition">Разбрах</button>
+            <h2 class="text-2xl font-bold text-white serif mb-4">Логика на Nexus</h2>
+            <div class="space-y-6 text-sm text-slate-400">
+                <p><strong class="text-indigo-400">1. Фонетичен Поток:</strong> Алгоритъмът анализира фамилията за "тежки" звуци и търси име, което да я балансира, избягвайки сблъсък на еднакви букви.</p>
+                <p><strong class="text-pink-400">2. Родова Памет:</strong> Ако въведете имена на предци, алгоритъмът дава приоритет на техните инициали, но само ако звучат добре с фамилията.</p>
+                <p><strong class="text-blue-400">3. Енергиен Баланс:</strong> Плъзгачът за енергия филтрира имената според съотношението на гласни (мекота) и съгласни (сила).</p>
             </div>
         </div>
     </div>
@@ -374,29 +353,31 @@
     <div id="favoritesDrawer" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-[#020205]/95 backdrop-blur-2xl border-l border-white/10 z-50 shadow-2xl flex flex-col">
         <div class="p-6 border-b border-white/10 flex justify-between items-center">
             <h3 class="font-serif text-2xl text-white">Колекция</h3>
-            <button onclick="toggleFavorites()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <button onclick="toggleFavorites()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
         </div>
         <div id="favoritesList" class="flex-1 overflow-y-auto p-6 space-y-3"></div>
         <div class="p-6 border-t border-white/10">
-            <button onclick="clearFavorites()" class="w-full py-3 text-red-400/50 hover:text-red-400 text-xs font-bold uppercase tracking-widest transition">Изтрий всичко</button>
+            <button onclick="exportFavorites()" class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold uppercase tracking-widest text-indigo-300 transition mb-3">Копирай</button>
+            <button onclick="clearFavorites()" class="w-full py-2 text-red-400/50 hover:text-red-400 text-[10px] uppercase tracking-widest transition">Изтрий всичко</button>
         </div>
     </div>
 
     <script>
-        // --- DATABASE GENESIS ---
+        // --- DATA ---
         const rawData = {
             christian_m: "Александър:Защитник;Георги:Земеделец;Димитър:Посветен;Никола:Победа;Иван:Бог е милостив;Теодор:Божи дар;Борис:Борец;Стефан:Венец;Михаил:Кой е като Бог;Петър:Камък;Васил:Царствен;Христо:Помазаник;Атанас:Безсмъртен;Константин:Постоянен;Илия:Бог е Яхве;Симеон:Бог чува;Андрей:Мъжествен;Тодор:Божи дар;Гавраил:Божия сила;Йордан:Спускащ се;Данаил:Божи съд;Емануил:Бог е с нас;Матей:Божи дар;Лука:Светлина;Филип:Обичащ конете;Павел:Смирен;Стоян:Здрав;Антон:Ценен;Емил:Съперник;Кирил:Господар;Методий:Подреден;Лазар:Бог помага;Сава:Вино;Григор:Бдящ;Яков:Следващ;Спас:Спасител;Християн:Христов;Валери:Силен;Богомил:Мил на Бога;Тимотей:Почитащ Бога;Захари:Бог помни;Рафаил:Бог лекува;Самуил:Измолен;Давид:Любим;Йосиф:Бог прибавя;Марко:Войнствен;Тома:Близнак;Симон:Слушащ;Апостол:Пратеник;Евгени:Благороден;Иларион:Весел;Климент:Милостив;Леонид:Лъвски;Максим:Най-голям;Николай:Победа;Продан:Даден;Ставри:Кръст;Теофил:Обичащ Бога;Юлиан:Къдрав;Янко:Бог е милостив;Алекси:Защитник;Анатоли:Източен;Вангел:Благовест;Дамян:Покорител;Костадин:Постоянен;Марин:Морски;Милан:Мил;Младен:Млад;Ненчо:Ненагледен;Пантелей:Всемилостив;Румен:Здрав;Ангел:Вестител;Божидар:Божи дар;Виктор:Победител;Владимир:Владетел;Деян:Деен;Евтим:Благодушен;Желязко:Здрав;Живко:Жив;Здравко:Здрав;Калоян:Хубав Иван;Красимир:Красив свят;Любомир:Любим на света;Момчил:Момък;Никодим:Победа на народа;Огнян:Огън;Пламен:Пламък;Радослав:Радост и слава;Светослав:Свята слава;Тихомир:Тих мир;Цветан:Цвете;Чавдар:Водач;Явор:Явор;Ясен:Ясен",
             christian_f: "Мария:Любима;София:Мъдрост;Елена:Светлина;Александра:Защитница;Виктория:Победа;Никол:Победа;Габриела:Божия сила;Йоана:Благодат;Теодора:Божи дар;Рая:Рай;Христина:Християнка;Ивана:Бог е милостив;Магдалена:От Магдала;Катерина:Чиста;Симона:Бог чува;Гергана:Земеделец;Стефани:Венец;Наталия:Рождество;Даниела:Бог е съдия;Елеонора:Бог е светлина;Анна:Благодат;Екатерина:Чиста;Михаела:Коя е като Бог;Василена:Царствена;Силвия:Горска;Кристина:Посветена;Диана:Божествена;Моника:Съветник;Вероника:Победа;Татяна:Уредителка;Юлия:Къдрава;Валерия:Силна;Елисавета:Бог е клетва;Марина:Морска;Надежда:Надежда;Вяра:Вяра;Любов:Любов;Ирина:Мир;Недялка:Неделя;Петя:Камък;Радка:Радост;Румяна:Румена;Светла:Светла;Стоянка:Устойчива;Тинка:Чиста;Цонка:Цвете;Яна:Бог е милостив;Антония:Ценна;Божидара:Дар;Ваня:Бог е милостив;Галина:Спокойствие;Дарина:Дарена;Емилия:Съперничка;Жана:Бог е милостив;Златка:Златна;Ива:Върба;Красимира:Красив мир;Лидия:От Лидия;Мая:Майка;Нина:Нежна;Олга:Свята;Павлина:Малка;Росица:Роса;Снежана:Снежна;Таня:Организатор;Фани:Венец;Християна:Християнка;Цвета:Цвете",
             slavic_m: "Божидар:Дар;Владимир:Владетел;Калоян:Хубав;Деян:Деен;Пламен:Огнен;Красимир:Красив свят;Мирослав:Мир и слава;Радослав:Радост;Боян:Войн;Огнян:Огън;Светослав:Свята слава;Драгомир:Драг;Момчил:Момък;Найден:Намерен;Бисер:Ценен;Веселин:Весел;Живко:Жив;Здравко:Здрав;Камен:Камък;Лъчезар:Лъч;Радомир:Радост;Станимир:Стани мир;Тихомир:Тих мир;Цветан:Цвете;Ясен:Ясен;Явор:Явор;Борислав:Слава;Венцислав:Венец;Добромир:Добър;Любомир:Любим;Слави:Слава;Чавдар:Водач;Янко:Бог е милостив;Борил:Борец;Велислав:Велика слава;Десислав:Слава;Златомир:Златен;Искрен:Искрен;Милен:Мил;Преслав:Преславен;Ростислав:Растяща слава;Свилен:Копринен;Страхил:Страх;Траян:Траен;Храбър:Смел;Цветомир:Цвете;Ярослав:Силна слава",
             slavic_f: "Ралица:Орион;Десислава:Слава;Боряна:Борец;Калина:Хубава;Цветелина:Цвете;Снежана:Снежна;Биляна:Билка;Радостина:Радост;Мира:Мир;Искра:Искра;Жана:Живот;Зорница:Зора;Мила:Мила;Преслава:Преславна;Весела:Весела;Вяра:Вяра;Дарина:Дар;Елица:Ела;Живка:Жива;Златина:Златна;Ивелина:Върба;Красимира:Красива;Людмила:Любима;Милена:Мила;Надежда:Надежда;Райна:Царица;Светлана:Светла;Славяна:Славянка;Станислава:Слава;Цветана:Цвете;Яна:Река;Божидара:Дар;Велислава:Слава;Гергана:Земеделец;Добромира:Добър мир;Елка:Ела;Жени:Благородна;Зорка:Зора;Иглика:Цвете;Йорданка:Спускаща се;Катя:Чиста;Лиляна:Лилия;Мирослава:Мир и слава;Невена:Невен",
-            modern_m: "Мартин:Войн;Виктор:Победител;Даниел:Божи съд;Кристиян:Християнин;Алекс:Защитник;Макс:Велик;Ерик:Вечен;Филип:Любител на коне;Робърт:Ярка слава;Себастиан:Почитан;Оливър:Маслина;Лео:Лъв;Никълъс:Победа;Адриян:От Адрия;Денис:На Дионис;Крис:Христоносец;Тео:Бог;Лукас:Светъл;Матео:Божи дар;Ноа:Почивка;Адам:Човек;Бенджамин:Син на десницата;Габриел:Божия сила;Давид:Любим;Едуард:Пазител;Жул:Млад;Иън:Бог е милостив;Кевин:Красив;Леонардо:Смел лъв;Майкъл:Кой е като Бог;Нейтън:Даден;Патрик:Благородник;Райън:Малък крал;Сам:Бог чува;Томас:Близнак;Уилям:Решителен;Феликс:Щастлив;Хари:Владетел;Чарли:Свободен;Джейкъб:Заместник;Антъни:Ценен;Брайън:Висок;Джордж:Земеделец;Итън:Силен;Кало:Хубав",
-            modern_f: "Ема:Цяла;Мия:Моя;Сара:Принцеса;Леа:Лъвица;Лили:Лилиум;Изабела:Обещание;Нора:Чест;Ева:Живот;Анна:Благодат;Джулия:Млада;Алис:Благородна;Карина:Скъпа;Мелиса:Пчела;Никол:Победа;Бела:Красива;Лора:Лавър;Дара:Дар;Ния:Цел;Амелия:Трудолюбива;Софи:Мъдрост;Оливия:Маслина;Емили:Съперничка;Ава:Живот;Шарлот:Свободна;Хана:Благодат;Зоя:Живот;Клара:Ясна;Луна:Луна;Мая:Илюзия;Натали:Рождество;Стела:Звезда;Вики:Победа;Елина:Светлина;Ивет:Тисово дърво;Кая:Чиста;Лара:Защитница;Мира:Мир;Неда:Родена в неделя;Поли:Малка;Рая:Рай;Симон:Бог чува;Теа:Богиня;Яна:Бог е милостив;Алина:Благородна;Бриджит:Силна;Ванеса:Пеперуда",
-            myth_m: "Атлас:Носещ света;Орион:Ловец;Аполон:Светлина;Хермес:Вестител;Зевс:Владетел;Арес:Войн;Дионис:Вино;Хектор:Държащ;Язон:Лечител;Персей:Разрушител;Одисей:Гневен;Ахил:Болка;Ерос:Любов;Хелиос:Слънце;Ефир:Въздух;Кастор:Бобър;Полукс:Много сладък;Сириус:Светещ;Драко:Дракон;Феникс:Птица;Лео:Лъв;Орфей:Тъмнина;Парис:Борец;Еней:Хвален;Тезеи:Полагащ",
-            myth_f: "Атина:Мъдрост;Хера:Покровителка;Артемида:Здрава;Афродита:Родена от пяна;Деметра:Майка Земя;Ирида:Дъга;Селена:Луна;Рея:Поток;Мая:Майка;Клио:Слава;Талия:Цъфтяща;Урания:Небесна;Калиопа:Прекрасен глас;Ерато:Любима;Дафне:Лавър;Касиопея:Сияеща;Андромеда:Владетелка;Ариадна:Света;Електра:Кехлибар;Леда:Лебед",
+            modern_m: "Мартин:Войн;Виктор:Победител;Даниел:Божи съд;Кристиян:Християнин;Алекс:Защитник;Макс:Велик;Ерик:Вечен;Филип:Любител на коне;Робърт:Ярка слава;Себастиан:Почитан;Оливър:Маслина;Лео:Лъв;Никълъс:Победа;Адриян:От Адрия;Денис:На Дионис;Крис:Христоносец;Тео:Бог;Лукас:Светъл;Матео:Божи дар;Ноа:Почивка;Адам:Човек;Бенджамин:Син на десницата;Габриел:Божия сила;Давид:Любим;Едуард:Пазител;Жул:Млад;Иън:Бог е милостив;Кевин:Красив;Леонардо:Смел лъв;Майкъл:Кой е като Бог;Нейтън:Даден;Патрик:Благородник;Райън:Малък крал;Сам:Бог чува;Томас:Близнак;Уилям:Решителен;Феликс:Щастлив;Хари:Владетел;Чарли:Свободен;Джейкъб:Заместник;Антъни:Ценен;Брайън:Висок;Джордж:Земеделец;Итън:Силен;Кало:Хубав;Луи:Славен;Марк:Войнствен;Нико:Победа;Оскар:Божие копие;Пол:Малък;Ричард:Смел;Стивън:Венец;Тони:Ценен;Франк:Свободен;Хенри:Владетел;Артур:Мечка;Арън:Висок;Бруно:Кафяв;Винсент:Завоевател;Грегор:Бдящ;Доминик:Господен;Ейдън:Огън;Елиас:Илия;Елиът:Бог е високо;Закари:Бог помни;Илай:Възвишен;Йонас:Гълъб;Калеб:Предан;Каспър:Съкровище;Колин:Победа;Лиъм:Войн;Логан:Малка дупка;Лука:Светлина;Майлс:Войник;Максимилиан:Най-голям;Марсел:Малък войн;Матиас:Божи дар;Мика:Кой е като Бог;Морис:Тъмен;Оуен:Благороден;Питър:Камък;Рафаел:Бог лекува;Робин:Ярка слава;Роман:Римлянин;Рубен:Виж сина;Саймън:Слушащ;Самюел:Бог чу;Сантяго:Свети Яков;Соломон:Мир;Спенсър:Домакин;Стенли:Каменна поляна;Теодор:Божи дар;Тимур:Желязо;Тобиас:Бог е добър;Тристан:Тъжен;Троя:Пехотинец;Фреди:Мирен;Фредерик:Мирен;Хуго:Ум;Чарлз:Свободен;Шон:Бог е милостив;Юри:Земеделец;Ян:Бог е милостив;Джак:Бог е милостив;Джеймс:Заместник;Алекс:Защитник;Богдан:Бог дал;Богомил:Мил на Бога;Валентин:Здрав;Велислав:Велика слава;Веселин:Весел;Витан:Живот;Даниел:Божи съд;Димо:Народ;Добромир:Добър мир;Драгомир:Драг на света;Евлоги:Благословен;Захарий:Бог си спомня;Ивайло:Вълк;Игнат:Огнен;Камен:Камък;Красен:Красив;Кристиян:Християнин;Лъчезар:Лъч;Мартин:Войн;Мирослав:Мир и слава;Митко:Деметра;Нико:Победа;Олег:Свещен;Петко:Петък;Радомир:Радост на света;Руслан:Лъв;Сашо:Защитник;Слав:Слава;Станислав:Стани славен;Тео:Бог;Траян:Траен;Яни:Бог е милостив",
+            modern_f: "Ема:Цяла;Мия:Моя;Сара:Принцеса;Леа:Лъвица;Лили:Лилиум;Изабела:Обещание;Нора:Чест;Ева:Живот;Анна:Благодат;Джулия:Млада;Алис:Благородна;Карина:Скъпа;Мелиса:Пчела;Никол:Победа;Бела:Красива;Лора:Лавър;Дара:Дар;Ния:Цел;Амелия:Трудолюбива;Софи:Мъдрост;Оливия:Маслина;Емили:Съперничка;Ава:Живот;Шарлот:Свободна;Хана:Благодат;Зоя:Живот;Клара:Ясна;Луна:Луна;Мая:Илюзия;Натали:Рождество;Стела:Звезда;Вики:Победа;Елина:Светлина;Ивет:Тисово дърво;Кая:Чиста;Лара:Защитница;Мира:Мир;Неда:Родена в неделя;Поли:Малка;Рая:Рай;Симон:Бог чува;Теа:Богиня;Яна:Бог е милостив;Алина:Благородна;Бриджит:Силна;Ванеса:Пеперуда;Глория:Слава;Деа:Богиня;Елвира:Истина;Жизел:Залог;Ина:Силна;Кейт:Чиста;Лиза:Бог е клетва;Мона:Желание;Ника:Победа;Адел:Благородна;Адриана:Тъмна;Алекса:Защитница;Алми:Хранителна;Аманда:Достойна;Амбър:Кехлибар;Амели:Трудолюбива;Андреа:Смела;Аника:Благодат;Антоанета:Ценна;Ариана:Свята;Беатрис:Носеща щастие;Бети:Бог е клетва;Бланка:Бяла;Бренда:Меч;Валерия:Силна;Вероника:Образ;Вивиан:Жива;Габи:Божия сила;Грейс:Благодат;Дария:Богата;Дебора:Пчела;Джесика:Богатство;Джина:Кралица;Джоана:Бог е милостив;Джулиана:Млада;Дина:Съдена;Доротея:Божи дар;Евелин:Живот;Едит:Богатство;Елеонор:Светлина;Елиза:Бог е клетва;Елинор:Светлина;Емануела:Бог е с нас;Ерика:Вечна;Естер:Звезда;Жанет:Бог е милостив;Жозефина:Бог прибавя;Зара:Принцеса;Зинаида:Божествена;Иванина:Бог е милостив;Ивон:Тисово дърво;Изабел:Бог е клетва;Илона:Светлина;Ингрид:Красива;Инес:Чиста;Ирена:Мир;Ирма:Цяла;Йоана:Бог е милостив;Карла:Свободна;Каролина:Свободна;Касандра:Пророчица;Кели:Война;Киара:Ясна;Клара:Ясна;Клео:Слава;Кора:Девица;Кристиана:Християнка;Лаура:Лавър;Лена:Светлина;Леона:Лъвица;Летисия:Радост;Лиана:Ляна;Линда:Красива;Лола:Скръб;Лорета:Лавър;Луиза:Славен;Луси:Светлина;Маделин:От Магдала;Майя:Майка;Мануела:Бог е с нас;Марго:Перла;Мариса:На морето;Меган:Перла;Мелани:Тъмна;Мелинда:Медена;Мишел:Коя е като Бог;Моли:Море;Надя:Надежда;Наоми:Приятна;Аделина:Благородна;Албена:Хубава;Божана:Божия;Весела:Весела;Виктория:Победа;Глория:Слава;Дария:Дарена;Елица:Ела;Зорница:Зорница;Ивет:Ива;Йорданка:Йордан;Катя:Чиста;Лора:Лавър;Миглена:Мила;Надя:Надежда;Преслава:Преславна;Радослава:Радост и слава;Севдалина:Любов;Славена:Слава;Теа:Богиня;Цветанка:Цвете",
             nature_m: "Явор:Явор;Огнян:Огън;Камен:Камък;Здравко:Здрав;Ясен:Ясен;Цветан:Цвете;Малин:Малина;Върбан:Върба;Горан:Гора;Елхо:Ела",
-            nature_f: "Роза:Роза;Виолета:Теменужка;Маргарита:Перла;Ива:Върба;Лилия:Невинност;Иглика:Първо цвете;Невена:Невен;Далия:Далия;Жасмина:Жасмин;Камелия:Камелия;Цветелина:Цветна"
+            nature_f: "Роза:Роза;Виолета:Теменужка;Маргарита:Перла;Ива:Върба;Лилия:Невинност;Иглика:Първо цвете;Невена:Невен;Далия:Далия;Жасмина:Жасмин;Камелия:Камелия;Цветелина:Цветна",
+            royal_m: "Симеон:Бог чува;Асен:Здрав;Самуил:Божие име;Ивайло:Вълк;Тервел:Бягащ;Борис:Борец;Калоян:Хубав Иван;Иван Александър:Защитник;Петър:Камък;Михаил:Кой е като Бог;Владимир:Владетел;Гаврил:Божия сила;Пресиян:Преславен;Крум:Скала;Омуртаг:Кръгъл;Кардам:Меч;Маламир:Малък мир;Бокил:Болярин;Расате:Владимир;Севар:Северен;Токту:Твърд;Умор:Умел;Аспарух:Бърз кон;Кубрат:Събирач;Алцек:Елен;Батбаян:Богат;Котраг:Смел;Телерик:Умен;Винех:Високо;Кормисош:Кормило",
+            royal_f: "Теодора:Божи дар;Мария:Любима;Елеонора:Светлина;Ирина:Мир;Екатерина:Чиста;Елизабет:Бог е клетва;Виктория:Победа;Анастасия:Възкресение;Кера:Госпожа;Тамара:Палма;Десислава:Слава;Елена:Светлина;Анна:Благодат;Зоя:Живот;Мария-Луиза:Славна;Йоанна:Бог е милостив;Маргарита:Перла;Симона:Бог чува;Клементина:Милостива;Дживора:Жива;Евдокия:Благоволение;Кира:Господарка;Ксения:Чужденка;Надежда:Надежда;Олга:Свята"
         };
 
+        // --- INIT & LOGIC ---
         const nameDatabase = {};
         for (const key in rawData) {
             nameDatabase[key] = rawData[key].split(';').map(entry => {
@@ -405,23 +386,18 @@
             });
         }
 
-        // --- STATE & UTILS ---
         let favorites = JSON.parse(localStorage.getItem('nomeno_favorites')) || [];
         let generatedHistory = new Set();
-        let lastGeneratedName = "";
 
-        // UI Init
         updateFavoritesUI();
-        vibeSlider.addEventListener('input', () => {
+        vibeSlider.addEventListener('input', updateVibeLabel);
+
+        function updateVibeLabel() {
             const val = vibeSlider.value;
             const label = document.getElementById('vibeLabel');
             if(val < 35) label.innerText = "Мекота";
             else if(val > 65) label.innerText = "Сила";
             else label.innerText = "Баланс";
-        });
-
-        function toggleExplainer() {
-            document.getElementById('explainerModal').classList.toggle('active');
         }
 
         function setGender(g) {
@@ -432,26 +408,35 @@
             });
         }
 
+        function toggleExplainer() {
+            document.getElementById('explainerModal').classList.toggle('hidden');
+            document.getElementById('explainerModal').classList.toggle('flex');
+        }
+
         function processData() {
-            document.getElementById('inputStage').classList.add('hidden');
-            document.getElementById('resultStage').classList.add('hidden');
-            document.getElementById('loadingStage').classList.remove('hidden');
-            document.getElementById('loadingStage').classList.add('flex');
+            const surname = document.getElementById('surname').value.trim();
+            if(!surname) { alert("Моля, въведете фамилия за точен анализ!"); return; }
+
+            document.getElementById('inputView').classList.add('hidden');
+            document.getElementById('resultView').classList.add('hidden');
+            document.getElementById('loadingView').classList.remove('hidden');
+            document.getElementById('loadingView').classList.add('flex');
 
             let pct = 0;
             const interval = setInterval(() => {
-                pct += Math.floor(Math.random() * 10) + 2;
+                pct += Math.floor(Math.random() * 8) + 2;
                 if(pct > 100) pct = 100;
                 document.getElementById('loaderPercent').innerText = pct + '%';
                 
-                const texts = ["Зареждане на Genesis...", "Анализ на фонетика...", "Синхронизиране...", "Финализиране..."];
-                if(pct % 25 === 0 && pct < 100) document.getElementById('loaderText').innerText = texts[Math.floor(pct/25)];
+                if(pct > 30) document.getElementById('loaderText').innerText = "Анализ на фонетика...";
+                if(pct > 60) document.getElementById('loaderText').innerText = "Синхронизиране...";
+                if(pct > 90) document.getElementById('loaderText').innerText = "Финализиране...";
                 
                 if(pct === 100) {
                     clearInterval(interval);
-                    setTimeout(runAlgorithm, 500);
+                    runAlgorithm();
                 }
-            }, 50);
+            }, 30);
         }
 
         function runAlgorithm() {
@@ -470,10 +455,10 @@
                 gender: document.getElementById('selectedGender').value
             };
 
-            const finalGender = inputs.gender === 'random' ? (Math.random() > 0.5 ? 'boy' : 'girl') : inputs.gender;
+            let finalGender = inputs.gender === 'random' ? (Math.random() > 0.5 ? 'boy' : 'girl') : inputs.gender;
             const genderKey = finalGender === 'boy' ? '_m' : '_f';
 
-            // Pool Construction
+            // Pool
             let pool = [];
             const origins = [inputs.originM, inputs.originF];
             
@@ -481,31 +466,29 @@
                 Object.keys(nameDatabase).filter(k => k.endsWith(genderKey)).forEach(k => pool = pool.concat(nameDatabase[k]));
             } else {
                 origins.forEach(o => { if(nameDatabase[o + genderKey]) pool = pool.concat(nameDatabase[o + genderKey]); });
-                // Always mix in some modern for variety
+                // Fallback
                 if(nameDatabase['modern' + genderKey]) pool = pool.concat(nameDatabase['modern' + genderKey]);
             }
 
-            // Dedupe & Filter
+            // Filter
             pool = pool.filter((v,i,a) => a.findIndex(t => t.name === v.name) === i);
             pool = pool.filter(n => !generatedHistory.has(n.name));
             if(pool.length === 0) { generatedHistory.clear(); pool = pool.concat(nameDatabase['modern' + genderKey]); }
 
-            // Scoring
+            // Score
             let bestName = null;
             let bestScore = -9999;
             let logicText = "";
 
             const softSounds = ['л','м','н','р','й','я','ю','е','и'];
-            const hardSounds = ['к','т','б','п','г','д','ж','з','ч','ш'];
-
-            // Shuffle
+            
             pool.sort(() => Math.random() - 0.5);
 
             for (let candidate of pool) {
                 let score = 0;
                 let reasons = [];
 
-                // 1. Heritage (High Prio)
+                // 1. Heritage
                 const grandparents = [inputs.grandMaM, inputs.grandPaM, inputs.grandMaD, inputs.grandPaD].filter(Boolean);
                 grandparents.forEach(gp => {
                     if (candidate.name.startsWith(gp[0].toUpperCase())) {
@@ -516,80 +499,79 @@
                 if(inputs.p1 && candidate.name.startsWith(inputs.p1[0].toUpperCase())) score += 5;
                 if(inputs.p2 && candidate.name.startsWith(inputs.p2[0].toUpperCase())) score += 5;
 
-                // 2. Phonetic Flow with Surname
-                if(inputs.surname) {
-                    const nameEnd = candidate.name.slice(-1).toLowerCase();
-                    const surStart = inputs.surname.charAt(0).toLowerCase();
-                    const nSyl = (candidate.name.match(/[аъоуеиюя]/gi) || []).length;
-                    const sSyl = (inputs.surname.match(/[аъоуеиюя]/gi) || []).length;
-
-                    // Clash check
-                    if (nameEnd === surStart) score -= 15;
-                    
-                    // Rhythm (Golden Ratio: 2-3, 3-2, 3-4)
-                    if (Math.abs(nSyl - sSyl) === 1 || (nSyl + sSyl === 5)) {
-                        score += 15;
-                        if(!reasons.includes('Перфектен ритъм')) reasons.push('перфектен ритъм');
-                    }
-
-                    // Consonant cluster check (Cacophony)
-                    const isCons = c => !['а','о','е','и','у','ъ','ю','я'].includes(c);
-                    if (isCons(nameEnd) && isCons(surStart)) score -= 5;
+                // 2. Phonetic Flow
+                const nameEnd = candidate.name.slice(-1).toLowerCase();
+                const surStart = inputs.surname.charAt(0).toLowerCase();
+                
+                // Clash check
+                if (nameEnd === surStart) score -= 15;
+                
+                // Rhythm Balance (Simple Heuristic: Length)
+                if (Math.abs(candidate.name.length - inputs.surname.length) > 2) {
+                    score += 10; // Length contrast creates rhythm
                 }
 
                 // 3. Vibe Matching
                 const nameChars = candidate.name.toLowerCase().split('');
                 const softCount = nameChars.filter(c => softSounds.includes(c)).length;
                 const ratio = softCount / nameChars.length;
-                const targetRatio = 1 - (inputs.vibe / 100); // 0=Soft(1.0), 100=Hard(0.0)
+                const targetRatio = 1 - (inputs.vibe / 100); 
                 
-                if (Math.abs(ratio - targetRatio) < 0.25) {
+                if (Math.abs(ratio - targetRatio) < 0.2) {
                     score += 10;
+                    if(!reasons.includes('Енергия')) reasons.push('енергиен баланс');
                 }
 
-                // 4. Semantic Resonance (Sibling)
+                // 4. Sibling
                 if(inputs.sibling) {
-                    // Simple length matching
-                    if(Math.abs(inputs.sibling.length - candidate.name.length) <= 1) score += 5;
-                    // Check for shared category (e.g. flower names)
-                    const flowers = "Цвета,Роза,Лилия,Виолета,Маргарита,Явор,Ясен,Ела,Калина,Здравко";
-                    if (flowers.includes(inputs.sibling) && flowers.includes(candidate.name)) {
-                        score += 25;
-                        reasons.push("тематична връзка (природа)");
+                    if(inputs.sibling[0] === candidate.name[0]) {
+                        score += 10;
+                        reasons.push("хармония с брат/сестра");
                     }
                 }
 
-                // Random Factor
-                score += Math.random() * 40;
+                score += Math.random() * 40; // Random factor
 
                 if (score > bestScore) {
                     bestScore = score;
                     bestName = candidate;
-                    logicText = reasons.length > 0 ? `Фактори: ${reasons.join(", ")}.` : "Отличен баланс и звучене.";
+                    logicText = reasons.length > 0 ? `Фактори: ${reasons.join(", ")}.` : "Отличен баланс на звучене и смисъл.";
                 }
             }
             
-            // Double Name logic if enabled
-            // (Simplified for this version to keep logic clean)
-
-            if (!bestName) bestName = pool[0]; // Fallback
-            
+            if (!bestName) bestName = pool[0];
             generatedHistory.add(bestName.name);
 
-            // Render
-            document.getElementById('loadingStage').classList.add('hidden');
-            document.getElementById('loadingStage').classList.remove('flex');
-            document.getElementById('resultStage').classList.remove('hidden');
-            document.getElementById('resultStage').classList.add('flex');
+            // Display Results
+            document.getElementById('loadingView').classList.add('hidden');
+            document.getElementById('loadingView').classList.remove('flex');
+            document.getElementById('resultView').classList.remove('hidden');
+            document.getElementById('resultView').classList.add('flex');
             
             document.getElementById('resName').innerText = bestName.name;
             document.getElementById('resSurname').innerText = inputs.surname;
             document.getElementById('resMeaning').innerText = bestName.meaning;
             document.getElementById('resReason').innerText = logicText;
             document.getElementById('resScore').innerText = Math.floor(92 + Math.random()*7) + "%";
+
+            // Visual DNA Update
+            updateDNA(bestName.name);
         }
 
-        // --- FAVORITES ---
+        function updateDNA(name) {
+            let val = 0;
+            for(let i=0; i<name.length; i++) val += name.charCodeAt(i);
+            
+            const soft = (val % 40) + 60; 
+            const unique = ((val * 3) % 50) + 40; 
+            
+            document.getElementById('dnaSoftBar').style.width = soft + '%';
+            document.getElementById('dnaSoftVal').innerText = soft + '%';
+            document.getElementById('dnaUniqueBar').style.width = unique + '%';
+            document.getElementById('dnaUniqueVal').innerText = unique + '%';
+        }
+
+        // --- ACTIONS ---
         function saveName() {
             const name = document.getElementById('resName').innerText;
             const surname = document.getElementById('resSurname').innerText;
@@ -650,9 +632,9 @@
         }
 
         function showInput() {
-            document.getElementById('resultStage').classList.add('hidden');
-            document.getElementById('resultStage').classList.remove('flex');
-            document.getElementById('inputStage').classList.remove('hidden');
+            document.getElementById('resultView').classList.add('hidden');
+            document.getElementById('resultView').classList.remove('flex');
+            document.getElementById('inputView').classList.remove('hidden');
         }
 
         function generateNew() {
