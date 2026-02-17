@@ -3,361 +3,374 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOMENO 2.0 - Nexus</title>
+    <title>NOMENO 3.0 - Destiny</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cinzel:wght@400;600;800&display=swap');
 
         :root {
-            --bg-deep: #0f172a;
-            --primary: #6366f1;
-            --accent: #ec4899;
-            --glass-bg: rgba(15, 23, 42, 0.6);
+            --bg-deep: #02040a;
+            --glass-surface: rgba(20, 25, 40, 0.65);
             --glass-border: rgba(255, 255, 255, 0.08);
+            --primary: #8b5cf6;
+            --accent: #f472b6;
+            --gold: #fbbf24;
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Outfit', sans-serif;
             background-color: var(--bg-deep);
             color: #f8fafc;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(99,102,241,0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(236,72,153,0.15) 0px, transparent 50%);
-            background-attachment: fixed;
         }
 
-        .serif { font-family: 'Playfair Display', serif; }
+        .serif { font-family: 'Cinzel', serif; }
 
-        /* --- GLASS COMPONENTS --- */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+        /* --- COSMIC BACKGROUND --- */
+        .destiny-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% 120%, #1e1b4b, #020617 60%);
+        }
+        
+        .stars-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            overflow: hidden; pointer-events: none;
+        }
+        
+        .star {
+            position: absolute; background: white; border-radius: 50%; opacity: 0;
+            animation: twinkle var(--duration) ease-in-out infinite;
+        }
+        @keyframes twinkle { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--opacity); transform: scale(1); } 100% { opacity: 0; transform: scale(0.5); } }
+
+        /* --- GLASS PANEL --- */
+        .glass-panel {
+            background: var(--glass-surface);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.02), 0 20px 60px -20px rgba(0,0,0,0.8);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         /* --- INPUTS --- */
-        .input-nexus {
-            background: rgba(255, 255, 255, 0.03);
+        .input-destiny {
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
-        .input-nexus:focus {
-            background: rgba(255, 255, 255, 0.07);
+        .input-destiny:focus {
+            background: rgba(20, 20, 35, 0.7);
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
             outline: none;
         }
-        .input-nexus::placeholder { color: rgba(255, 255, 255, 0.3); }
-        select.input-nexus option { background: #1e293b; color: white; }
+        select.input-destiny option { background: #0f172a; color: white; }
+
+        /* --- ANIMATIONS --- */
+        .fade-in-up { animation: fadeInUp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; transform: translateY(30px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
         /* --- CONTROLS --- */
         .gender-btn {
-            background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            transition: all 0.3s;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); transition: 0.3s;
         }
-        .gender-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+        .gender-btn:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
         .gender-btn.active {
-            background: rgba(99, 102, 241, 0.15); 
-            border-color: var(--primary); 
-            color: white;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            border-color: var(--primary); color: white;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.25);
         }
 
-        /* Range Slider */
+        /* --- SLIDER --- */
         input[type=range] {
-            -webkit-appearance: none; background: transparent; cursor: pointer;
+            -webkit-appearance: none; background: transparent; width: 100%; cursor: pointer;
         }
         input[type=range]::-webkit-slider-runnable-track {
-            background: linear-gradient(90deg, #ec4899, #a855f7, #6366f1);
-            height: 4px; border-radius: 2px;
+            background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px;
         }
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none; height: 16px; width: 16px; 
-            background: white; border-radius: 50%; margin-top: -6px;
-            box-shadow: 0 0 10px rgba(255,255,255,0.5); transition: transform 0.1s;
+            background: var(--primary); border-radius: 50%; margin-top: -6px;
+            box-shadow: 0 0 10px var(--primary); transition: transform 0.2s;
         }
         input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
-        /* --- ANIMATIONS --- */
-        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(10px); }
-        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-
-        .shimmer {
-            position: absolute; inset: 0; transform: skewX(-20deg);
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
-            animation: shimmer 3s infinite linear; pointer-events: none;
-        }
-        @keyframes shimmer { 0% { transform: translateX(-150%) skewX(-20deg); } 100% { transform: translateX(150%) skewX(-20deg); } }
-
-        /* DNA BARS */
-        .dna-track { background: rgba(255,255,255,0.05); height: 6px; border-radius: 3px; overflow: hidden; }
-        .dna-fill { height: 100%; border-radius: 3px; transition: width 1s ease-out; }
-
         /* --- DRAWER --- */
         #favoritesDrawer {
-            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
         #favoritesDrawer.open { transform: translateX(0); }
+
+        /* --- DNA BARS --- */
+        .dna-track { background: rgba(255,255,255,0.05); height: 4px; border-radius: 2px; overflow: hidden; }
+        .dna-fill { height: 100%; border-radius: 2px; transition: width 1.5s ease-out; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center">
 
-    <!-- Navbar -->
-    <nav class="w-full max-w-6xl flex justify-between items-center p-6 fade-in" style="animation-delay: 0ms;">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                <i data-lucide="infinity" class="w-6 h-6 text-white"></i>
+    <div class="destiny-bg"></div>
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- Header -->
+    <nav class="w-full max-w-6xl flex justify-between items-center p-6 md:p-8 fade-in-up" style="animation-delay: 0ms;">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-white/5 backdrop-blur-md shadow-[0_0_30px_rgba(139,92,246,0.3)]">
+                <i data-lucide="sparkles" class="w-6 h-6 text-white"></i>
             </div>
             <div>
-                <h1 class="text-lg font-bold tracking-tight text-white leading-none">NOMENO <span class="text-indigo-400">2.0</span></h1>
-                <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest">Nexus Engine</p>
+                <h1 class="text-xl font-bold text-white tracking-widest serif">NOMENO <span class="text-violet-400">3.0</span></h1>
+                <p class="text-[9px] text-gray-400 uppercase tracking-[0.4em] font-bold">Destiny Engine</p>
             </div>
         </div>
-        
-        <div class="flex gap-3">
-            <button onclick="toggleExplainer()" class="px-4 py-2 rounded-full border border-white/10 hover:bg-white/5 text-xs font-semibold text-slate-300 transition flex items-center gap-2">
-                <i data-lucide="help-circle" class="w-4 h-4"></i> <span class="hidden sm:inline">Логика</span>
-            </button>
-            <button onclick="toggleFavorites()" class="px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/20 text-indigo-300 text-xs font-bold flex items-center gap-2 transition group">
-                <i data-lucide="bookmark" class="w-4 h-4 group-hover:scale-110 transition"></i>
-                <span class="hidden sm:inline">Запазени</span>
-                <span id="favCount" class="bg-indigo-500 text-white px-1.5 rounded-full text-[10px] hidden">0</span>
+        <div class="flex gap-4">
+            <button onclick="toggleFavorites()" class="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition text-xs font-bold text-gray-300 flex items-center gap-2 group">
+                <i data-lucide="bookmark" class="w-4 h-4 text-violet-400 group-hover:scale-110 transition"></i>
+                <span class="hidden sm:inline uppercase tracking-wider">Колекция</span>
+                <span id="favCount" class="bg-violet-600 text-white w-4 h-4 flex items-center justify-center rounded-full text-[9px] hidden">0</span>
             </button>
         </div>
     </nav>
 
     <!-- Main Container -->
-    <main class="w-full max-w-5xl px-4 pb-12 flex-1 relative z-10">
+    <main class="w-full max-w-6xl px-4 md:px-8 pb-12 flex-1 relative z-10">
         
-        <!-- INPUT VIEW -->
-        <div id="inputView" class="glass-card rounded-3xl p-6 md:p-10 fade-in" style="animation-delay: 100ms;">
+        <!-- INPUT STAGE -->
+        <div id="inputStage" class="glass-panel rounded-[2rem] p-8 md:p-12 fade-in-up" style="animation-delay: 100ms;">
             
-            <div class="mb-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-2 serif">Конфигурация</h2>
-                <p class="text-slate-400 text-sm max-w-lg">
-                    Алгоритъмът Nexus анализира фонетични структури, културен контекст и родова памет.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
                 
-                <!-- LEFT: CORE DATA -->
-                <div class="lg:col-span-7 space-y-6">
-                    
-                    <!-- Surname Block -->
-                    <div class="bg-white/[0.02] p-6 rounded-2xl border border-white/5 space-y-4 relative group">
-                        <div class="absolute -left-px top-6 bottom-6 w-0.5 bg-indigo-500 rounded-full"></div>
-                        <label class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest flex items-center gap-2">
-                            <i data-lucide="fingerprint" class="w-3 h-3"></i> Фамилия (Задължително)
-                        </label>
-                        <input type="text" id="surname" placeholder="напр. Маринов" class="input-nexus w-full px-5 py-3 rounded-xl text-lg font-medium">
-                        
-                        <div class="grid grid-cols-2 gap-4 pt-2">
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Пол</label>
-                                <div class="flex gap-1 bg-black/20 p-1 rounded-lg">
-                                    <button onclick="setGender('boy')" id="btn-boy" class="gender-btn flex-1 py-2 rounded-md flex justify-center"><i data-lucide="baby" class="w-4 h-4 text-blue-400"></i></button>
-                                    <button onclick="setGender('girl')" id="btn-girl" class="gender-btn flex-1 py-2 rounded-md flex justify-center"><i data-lucide="baby" class="w-4 h-4 text-pink-400"></i></button>
-                                    <button onclick="setGender('random')" id="btn-random" class="gender-btn active flex-1 py-2 rounded-md flex justify-center"><i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i></button>
+                <!-- Left Column: Core Data -->
+                <div class="lg:col-span-7 space-y-10">
+                    <div class="space-y-3">
+                        <h2 class="text-4xl md:text-5xl font-bold text-white serif leading-tight">Създай своето <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">Бъдеще</span></h2>
+                        <p class="text-gray-400 text-sm max-w-lg leading-relaxed">
+                            Алгоритъмът Destiny анализира фонетични структури, начални инициали и семантични връзки за перфектна хармония.
+                        </p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Surname Block -->
+                        <div class="bg-white/[0.03] p-6 rounded-2xl border border-white/5 relative group hover:border-white/10 transition">
+                            <div class="absolute -left-px top-6 bottom-6 w-0.5 bg-violet-500 rounded-full opacity-50 group-hover:opacity-100 transition"></div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold text-violet-300 uppercase tracking-widest flex items-center gap-2">
+                                        <i data-lucide="fingerprint" class="w-3 h-3"></i> Фамилия (Задължително)
+                                    </label>
+                                    <input type="text" id="surname" placeholder="напр. Иванов" class="input-destiny w-full px-4 py-3 rounded-xl text-base">
+                                </div>
+                                <div class="space-y-2">
+                                     <label class="text-[10px] font-bold text-pink-300 uppercase tracking-widest flex items-center gap-2">
+                                        <i data-lucide="type" class="w-3 h-3"></i> Първа Буква (Опция)
+                                    </label>
+                                    <select id="startLetter" class="input-destiny w-full px-4 py-3 rounded-xl text-base cursor-pointer">
+                                        <option value="">Без значение</option>
+                                        <option value="А">А</option><option value="Б">Б</option><option value="В">В</option>
+                                        <option value="Г">Г</option><option value="Д">Д</option><option value="Е">Е</option>
+                                        <option value="Ж">Ж</option><option value="З">З</option><option value="И">И</option>
+                                        <option value="Й">Й</option><option value="К">К</option><option value="Л">Л</option>
+                                        <option value="М">М</option><option value="Н">Н</option><option value="О">О</option>
+                                        <option value="П">П</option><option value="Р">Р</option><option value="С">С</option>
+                                        <option value="Т">Т</option><option value="Ф">Ф</option><option value="Х">Х</option>
+                                        <option value="Ц">Ц</option><option value="Ч">Ч</option><option value="Ш">Ш</option>
+                                        <option value="Щ">Щ</option><option value="Ю">Ю</option><option value="Я">Я</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Filters -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Брат/Сестра</label>
+                                <input type="text" id="sibling" placeholder="Име..." class="input-destiny w-full px-4 py-2.5 rounded-xl text-sm">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Пол</label>
+                                <div class="flex bg-white/[0.03] rounded-xl p-1 border border-white/5">
+                                    <button onclick="setGender('boy')" id="btn-boy" class="gender-btn flex-1 py-1.5 rounded-lg flex justify-center items-center"><i data-lucide="zap" class="w-4 h-4 text-blue-400"></i></button>
+                                    <button onclick="setGender('girl')" id="btn-girl" class="gender-btn flex-1 py-1.5 rounded-lg flex justify-center items-center"><i data-lucide="heart" class="w-4 h-4 text-pink-400"></i></button>
+                                    <button onclick="setGender('random')" id="btn-random" class="gender-btn active flex-1 py-1.5 rounded-lg flex justify-center items-center"><i data-lucide="sparkles" class="w-4 h-4 text-white"></i></button>
                                 </div>
                                 <input type="hidden" id="selectedGender" value="random">
                             </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Брат/Сестра</label>
-                                <input type="text" id="sibling" placeholder="Име..." class="input-nexus w-full px-3 py-2 rounded-lg text-sm">
+                        </div>
+
+                        <!-- Vibe Slider -->
+                        <div class="space-y-2 pt-2">
+                            <div class="flex justify-between items-center text-[10px] text-gray-400 uppercase font-bold">
+                                <span>Мекота (Soft)</span>
+                                <span id="vibeLabel" class="text-white">Баланс</span>
+                                <span>Сила (Hard)</span>
                             </div>
+                            <input type="range" id="vibeSlider" min="0" max="100" value="50">
                         </div>
                     </div>
-
-                    <!-- Vibe Control -->
-                    <div class="bg-white/[0.02] p-6 rounded-2xl border border-white/5 space-y-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="text-[10px] font-bold text-pink-300 uppercase tracking-widest flex items-center gap-2">
-                                <i data-lucide="activity" class="w-3 h-3"></i> Енергия на името
-                            </label>
-                            <span id="vibeLabel" class="text-xs font-mono text-white bg-white/5 px-2 py-0.5 rounded">Баланс</span>
-                        </div>
-                        <input type="range" id="vibeSlider" min="0" max="100" value="50" class="w-full">
-                        <div class="flex justify-between text-[9px] text-slate-500 uppercase font-bold px-1">
-                            <span>Мекота & Нежност</span>
-                            <span>Сила & Лидерство</span>
-                        </div>
-                    </div>
-
                 </div>
 
-                <!-- RIGHT: HERITAGE -->
-                <div class="lg:col-span-5 flex flex-col h-full space-y-6">
+                <!-- Right Column: Heritage & Actions -->
+                <div class="lg:col-span-5 flex flex-col justify-between space-y-8 lg:border-l lg:border-white/5 lg:pl-10">
                     
-                    <div class="bg-white/[0.02] p-6 rounded-2xl border border-white/5 flex-1 space-y-6">
-                        <div class="flex items-center gap-2 border-b border-white/5 pb-3">
-                            <i data-lucide="git-merge" class="w-4 h-4 text-slate-400"></i>
-                            <span class="text-xs font-bold text-slate-300 uppercase tracking-widest">Произход & Корени</span>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-3 text-sm font-bold text-white uppercase tracking-widest border-b border-white/10 pb-4">
+                            <div class="p-1.5 bg-violet-500/10 rounded border border-violet-500/20"><i data-lucide="git-merge" class="w-4 h-4 text-violet-400"></i></div>
+                            Родова Памет
                         </div>
 
-                        <!-- Mother -->
-                        <div class="space-y-2">
-                            <span class="text-[9px] font-bold text-pink-400 uppercase">Майчина Линия</span>
+                        <!-- Mother Side -->
+                        <div class="space-y-3">
+                            <span class="text-[9px] font-bold text-pink-400 uppercase tracking-widest ml-1">Майчина Линия</span>
                             <div class="flex gap-2">
-                                <input type="text" id="parent1" placeholder="Майка" class="input-nexus w-full px-3 py-2 rounded-lg text-sm">
-                                <select id="originMother" class="input-nexus w-full px-1 py-2 rounded-lg text-[11px] cursor-pointer">
+                                <input type="text" id="parent1" placeholder="Майка" class="input-destiny flex-1 px-3 py-2 rounded-lg text-sm bg-transparent border-white/10">
+                                <select id="originMother" class="input-destiny w-28 px-2 py-2 rounded-lg text-[10px]">
+                                    <option value="all">★ Всички</option>
                                     <option value="modern">Модерни</option>
-                                    <option value="christian">Християнски</option>
+                                    <option value="christian">Традиция</option>
                                     <option value="slavic">Български</option>
                                     <option value="nature">Природа</option>
                                     <option value="royal">Царски</option>
-                                    <option value="all">Всички</option>
                                 </select>
                             </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="grandMaM" placeholder="Баба" class="input-nexus px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
-                                <input type="text" id="grandPaM" placeholder="Дядо" class="input-nexus px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
+                            <div class="flex gap-2">
+                                <input type="text" id="grandMaM" placeholder="Баба" class="input-destiny flex-1 px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
+                                <input type="text" id="grandPaM" placeholder="Дядо" class="input-destiny flex-1 px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
                             </div>
                         </div>
 
-                        <!-- Father -->
-                        <div class="space-y-2 pt-2 border-t border-white/5">
-                            <span class="text-[9px] font-bold text-blue-400 uppercase">Бащина Линия</span>
+                        <!-- Father Side -->
+                        <div class="space-y-3 pt-4 border-t border-white/5">
+                            <span class="text-[9px] font-bold text-blue-400 uppercase tracking-widest ml-1">Бащина Линия</span>
                             <div class="flex gap-2">
-                                <input type="text" id="parent2" placeholder="Баща" class="input-nexus w-full px-3 py-2 rounded-lg text-sm">
-                                <select id="originFather" class="input-nexus w-full px-1 py-2 rounded-lg text-[11px] cursor-pointer">
+                                <input type="text" id="parent2" placeholder="Баща" class="input-destiny flex-1 px-3 py-2 rounded-lg text-sm bg-transparent border-white/10">
+                                <select id="originFather" class="input-destiny w-28 px-2 py-2 rounded-lg text-[10px]">
+                                    <option value="all">★ Всички</option>
                                     <option value="modern">Модерни</option>
-                                    <option value="christian">Християнски</option>
+                                    <option value="christian">Традиция</option>
                                     <option value="slavic">Български</option>
                                     <option value="nature">Природа</option>
                                     <option value="royal">Царски</option>
-                                    <option value="all">Всички</option>
                                 </select>
                             </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="grandMaD" placeholder="Баба" class="input-nexus px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
-                                <input type="text" id="grandPaD" placeholder="Дядо" class="input-nexus px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
+                            <div class="flex gap-2">
+                                <input type="text" id="grandMaD" placeholder="Баба" class="input-destiny flex-1 px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
+                                <input type="text" id="grandPaD" placeholder="Дядо" class="input-destiny flex-1 px-3 py-1.5 rounded-lg text-xs opacity-60 focus:opacity-100">
                             </div>
                         </div>
                     </div>
 
-                    <button onclick="processData()" class="relative w-full py-5 rounded-2xl bg-white text-slate-900 font-bold text-sm tracking-[0.2em] uppercase hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-3 overflow-hidden group">
-                        <div class="absolute inset-0 bg-gradient-to-r from-indigo-200 via-white to-purple-200 opacity-0 group-hover:opacity-50 transition duration-500"></div>
-                        <span class="relative flex items-center gap-2">Генерирай <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></span>
+                    <button onclick="processData()" class="relative w-full py-5 rounded-2xl bg-white text-slate-900 font-bold text-sm tracking-[0.25em] uppercase hover:shadow-[0_0_50px_rgba(255,255,255,0.4)] transition-all duration-500 transform hover:scale-[1.02] flex items-center justify-center gap-3 overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-violet-200 via-white to-pink-200 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        <span class="relative z-10 flex items-center gap-2">Генерирай <i data-lucide="cpu" class="w-4 h-4"></i></span>
                     </button>
-
                 </div>
             </div>
         </div>
 
-        <!-- LOADING VIEW -->
-        <div id="loadingView" class="hidden h-[600px] flex-col items-center justify-center fade-in">
-            <div class="relative w-32 h-32 mb-8">
-                <div class="absolute inset-0 rounded-full border border-indigo-500/20 animate-[spin_4s_linear_infinite]"></div>
-                <div class="absolute inset-2 rounded-full border border-t-indigo-500 border-r-transparent border-b-transparent border-l-transparent animate-[spin_1s_linear_infinite]"></div>
+        <!-- LOADING STAGE -->
+        <div id="loadingStage" class="hidden h-[600px] flex-col items-center justify-center fade-in">
+            <div class="relative w-48 h-48 mb-8">
+                <!-- Orbits -->
+                <div class="absolute inset-0 rounded-full border border-violet-500/20 animate-[spin_8s_linear_infinite]"></div>
+                <div class="absolute inset-4 rounded-full border border-pink-500/20 animate-[spin_5s_linear_infinite_reverse]"></div>
+                <div class="absolute inset-8 rounded-full border border-t-white border-r-transparent border-b-transparent border-l-transparent animate-[spin_2s_linear_infinite]"></div>
+                
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="text-2xl font-mono font-bold text-white" id="loaderPercent">0%</span>
+                    <span class="text-4xl font-mono font-bold text-white tracking-tighter" id="loaderPercent">0%</span>
                 </div>
             </div>
-            <p class="text-xs font-mono text-indigo-300 uppercase tracking-widest" id="loaderText">Инициализиране...</p>
+            <p class="text-xs font-mono text-violet-300 uppercase tracking-[0.2em] animate-pulse" id="loaderText">Анализ на буквите...</p>
         </div>
 
-        <!-- RESULT VIEW -->
-        <div id="resultView" class="hidden glass-card rounded-3xl p-8 md:p-12 min-h-[600px] flex flex-col justify-between fade-in relative overflow-hidden">
-            <div class="shimmer"></div>
+        <!-- RESULT STAGE -->
+        <div id="resultStage" class="hidden glass-panel rounded-[2rem] p-8 md:p-12 min-h-[600px] flex flex-col justify-between fade-in relative overflow-hidden">
             
             <!-- Result Top -->
             <div class="flex justify-between items-start mb-10 relative z-10">
-                <button onclick="showInput()" class="text-slate-500 hover:text-white transition flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
-                    <div class="p-1.5 rounded-full bg-white/5"><i data-lucide="chevron-left" class="w-3 h-3"></i></div>
-                    Редакция
+                <button onclick="showInput()" class="text-gray-500 hover:text-white transition flex items-center gap-2 text-xs font-bold uppercase tracking-widest border border-white/5 px-3 py-1.5 rounded-full hover:bg-white/5">
+                    <i data-lucide="chevron-left" class="w-3 h-3"></i> Редакция
                 </button>
                 <div class="text-right">
-                    <div class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Хармония</div>
-                    <div class="text-xl font-mono text-green-400 font-bold" id="resScore">99.4%</div>
+                    <div class="text-[9px] text-gray-500 uppercase tracking-widest font-bold">Съвместимост</div>
+                    <div class="text-2xl font-mono text-green-400 font-bold drop-shadow-[0_0_10px_rgba(74,222,128,0.4)]" id="resScore">99.9%</div>
                 </div>
             </div>
 
             <!-- Name Center -->
             <div class="text-center mb-12 relative z-10">
-                <h2 id="resName" class="text-6xl md:text-8xl font-bold text-white mb-3 serif tracking-tight leading-none">Име</h2>
-                <p id="resSurname" class="text-xl md:text-3xl text-slate-400 font-light uppercase tracking-[0.4em] font-mono"></p>
-                <div class="mt-4 flex justify-center">
-                    <button onclick="speakName()" class="text-slate-500 hover:text-indigo-400 transition p-2 hover:bg-white/5 rounded-full">
-                        <i data-lucide="volume-2" class="w-5 h-5"></i>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-32 bg-violet-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+                <h2 id="resName" class="relative text-6xl md:text-8xl lg:text-9xl font-bold text-white mb-2 serif tracking-tight leading-none drop-shadow-2xl">Име</h2>
+                <p id="resSurname" class="text-xl md:text-3xl text-gray-400 font-light uppercase tracking-[0.5em] font-mono ml-4"></p>
+                <div class="mt-6 flex justify-center">
+                    <button onclick="speakName()" class="text-gray-400 hover:text-violet-300 transition p-3 hover:bg-white/5 rounded-full group">
+                        <i data-lucide="volume-2" class="w-6 h-6 group-hover:scale-110 transition"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- DNA Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 relative z-10">
-                <div class="bg-black/20 p-5 rounded-2xl border border-white/5 backdrop-blur-sm">
-                    <div class="flex items-center gap-2 mb-3 text-indigo-400 text-[10px] font-bold uppercase tracking-widest">
-                        <i data-lucide="book" class="w-3 h-3"></i> Значение
+            <!-- DNA & Reason -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 relative z-10">
+                <div class="bg-white/[0.03] p-6 rounded-2xl border border-white/5 hover:border-violet-500/20 transition group">
+                    <div class="flex items-center gap-2 mb-4 text-violet-400 text-[10px] font-bold uppercase tracking-widest">
+                        <i data-lucide="book-open" class="w-3 h-3"></i> Значение
                     </div>
-                    <p id="resMeaning" class="text-lg text-slate-200 serif italic">...</p>
+                    <p id="resMeaning" class="text-lg text-gray-200 serif italic leading-relaxed">...</p>
                 </div>
                 
-                <div class="bg-black/20 p-5 rounded-2xl border border-white/5 backdrop-blur-sm space-y-4">
-                    <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase font-bold">
-                        <span>Мекота</span>
-                        <span id="dnaSoftVal" class="text-white">0%</span>
+                <div class="bg-white/[0.03] p-6 rounded-2xl border border-white/5 space-y-5">
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-[9px] text-gray-400 mb-1.5 uppercase font-bold tracking-wider">
+                                <span>Мекота</span>
+                                <span id="dnaSoftVal" class="text-white">0%</span>
+                            </div>
+                            <div class="dna-track"><div id="dnaSoftBar" class="dna-fill bg-pink-500" style="width: 0%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[9px] text-gray-400 mb-1.5 uppercase font-bold tracking-wider">
+                                <span>Уникалност</span>
+                                <span id="dnaUniqueVal" class="text-white">0%</span>
+                            </div>
+                            <div class="dna-track"><div id="dnaUniqueBar" class="dna-fill bg-indigo-500" style="width: 0%"></div></div>
+                        </div>
                     </div>
-                    <div class="dna-track"><div id="dnaSoftBar" class="dna-fill bg-pink-500" style="width: 0%"></div></div>
-                    
-                    <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase font-bold mt-2">
-                        <span>Уникалност</span>
-                        <span id="dnaUniqueVal" class="text-white">0%</span>
-                    </div>
-                    <div class="dna-track"><div id="dnaUniqueBar" class="dna-fill bg-indigo-500" style="width: 0%"></div></div>
-                    
-                    <p id="resReason" class="text-xs text-slate-400 leading-relaxed mt-3 pt-3 border-t border-white/5">...</p>
+                    <p id="resReason" class="text-[11px] text-gray-500 leading-relaxed pt-3 border-t border-white/5">...</p>
                 </div>
             </div>
 
             <!-- Actions -->
-            <div class="grid grid-cols-3 gap-4 relative z-10">
-                <button onclick="generateNew()" class="col-span-1 py-4 rounded-xl border border-white/10 hover:border-red-500/30 hover:bg-red-500/10 text-slate-400 hover:text-red-400 transition flex flex-col items-center justify-center gap-1 group">
-                    <i data-lucide="x" class="w-4 h-4 group-hover:scale-110 transition"></i>
-                    <span class="text-[9px] uppercase font-bold tracking-wider">Скрий</span>
+            <div class="grid grid-cols-3 gap-4 relative z-10 max-w-xl mx-auto w-full">
+                <button onclick="generateNew()" class="col-span-1 py-4 rounded-xl border border-white/10 hover:bg-white/5 text-gray-400 hover:text-red-400 transition flex flex-col items-center justify-center gap-1 group">
+                    <i data-lucide="x" class="w-5 h-5 group-hover:scale-125 transition"></i>
+                    <span class="text-[9px] uppercase font-bold opacity-60 group-hover:opacity-100">Скрий</span>
                 </button>
-                <button onclick="generateNew()" class="col-span-1 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white transition flex flex-col items-center justify-center gap-1 group">
-                    <i data-lucide="shuffle" class="w-4 h-4 text-indigo-400 group-hover:rotate-180 transition duration-500"></i>
-                    <span class="text-[9px] uppercase font-bold tracking-wider">Следващо</span>
+                <button onclick="generateNew()" class="col-span-1 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white transition flex flex-col items-center justify-center gap-1 group border border-white/5">
+                    <i data-lucide="shuffle" class="w-5 h-5 group-hover:rotate-180 transition duration-700 text-violet-400"></i>
+                    <span class="text-[9px] uppercase font-bold">Следващо</span>
                 </button>
-                <button onclick="saveName()" class="col-span-1 py-4 rounded-xl bg-white text-slate-900 hover:bg-indigo-50 transition flex flex-col items-center justify-center gap-1 shadow-lg shadow-white/10 group">
-                    <i data-lucide="heart" class="w-4 h-4 group-hover:text-pink-500 group-hover:fill-pink-500 transition"></i>
-                    <span class="text-[9px] uppercase font-bold tracking-wider">Запази</span>
+                <button onclick="saveName()" class="col-span-1 py-4 rounded-xl bg-white text-black hover:bg-violet-50 transition flex flex-col items-center justify-center gap-1 shadow-lg shadow-white/10 group">
+                    <i data-lucide="heart" class="w-5 h-5 group-hover:fill-pink-500 group-hover:text-pink-500 transition-colors"></i>
+                    <span class="text-[9px] uppercase font-bold">Запази</span>
                 </button>
             </div>
         </div>
 
     </main>
 
-    <!-- EXPLAINER MODAL -->
-    <div id="explainerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden">
-        <div id="explainerContent" class="bg-[#0f172a] border border-white/10 w-full max-w-2xl rounded-3xl p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="toggleExplainer()" class="absolute top-6 right-6 text-gray-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
-            <h2 class="text-2xl font-bold text-white serif mb-4">Логика на Nexus</h2>
-            <div class="space-y-6 text-sm text-slate-400">
-                <p><strong class="text-indigo-400">1. Фонетичен Поток:</strong> Алгоритъмът анализира фамилията за "тежки" звуци и търси име, което да я балансира, избягвайки сблъсък на еднакви букви.</p>
-                <p><strong class="text-pink-400">2. Родова Памет:</strong> Ако въведете имена на предци, алгоритъмът дава приоритет на техните инициали, но само ако звучат добре с фамилията.</p>
-                <p><strong class="text-blue-400">3. Енергиен Баланс:</strong> Плъзгачът за енергия филтрира имената според съотношението на гласни (мекота) и съгласни (сила).</p>
-            </div>
-        </div>
-    </div>
-
     <!-- FAVORITES DRAWER -->
-    <div id="favoritesDrawer" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-[#020205]/95 backdrop-blur-2xl border-l border-white/10 z-50 shadow-2xl flex flex-col">
-        <div class="p-6 border-b border-white/10 flex justify-between items-center">
-            <h3 class="font-serif text-2xl text-white">Колекция</h3>
-            <button onclick="toggleFavorites()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+    <div id="favoritesDrawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-[#02040a]/95 backdrop-blur-3xl border-l border-white/10 z-50 shadow-2xl flex flex-col">
+        <div class="p-8 border-b border-white/10 flex justify-between items-center">
+            <h3 class="font-serif text-2xl text-white italic">Колекция</h3>
+            <button onclick="toggleFavorites()" class="text-gray-500 hover:text-white transition p-2 hover:bg-white/5 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <div id="favoritesList" class="flex-1 overflow-y-auto p-6 space-y-3"></div>
-        <div class="p-6 border-t border-white/10">
-            <button onclick="exportFavorites()" class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold uppercase tracking-widest text-indigo-300 transition mb-3">Копирай</button>
+        <div class="p-6 border-t border-white/10 bg-white/[0.01]">
+            <button onclick="exportFavorites()" class="w-full py-4 rounded-xl bg-violet-600/20 border border-violet-500/30 hover:bg-violet-600/30 text-violet-200 text-xs font-bold uppercase tracking-widest transition flex items-center justify-center gap-2 mb-2">
+                <i data-lucide="copy" class="w-4 h-4"></i> Копирай
+            </button>
             <button onclick="clearFavorites()" class="w-full py-2 text-red-400/50 hover:text-red-400 text-[10px] uppercase tracking-widest transition">Изтрий всичко</button>
         </div>
     </div>
@@ -391,6 +404,20 @@
 
         updateFavoritesUI();
         vibeSlider.addEventListener('input', updateVibeLabel);
+        
+        // Stars
+        const starsContainer = document.getElementById('starsContainer');
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 2 + 'px';
+            star.style.height = star.style.width;
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            star.style.setProperty('--opacity', Math.random());
+            starsContainer.appendChild(star);
+        }
 
         function updateVibeLabel() {
             const val = vibeSlider.value;
@@ -408,19 +435,18 @@
             });
         }
 
-        function toggleExplainer() {
-            document.getElementById('explainerModal').classList.toggle('hidden');
-            document.getElementById('explainerModal').classList.toggle('flex');
+        function toggleFavorites() {
+            document.getElementById('favoritesDrawer').classList.toggle('open');
         }
 
         function processData() {
             const surname = document.getElementById('surname').value.trim();
             if(!surname) { alert("Моля, въведете фамилия за точен анализ!"); return; }
 
-            document.getElementById('inputView').classList.add('hidden');
-            document.getElementById('resultView').classList.add('hidden');
-            document.getElementById('loadingView').classList.remove('hidden');
-            document.getElementById('loadingView').classList.add('flex');
+            document.getElementById('inputStage').classList.add('hidden');
+            document.getElementById('resultStage').classList.add('hidden');
+            document.getElementById('loadingStage').classList.remove('hidden');
+            document.getElementById('loadingStage').classList.add('flex');
 
             let pct = 0;
             const interval = setInterval(() => {
@@ -452,7 +478,8 @@
                 originM: document.getElementById('originMother').value,
                 originF: document.getElementById('originFather').value,
                 vibe: document.getElementById('vibeSlider').value,
-                gender: document.getElementById('selectedGender').value
+                gender: document.getElementById('selectedGender').value,
+                startLetter: document.getElementById('startLetter').value
             };
 
             let finalGender = inputs.gender === 'random' ? (Math.random() > 0.5 ? 'boy' : 'girl') : inputs.gender;
@@ -470,9 +497,26 @@
                 if(nameDatabase['modern' + genderKey]) pool = pool.concat(nameDatabase['modern' + genderKey]);
             }
 
-            // Filter
+            // Dedupe & Filter History
             pool = pool.filter((v,i,a) => a.findIndex(t => t.name === v.name) === i);
             pool = pool.filter(n => !generatedHistory.has(n.name));
+            
+            // --- STRICT LETTER FILTER ---
+            // If user selected a letter, enforce it strongly.
+            // If the filtered pool is empty, we must relax it or show a fallback message, 
+            // but for a generator, expanding the search is better.
+            let letterPool = [];
+            if (inputs.startLetter) {
+                letterPool = pool.filter(n => n.name.toUpperCase().startsWith(inputs.startLetter));
+                if (letterPool.length > 0) {
+                    pool = letterPool;
+                } else {
+                    // Fail-safe: Keep original pool but will score low on 'Initial' check
+                    // Or we could check other databases? No, let's just stick to score.
+                    // But to ensure user satisfaction, if we can't find it, we stick to original pool.
+                }
+            }
+
             if(pool.length === 0) { generatedHistory.clear(); pool = pool.concat(nameDatabase['modern' + genderKey]); }
 
             // Score
@@ -488,6 +532,16 @@
                 let score = 0;
                 let reasons = [];
 
+                // 0. Explicit Starting Letter (Absolute Priority)
+                if (inputs.startLetter) {
+                    if (candidate.name.toUpperCase().startsWith(inputs.startLetter)) {
+                        score += 100; // Massive boost
+                        reasons.push(`започва с "${inputs.startLetter}"`);
+                    } else {
+                        score -= 50; // Heavy penalty if not matching
+                    }
+                }
+
                 // 1. Heritage
                 const grandparents = [inputs.grandMaM, inputs.grandPaM, inputs.grandMaD, inputs.grandPaD].filter(Boolean);
                 grandparents.forEach(gp => {
@@ -502,13 +556,16 @@
                 // 2. Phonetic Flow
                 const nameEnd = candidate.name.slice(-1).toLowerCase();
                 const surStart = inputs.surname.charAt(0).toLowerCase();
-                
+                const nSyl = (candidate.name.match(/[аъоуеиюя]/gi) || []).length;
+                const sSyl = (inputs.surname.match(/[аъоуеиюя]/gi) || []).length;
+
                 // Clash check
                 if (nameEnd === surStart) score -= 15;
                 
-                // Rhythm Balance (Simple Heuristic: Length)
-                if (Math.abs(candidate.name.length - inputs.surname.length) > 2) {
-                    score += 10; // Length contrast creates rhythm
+                // Rhythm Balance
+                if (Math.abs(nSyl - sSyl) >= 1) { // Changed to prefer asymmetry
+                    score += 10;
+                    if(!reasons.includes('Ритъм')) reasons.push('добър ритъм');
                 }
 
                 // 3. Vibe Matching
@@ -519,7 +576,6 @@
                 
                 if (Math.abs(ratio - targetRatio) < 0.2) {
                     score += 10;
-                    if(!reasons.includes('Енергия')) reasons.push('енергиен баланс');
                 }
 
                 // 4. Sibling
@@ -535,7 +591,7 @@
                 if (score > bestScore) {
                     bestScore = score;
                     bestName = candidate;
-                    logicText = reasons.length > 0 ? `Фактори: ${reasons.join(", ")}.` : "Отличен баланс на звучене и смисъл.";
+                    logicText = reasons.length > 0 ? `Фактори: ${reasons.join(", ")}.` : "Отличен баланс на звучене.";
                 }
             }
             
@@ -543,18 +599,17 @@
             generatedHistory.add(bestName.name);
 
             // Display Results
-            document.getElementById('loadingView').classList.add('hidden');
-            document.getElementById('loadingView').classList.remove('flex');
-            document.getElementById('resultView').classList.remove('hidden');
-            document.getElementById('resultView').classList.add('flex');
+            document.getElementById('loadingStage').classList.add('hidden');
+            document.getElementById('loadingStage').classList.remove('flex');
+            document.getElementById('resultStage').classList.remove('hidden');
+            document.getElementById('resultStage').classList.add('flex');
             
             document.getElementById('resName').innerText = bestName.name;
             document.getElementById('resSurname').innerText = inputs.surname;
             document.getElementById('resMeaning').innerText = bestName.meaning;
             document.getElementById('resReason').innerText = logicText;
-            document.getElementById('resScore').innerText = Math.floor(92 + Math.random()*7) + "%";
+            document.getElementById('resScore').innerText = Math.floor(94 + Math.random()*5) + "%";
 
-            // Visual DNA Update
             updateDNA(bestName.name);
         }
 
@@ -632,9 +687,9 @@
         }
 
         function showInput() {
-            document.getElementById('resultView').classList.add('hidden');
-            document.getElementById('resultView').classList.remove('flex');
-            document.getElementById('inputView').classList.remove('hidden');
+            document.getElementById('resultStage').classList.add('hidden');
+            document.getElementById('resultStage').classList.remove('flex');
+            document.getElementById('inputStage').classList.remove('hidden');
         }
 
         function generateNew() {
