@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nomeno AI 8.0 - Tradition & Future</title>
+    <title>Nomeno AI 9.0 - Future Gen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+        :root {
+            --glass-bg: rgba(17, 25, 40, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.125);
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+        }
 
         body {
-            font-family: 'Outfit', sans-serif;
-            background-color: #0f172a;
-            color: #e2e8f0;
+            font-family: 'Manrope', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
             overflow-x: hidden;
         }
 
@@ -20,356 +27,360 @@
             font-family: 'Playfair Display', serif;
         }
 
-        /* Neural Background */
-        .neural-bg {
+        /* Dynamic Background */
+        .bg-mesh {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
-            overflow: hidden;
+            top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%);
+            background-size: 100% 100%;
         }
 
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: float 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .orb-1 { width: 500px; height: 500px; background: #8b5cf6; top: -10%; left: -10%; }
-        .orb-2 { width: 400px; height: 400px; background: #ec4899; bottom: 0%; right: -5%; animation-delay: -5s; }
-        .orb-3 { width: 300px; height: 300px; background: #3b82f6; top: 30%; left: 40%; animation-delay: -10s; }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(40px, -40px) scale(1.1); }
+        /* Glass Card Refined */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
         }
 
-        .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(20px);
+        /* Modern Inputs */
+        .input-modern {
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            color: white;
+            transition: all 0.3s ease;
         }
+        .input-modern:focus {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
+            outline: none;
+        }
+        .input-modern::placeholder { color: rgba(255, 255, 255, 0.3); }
 
-        .gradient-text {
-            background: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Form Inputs */
-        input, select {
-            background: rgba(15, 23, 42, 0.8) !important;
-            border-color: rgba(255, 255, 255, 0.1) !important;
-            color: white !important;
-        }
-        input:focus, select:focus {
-            border-color: #a78bfa !important;
-            ring-color: #a78bfa !important;
-            box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+        /* Select styling hack */
+        select.input-modern option {
+            background-color: #1e293b;
+            color: white;
         }
 
         /* Toggle Switch */
         .toggle-checkbox:checked {
             right: 0;
-            border-color: #a78bfa;
+            border-color: var(--accent-purple);
         }
         .toggle-checkbox:checked + .toggle-label {
-            background-color: #a78bfa;
+            background-color: var(--accent-purple);
         }
 
+        /* Gender Buttons */
         .gender-btn {
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .gender-btn:hover { background: rgba(255, 255, 255, 0.08); }
         .gender-btn.active {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%);
-            border-color: #a78bfa;
-            box-shadow: 0 0 20px rgba(167, 139, 250, 0.2);
+            background: rgba(168, 85, 247, 0.15);
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
         }
 
-        /* Favorites Drawer */
-        #favoritesDrawer {
-            transform: translateX(100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        #favoritesDrawer.open {
-            transform: translateX(0);
-        }
-
-        .fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* DNA Bars */
-        .dna-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.1); overflow: hidden; }
-        .dna-fill { height: 100%; border-radius: 3px; transition: width 1s ease-out; }
+        /* Animations */
+        .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+
+        /* Drawer */
+        #favoritesDrawer {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #favoritesDrawer.open { transform: translateX(0); }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+<body class="min-h-screen flex flex-col items-center p-4 md:p-8">
 
-    <div class="neural-bg">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
+    <div class="bg-mesh"></div>
 
-    <!-- Top Bar -->
-    <div class="absolute top-0 left-0 w-full p-4 flex justify-between items-center z-50">
-        <div class="flex items-center gap-2">
-            <i data-lucide="brain-circuit" class="w-6 h-6 text-purple-400"></i>
-            <span class="font-bold tracking-widest text-white/80">NOMENO 8.0</span>
-        </div>
-        <button onclick="toggleFavorites()" class="relative group">
-            <div class="bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition border border-white/10">
-                <i data-lucide="heart" class="w-5 h-5 text-pink-400 group-hover:scale-110 transition"></i>
+    <!-- Nav -->
+    <nav class="w-full max-w-5xl flex justify-between items-center mb-8 fade-in-up" style="animation-delay: 0.1s;">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                <i data-lucide="dna" class="w-6 h-6 text-white"></i>
             </div>
-            <span id="favCount" class="absolute -top-1 -right-1 bg-pink-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg">0</span>
+            <div>
+                <h1 class="text-xl font-bold tracking-tight text-white leading-none">NOMENO</h1>
+                <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-semibold">AI Architect</span>
+            </div>
+        </div>
+        
+        <button onclick="toggleFavorites()" class="group relative px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition flex items-center gap-2">
+            <i data-lucide="heart" class="w-4 h-4 text-pink-400 group-hover:scale-110 transition"></i>
+            <span class="text-xs font-bold text-gray-300 hidden sm:inline">Любими</span>
+            <span id="favCount" class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[9px] font-bold text-white shadow-sm opacity-0 transition-opacity">0</span>
         </button>
-    </div>
+    </nav>
 
-    <!-- Favorites Drawer -->
-    <div id="favoritesDrawer" class="fixed top-0 right-0 h-full w-80 bg-[#0f172a]/95 backdrop-blur-xl border-l border-white/10 z-50 shadow-2xl flex flex-col">
-        <div class="p-6 border-b border-white/10 flex justify-between items-center">
-            <h3 class="font-bold text-white text-lg">Запазени Имена</h3>
-            <button onclick="toggleFavorites()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        <div id="favoritesList" class="flex-1 overflow-y-auto p-4 space-y-3">
-            <!-- Items injected here -->
-            <div class="text-center text-gray-500 mt-10 text-sm">Все още нямате запазени имена.</div>
-        </div>
-        <div class="p-4 border-t border-white/10 space-y-3">
-            <button onclick="exportFavorites()" class="w-full py-2 rounded-lg border border-purple-500/30 text-purple-300 text-xs font-bold hover:bg-purple-500/10 transition flex items-center justify-center gap-2">
-                <i data-lucide="download" class="w-3 h-3"></i> КОПИРАЙ СПИСЪКА
-            </button>
-            <button onclick="clearFavorites()" class="w-full py-2 rounded-lg border border-red-500/30 text-red-400 text-xs font-bold hover:bg-red-500/10 transition">ИЗЧИСТИ ВСИЧКИ</button>
-        </div>
-    </div>
-
-    <!-- Main Interface -->
-    <div class="glass-card w-full max-w-4xl rounded-3xl overflow-hidden fade-in relative z-10 my-12">
+    <!-- Main Card -->
+    <div class="glass-panel w-full max-w-4xl rounded-3xl overflow-hidden fade-in-up relative z-10" style="animation-delay: 0.2s;">
         
         <!-- Input Section -->
-        <div id="inputSection" class="p-8 space-y-8">
-            <div class="text-center mb-6">
-                <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">Генератор <span class="gradient-text">Nomeno 8</span></h1>
-                <p class="text-gray-400 text-sm">Алгоритъм за традиции, приемственост и вокален поток</p>
-            </div>
+        <div id="inputSection" class="p-6 md:p-10 space-y-8">
             
-            <!-- Parents & Origins -->
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300">
+                    Създай перфектното име
+                </h2>
+                <p class="text-gray-400 text-sm md:text-base max-w-lg mx-auto">
+                    Алгоритъм от ново поколение, който анализира звучене, традиции и съвместимост.
+                </p>
+            </div>
+
+            <!-- Core Identity -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-2 p-4 rounded-2xl bg-white/5 border border-white/5">
-                    <div class="flex items-center gap-2 mb-2 text-purple-300 text-xs font-bold uppercase tracking-wider">
-                        <i data-lucide="user" class="w-3 h-3"></i> Линия на Майката
-                    </div>
-                    <input type="text" id="parent1" placeholder="Име на майката" class="w-full px-4 py-2 rounded-lg border focus:outline-none transition-all text-sm mb-2">
-                    <select id="originMother" class="w-full text-xs p-2 rounded bg-transparent text-gray-400 border border-white/5 hover:border-purple-400/50 transition cursor-pointer">
-                        <option value="christian">Християнски / Традиционни</option>
-                        <option value="slavic">Славянски / Старобългарски</option>
-                        <option value="muslim">Мюсюлмански / Турски</option>
-                        <option value="modern">Модерни / Западни</option>
-                        <option value="nature">Природа / Цветя</option>
-                        <option value="royal">Царски / Исторически</option>
-                        <option value="rare">Антични / Редки</option>
-                        <option value="all">Всички / Смесени</option>
-                    </select>
+                <!-- Surname -->
+                <div class="space-y-3">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                        <i data-lucide="signature" class="w-3 h-3 text-purple-400"></i> Фамилия на детето
+                    </label>
+                    <input type="text" id="surname" placeholder="напр. Иванов" class="input-modern w-full px-4 py-3 rounded-xl">
+                    <p class="text-[10px] text-gray-500 pl-1">Използва се за ритмичен анализ на сричките.</p>
                 </div>
 
-                <div class="space-y-2 p-4 rounded-2xl bg-white/5 border border-white/5">
-                    <div class="flex items-center gap-2 mb-2 text-blue-300 text-xs font-bold uppercase tracking-wider">
-                        <i data-lucide="user" class="w-3 h-3"></i> Линия на Бащата
+                <!-- Gender -->
+                <div class="space-y-3">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                        <i data-lucide="users" class="w-3 h-3 text-blue-400"></i> Пол
+                    </label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setGender('boy')" id="btn-boy" class="gender-btn py-3 rounded-xl flex items-center justify-center gap-2">
+                            <i data-lucide="baby" class="w-4 h-4 text-blue-400"></i>
+                            <span class="text-xs font-bold text-gray-300">Момче</span>
+                        </button>
+                        <button onclick="setGender('girl')" id="btn-girl" class="gender-btn py-3 rounded-xl flex items-center justify-center gap-2">
+                            <i data-lucide="baby" class="w-4 h-4 text-pink-400"></i>
+                            <span class="text-xs font-bold text-gray-300">Момиче</span>
+                        </button>
+                        <button onclick="setGender('random')" id="btn-random" class="gender-btn active py-3 rounded-xl flex items-center justify-center gap-2">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
+                            <span class="text-xs font-bold text-gray-300">Изненада</span>
+                        </button>
                     </div>
-                    <input type="text" id="parent2" placeholder="Име на бащата" class="w-full px-4 py-2 rounded-lg border focus:outline-none transition-all text-sm mb-2">
-                    <select id="originFather" class="w-full text-xs p-2 rounded bg-transparent text-gray-400 border border-white/5 hover:border-blue-400/50 transition cursor-pointer">
-                         <option value="christian">Християнски / Традиционни</option>
-                        <option value="slavic">Славянски / Старобългарски</option>
-                        <option value="muslim">Мюсюлмански / Турски</option>
-                        <option value="modern">Модерни / Западни</option>
-                        <option value="nature">Природа / Цветя</option>
-                        <option value="royal">Царски / Исторически</option>
-                        <option value="rare">Антични / Редки</option>
-                        <option value="all">Всички / Смесени</option>
-                    </select>
+                    <input type="hidden" id="selectedGender" value="random">
                 </div>
             </div>
 
-            <!-- Grandparents Section -->
-            <div class="p-4 rounded-2xl bg-white/5 border border-white/5 relative">
-                <div class="absolute top-3 right-3 text-gray-500 opacity-20"><i data-lucide="users" class="w-10 h-10"></i></div>
-                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-1">Баби и Дядовци (Опционално - за традиция)</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="grandMaM" placeholder="Баба (по майчина)" class="w-full px-3 py-2 rounded-lg border focus:outline-none text-xs transition-all">
-                        <input type="text" id="grandPaM" placeholder="Дядо (по майчина)" class="w-full px-3 py-2 rounded-lg border focus:outline-none text-xs transition-all">
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="grandMaD" placeholder="Баба (по бащина)" class="w-full px-3 py-2 rounded-lg border focus:outline-none text-xs transition-all">
-                        <input type="text" id="grandPaD" placeholder="Дядо (по бащина)" class="w-full px-3 py-2 rounded-lg border focus:outline-none text-xs transition-all">
-                    </div>
-                </div>
-            </div>
+            <div class="h-px bg-white/5 w-full"></div>
 
-            <!-- Surname & Advanced Settings -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                <div class="space-y-4">
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Фамилия (Критично за ритъма)</label>
-                        <input type="text" id="surname" placeholder="напр. Иванов" class="w-full px-4 py-3 rounded-xl border focus:outline-none transition-all">
-                    </div>
-                    <div class="space-y-2">
-                         <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Име на братче/сестриче</label>
-                        <input type="text" id="sibling" placeholder="Име..." class="w-full px-4 py-3 rounded-xl border focus:outline-none transition-all">
-                    </div>
+            <!-- Lineage Section -->
+            <div class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                        <span class="w-1 h-4 bg-purple-500 rounded-full"></span>
+                        Родова памет и Произход
+                    </h3>
+                    <span class="text-[10px] text-gray-500 uppercase tracking-wider bg-white/5 px-2 py-1 rounded">Конфигурация</span>
                 </div>
 
-                <div class="space-y-4 pt-6 md:pt-0">
-                    <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/5">
-                        <span class="text-sm text-gray-300 font-medium ml-2">Двойно име (напр. Анна-Мария)</span>
-                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                            <input type="checkbox" name="toggle" id="doubleNameToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-600"/>
-                            <label for="doubleNameToggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-700 cursor-pointer"></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Mother's Side -->
+                    <div class="space-y-4 p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 rounded-lg bg-pink-500/10 text-pink-400"><i data-lucide="user" class="w-4 h-4"></i></div>
+                            <span class="text-sm font-semibold text-gray-300">Линия на Майката</span>
+                        </div>
+                        <input type="text" id="parent1" placeholder="Име на майката" class="input-modern w-full px-4 py-2.5 rounded-lg text-sm">
+                        <select id="originMother" class="input-modern w-full px-4 py-2.5 rounded-lg text-sm cursor-pointer">
+                            <option value="christian">Християнски / Традиционни</option>
+                            <option value="slavic">Славянски / Старобългарски</option>
+                            <option value="muslim">Мюсюлмански / Турски</option>
+                            <option value="modern">Модерни / Западни</option>
+                            <option value="nature">Природа / Цветя</option>
+                            <option value="royal">Царски / Исторически</option>
+                            <option value="rare">Антични / Редки</option>
+                            <option value="all">Всички / Смесени</option>
+                        </select>
+                        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/5">
+                            <input type="text" id="grandMaM" placeholder="Баба" class="input-modern px-3 py-2 rounded-lg text-xs">
+                            <input type="text" id="grandPaM" placeholder="Дядо" class="input-modern px-3 py-2 rounded-lg text-xs">
                         </div>
                     </div>
-                    
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Пол</label>
-                        <div class="grid grid-cols-3 gap-3">
-                            <button onclick="setGender('boy')" id="btn-boy" class="gender-btn py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
-                                <i data-lucide="smile" class="w-4 h-4 text-blue-400"></i>
-                                <span class="text-[10px] font-bold text-gray-300">МОМЧЕ</span>
-                            </button>
-                            <button onclick="setGender('girl')" id="btn-girl" class="gender-btn py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
-                                <i data-lucide="heart" class="w-4 h-4 text-pink-400"></i>
-                                <span class="text-[10px] font-bold text-gray-300">МОМИЧЕ</span>
-                            </button>
-                            <button onclick="setGender('random')" id="btn-random" class="gender-btn active py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
-                                <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
-                                <span class="text-[10px] font-bold text-gray-300">ВСИЧКИ</span>
-                            </button>
+
+                    <!-- Father's Side -->
+                    <div class="space-y-4 p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 rounded-lg bg-blue-500/10 text-blue-400"><i data-lucide="user" class="w-4 h-4"></i></div>
+                            <span class="text-sm font-semibold text-gray-300">Линия на Бащата</span>
                         </div>
-                        <input type="hidden" id="selectedGender" value="random">
+                        <input type="text" id="parent2" placeholder="Име на бащата" class="input-modern w-full px-4 py-2.5 rounded-lg text-sm">
+                        <select id="originFather" class="input-modern w-full px-4 py-2.5 rounded-lg text-sm cursor-pointer">
+                             <option value="christian">Християнски / Традиционни</option>
+                            <option value="slavic">Славянски / Старобългарски</option>
+                            <option value="muslim">Мюсюлмански / Турски</option>
+                            <option value="modern">Модерни / Западни</option>
+                            <option value="nature">Природа / Цветя</option>
+                            <option value="royal">Царски / Исторически</option>
+                            <option value="rare">Антични / Редки</option>
+                            <option value="all">Всички / Смесени</option>
+                        </select>
+                        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/5">
+                            <input type="text" id="grandMaD" placeholder="Баба" class="input-modern px-3 py-2 rounded-lg text-xs">
+                            <input type="text" id="grandPaD" placeholder="Дядо" class="input-modern px-3 py-2 rounded-lg text-xs">
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <button onclick="startGeneration()" class="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold tracking-widest shadow-lg shadow-purple-900/50 transform hover:scale-[1.01] transition-all flex items-center justify-center gap-3 mt-4">
-                <i data-lucide="cpu" class="w-5 h-5"></i> ГЕНЕРИРАЙ ИМЕ
+            <!-- Advanced Filters -->
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-purple-500/5 p-4 rounded-xl border border-purple-500/10">
+                <div class="flex-1 w-full">
+                    <input type="text" id="sibling" placeholder="Име на братче/сестриче (Опционално)" class="input-modern w-full px-4 py-2.5 rounded-lg text-sm bg-transparent border-none focus:ring-0 placeholder-gray-500">
+                </div>
+                <div class="h-8 w-px bg-white/10 hidden md:block"></div>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-bold text-gray-400 uppercase">Двойно име</span>
+                    <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" name="toggle" id="doubleNameToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-600"/>
+                        <label for="doubleNameToggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-700 cursor-pointer"></label>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="startGeneration()" class="w-full py-5 rounded-2xl bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-bold text-lg tracking-widest shadow-xl shadow-purple-900/40 transform hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 group">
+                <i data-lucide="cpu" class="w-6 h-6 group-hover:rotate-180 transition duration-700"></i> ГЕНЕРИРАЙ ИМЕ
             </button>
         </div>
 
-        <!-- AI Loader -->
-        <div id="aiLoader" class="hidden p-12 text-center h-[600px] flex flex-col items-center justify-center">
-            <div class="relative w-32 h-32 mb-8">
-                <div class="absolute inset-0 border-t-4 border-purple-500 rounded-full animate-spin"></div>
-                <div class="absolute inset-2 border-r-4 border-pink-500 rounded-full animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="text-2xl font-mono text-white" id="percentage">0%</span>
+        <!-- Loading State -->
+        <div id="aiLoader" class="hidden p-12 text-center h-[600px] flex flex-col items-center justify-center relative">
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm z-0"></div>
+            <div class="relative z-10 flex flex-col items-center">
+                <div class="relative w-40 h-40 mb-10">
+                    <div class="absolute inset-0 border-t-2 border-purple-500 rounded-full animate-spin"></div>
+                    <div class="absolute inset-3 border-r-2 border-blue-500 rounded-full animate-spin" style="animation-direction: reverse; animation-duration: 2s;"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-4xl font-mono font-bold text-white tracking-tighter" id="percentage">0%</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2 animate-pulse" id="aiStatus">Инициализиране...</h3>
+                <div class="flex gap-2 mt-4">
+                    <span class="w-2 h-2 rounded-full bg-purple-500 animate-bounce"></span>
+                    <span class="w-2 h-2 rounded-full bg-purple-500 animate-bounce" style="animation-delay: 0.1s"></span>
+                    <span class="w-2 h-2 rounded-full bg-purple-500 animate-bounce" style="animation-delay: 0.2s"></span>
                 </div>
             </div>
-            <h3 class="text-xl font-bold text-white mb-2" id="aiStatus">Инициализиране...</h3>
-            <p class="text-gray-500 text-sm">Проверка на родова памет и съвместимост</p>
         </div>
 
-        <!-- Result Screen -->
+        <!-- Result Section -->
         <div id="resultSection" class="hidden relative h-full">
             <div class="p-8 md:p-12 text-center">
-                <div class="flex justify-between items-start w-full mb-6">
-                    <button onclick="resetApp()" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition">
-                        <i data-lucide="arrow-left" class="w-5 h-5 text-gray-300"></i>
+                
+                <!-- Navbar in result -->
+                <div class="flex justify-between items-start w-full mb-10">
+                    <button onclick="resetApp()" class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 transition text-xs font-bold text-gray-300 flex items-center gap-2">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Назад
                     </button>
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 text-xs font-bold">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-bold tracking-widest uppercase">
                         <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-                        AI SCORE: <span id="matchScore">98%</span>
+                        Algorithm Match: <span id="matchScore">98%</span>
                     </div>
                 </div>
 
-                <!-- Main Name Display -->
-                <div class="mb-10">
-                    <h2 id="generatedName" class="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 mb-2 serif-font tracking-tight leading-tight">
+                <!-- Name Display -->
+                <div class="mb-12 relative group cursor-default">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-[3rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-1000"></div>
+                    <h2 id="generatedName" class="relative text-5xl md:text-7xl lg:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-400 mb-3 serif-font tracking-tight leading-tight drop-shadow-2xl">
                         Име
                     </h2>
-                    <p id="generatedSurname" class="text-xl md:text-2xl text-gray-500 font-light uppercase tracking-widest opacity-80"></p>
+                    <p id="generatedSurname" class="text-lg md:text-2xl text-purple-200/60 font-light uppercase tracking-[0.3em]"></p>
                 </div>
 
-                <!-- Attributes & DNA -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-left">
+                <!-- Info Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-10 text-left">
                     
-                    <!-- Meaning & Reason -->
-                    <div class="bg-white/5 p-6 rounded-2xl border border-white/5 backdrop-blur-md flex flex-col justify-between">
-                        <div class="mb-4">
-                            <div class="flex items-center gap-2 mb-2 text-purple-300 text-xs font-bold uppercase tracking-wider">
-                                <i data-lucide="book-open" class="w-3 h-3"></i> Значение
+                    <!-- Main Logic Box -->
+                    <div class="md:col-span-7 bg-white/[0.03] p-6 rounded-2xl border border-white/5 flex flex-col justify-between hover:bg-white/[0.05] transition">
+                        <div class="mb-6">
+                            <div class="flex items-center gap-2 mb-3 text-purple-300 text-xs font-bold uppercase tracking-wider">
+                                <i data-lucide="book-open" class="w-4 h-4"></i> Значение
                             </div>
-                            <p id="nameMeaning" class="text-white/90 italic font-medium">...</p>
+                            <p id="nameMeaning" class="text-xl text-white/90 font-serif italic leading-relaxed">...</p>
                         </div>
                         <div>
                             <div class="flex items-center gap-2 mb-2 text-blue-300 text-xs font-bold uppercase tracking-wider">
-                                <i data-lucide="cpu" class="w-3 h-3"></i> AI Анализ
+                                <i data-lucide="cpu" class="w-4 h-4"></i> AI Логика
                             </div>
-                            <p id="nameReason" class="text-gray-400 text-xs leading-relaxed">...</p>
+                            <p id="nameReason" class="text-gray-400 text-sm leading-relaxed">...</p>
                         </div>
                     </div>
 
                     <!-- DNA Stats -->
-                    <div class="bg-white/5 p-6 rounded-2xl border border-white/5 backdrop-blur-md space-y-4">
-                        <div class="flex items-center gap-2 text-pink-300 text-xs font-bold uppercase tracking-wider mb-2">
-                            <i data-lucide="bar-chart-2" class="w-3 h-3"></i> ДНК на Името
+                    <div class="md:col-span-5 bg-white/[0.03] p-6 rounded-2xl border border-white/5 space-y-5">
+                        <div class="flex items-center justify-between text-pink-300 text-xs font-bold uppercase tracking-wider mb-2">
+                            <span class="flex items-center gap-2"><i data-lucide="bar-chart-2" class="w-4 h-4"></i> ДНК Анализ</span>
                         </div>
                         
-                        <div>
-                            <div class="flex justify-between text-[10px] text-gray-400 mb-1">
-                                <span>МЕКОТА (Звучене)</span>
-                                <span id="valSoft">0%</span>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-[10px] text-gray-400 mb-1.5 font-bold tracking-wider">
+                                    <span>МЕКОТА</span>
+                                    <span id="valSoft" class="text-white">0%</span>
+                                </div>
+                                <div class="dna-bar bg-white/5"><div id="barSoft" class="dna-fill bg-gradient-to-r from-pink-500 to-rose-500" style="width: 0%"></div></div>
                             </div>
-                            <div class="dna-bar"><div id="barSoft" class="dna-fill bg-pink-500" style="width: 0%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-[10px] text-gray-400 mb-1">
-                                <span>УНИКАЛНОСТ</span>
-                                <span id="valUnique">0%</span>
+                            <div>
+                                <div class="flex justify-between text-[10px] text-gray-400 mb-1.5 font-bold tracking-wider">
+                                    <span>УНИКАЛНОСТ</span>
+                                    <span id="valUnique" class="text-white">0%</span>
+                                </div>
+                                <div class="dna-bar bg-white/5"><div id="barUnique" class="dna-fill bg-gradient-to-r from-violet-500 to-purple-500" style="width: 0%"></div></div>
                             </div>
-                            <div class="dna-bar"><div id="barUnique" class="dna-fill bg-purple-500" style="width: 0%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-[10px] text-gray-400 mb-1">
-                                <span>ТРАДИЦИЯ</span>
-                                <span id="valTrad">0%</span>
+                            <div>
+                                <div class="flex justify-between text-[10px] text-gray-400 mb-1.5 font-bold tracking-wider">
+                                    <span>ТРАДИЦИЯ</span>
+                                    <span id="valTrad" class="text-white">0%</span>
+                                </div>
+                                <div class="dna-bar bg-white/5"><div id="barTrad" class="dna-fill bg-gradient-to-r from-blue-500 to-cyan-500" style="width: 0%"></div></div>
                             </div>
-                            <div class="dna-bar"><div id="barTrad" class="dna-fill bg-blue-500" style="width: 0%"></div></div>
                         </div>
 
                         <!-- Numerology -->
-                        <div class="pt-2 border-t border-white/10 mt-2 flex items-center justify-between">
-                            <span class="text-[10px] text-gray-400 uppercase">Число на името</span>
-                            <div class="flex items-center gap-2">
-                                <span id="numerologyNum" class="font-bold text-white text-lg font-mono">7</span>
-                                <span id="numerologyText" class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300">Мистик</span>
+                        <div class="pt-4 border-t border-white/10 mt-2 flex items-center justify-between">
+                            <span class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Число</span>
+                            <div class="flex items-center gap-3">
+                                <span id="numerologyNum" class="font-bold text-white text-2xl font-mono leading-none">7</span>
+                                <div class="flex flex-col items-end">
+                                    <span id="numerologyText" class="text-[10px] text-purple-300 font-bold uppercase">Мистик</span>
+                                    <span class="text-[9px] text-gray-500">Нумерология</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex flex-col md:flex-row justify-center gap-3">
-                    <button onclick="feedback('dislike')" class="flex-1 py-4 rounded-xl border border-red-500/20 hover:bg-red-500/10 text-red-300 font-bold flex items-center justify-center gap-2 transition group text-sm">
-                        <i data-lucide="x" class="w-4 h-4 group-hover:scale-110 transition"></i> Блокирай
+                <div class="flex flex-col sm:flex-row justify-center gap-4 max-w-2xl mx-auto">
+                    <button onclick="feedback('dislike')" class="flex-1 py-4 rounded-xl border border-red-500/20 hover:bg-red-500/10 text-red-400 font-bold flex items-center justify-center gap-2 transition group text-xs uppercase tracking-wider">
+                        <i data-lucide="x" class="w-4 h-4 group-hover:scale-125 transition"></i> Не
                     </button>
                     
-                    <button onclick="startGeneration(true)" class="flex-[1.5] py-4 rounded-xl border border-white/20 hover:bg-white/10 text-white font-bold flex items-center justify-center gap-2 transition group text-sm">
-                        <i data-lucide="shuffle" class="w-4 h-4 group-hover:rotate-180 transition duration-500"></i> Следващо (Пропусни)
+                    <button onclick="startGeneration(true)" class="flex-1 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold flex items-center justify-center gap-2 transition group text-xs uppercase tracking-wider border border-white/5">
+                        <i data-lucide="shuffle" class="w-4 h-4 group-hover:rotate-180 transition duration-500 text-purple-400"></i> Следващо
                     </button>
 
-                    <button onclick="feedback('like')" class="flex-[2] py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2 transition group text-sm">
-                        <i data-lucide="heart" class="w-4 h-4 fill-current group-hover:scale-110 transition"></i> Запази в Любими
+                    <button onclick="feedback('like')" class="flex-[1.5] py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold shadow-lg shadow-emerald-900/20 flex items-center justify-center gap-2 transition group text-xs uppercase tracking-wider">
+                        <i data-lucide="heart" class="w-4 h-4 fill-current group-hover:scale-125 transition"></i> Запази
                     </button>
                 </div>
             </div>
@@ -377,14 +388,37 @@
 
     </div>
 
+    <!-- Favorites Drawer -->
+    <div id="favoritesDrawer" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-[#0b1121]/95 backdrop-blur-2xl border-l border-white/10 z-50 shadow-2xl flex flex-col">
+        <div class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+            <h3 class="font-bold text-white text-lg flex items-center gap-2">
+                <i data-lucide="heart" class="w-5 h-5 text-pink-500 fill-current"></i> Любими
+            </h3>
+            <button onclick="toggleFavorites()" class="text-gray-400 hover:text-white p-2 hover:bg-white/10 rounded-full transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div id="favoritesList" class="flex-1 overflow-y-auto p-4 space-y-3">
+            <!-- Items injected here -->
+        </div>
+        <div class="p-6 border-t border-white/10 space-y-3 bg-[#0b1121]">
+            <button onclick="exportFavorites()" class="w-full py-3 rounded-xl border border-purple-500/30 text-purple-300 text-xs font-bold hover:bg-purple-500/10 transition flex items-center justify-center gap-2 uppercase tracking-wider">
+                <i data-lucide="copy" class="w-4 h-4"></i> Копирай Списъка
+            </button>
+            <button onclick="clearFavorites()" class="w-full py-3 rounded-xl border border-red-500/20 text-red-400 text-xs font-bold hover:bg-red-500/10 transition uppercase tracking-wider">Изчисти Всички</button>
+        </div>
+    </div>
+
     <script>
-        // --- MASSIVE DATABASE EXPANSION (8.0) ---
-        // Added more names across categories, including some traditional Bulgarian forms
+        // --- DATA ---
+        // (Data structure remains the same, compressed for brevity in logic)
         const rawData = {
-            christian_m: "Александър:Защитник;Георги:Земеделец;Димитър:Посветен на земята;Никола:Победа;Иван:Бог е милостив;Теодор:Божи дар;Борис:Борец;Стефан:Венец;Михаил:Кой е като Бог;Петър:Камък;Васил:Царствен;Христо:Помазаник;Атанас:Безсмъртен;Константин:Постоянен;Илия:Бог е Яхве;Симеон:Бог чува;Андрей:Мъжествен;Тодор:Божи дар;Гавраил:Божия сила;Йордан:Спускащ се;Данаил:Божи съд;Емануил:Бог е с нас;Матей:Божи дар;Лука:Светлина;Филип:Обичащ конете;Павел:Смирен;Стоян:Здрав;Антон:Ценен;Емил:Съперник;Кирил:Господар;Методий:Подреден;Лазар:Бог помага;Сава:Вино;Григор:Бдящ;Яков:Следващ;Спас:Спасител;Християн:Христов;Валери:Силен;Богомил:Мил на Бога;Тимотей:Почитащ Бога;Захари:Бог помни;Рафаил:Бог лекува;Самуил:Измолен;Давид:Любим;Йосиф:Бог прибавя;Марко:Войнствен;Тома:Близнак;Симон:Слушащ;Апостол:Пратеник;Евгени:Благороден;Иларион:Весел;Климент:Милостив;Леонид:Лъвски;Максим:Най-голям;Николай:Победа;Продан:Даден;Ставри:Кръст;Теофил:Обичащ Бога;Юлиан:Къдрав;Янко:Бог е милостив;Алекси:Защитник;Анатоли:Източен;Вангел:Благовест;Дамян:Покорител;Костадин:Постоянен;Марин:Морски;Милан:Мил;Младен:Млад;Ненчо:Ненагледен;Пантелей:Всемилостив;Румен:Здрав;Ангел:Вестител;Божидар:Божи дар;Виктор:Победител;Владимир:Владетел;Деян:Деен;Евтим:Благодушен;Желязко:Здрав;Живко:Жив;Здравко:Здрав;Калоян:Хубав Иван;Красимир:Красив свят;Любомир:Любим на света;Момчил:Момък;Никодим:Победа на народа;Огнян:Огън;Пламен:Пламък;Радослав:Радост и слава;Светослав:Свята слава;Тихомир:Тих мир;Цветан:Цвете;Чавдар:Водач;Явор:Явор;Ясен:Ясен;Алекс:Защитник;Богдан:Бог дал;Богомил:Мил на Бога;Валентин:Здрав;Велислав:Велика слава;Веселин:Весел;Витан:Живот;Даниел:Божи съд;Димо:Народ;Добромир:Добър мир;Драгомир:Драг на света;Евлоги:Благословен;Захарий:Бог си спомня;Ивайло:Вълк;Игнат:Огнен;Камен:Камък;Красен:Красив;Кристиян:Християнин;Лъчезар:Лъч;Мартин:Войн;Мирослав:Мир и слава;Митко:Деметра;Нико:Победа;Олег:Свещен;Петко:Петък;Радомир:Радост на света;Руслан:Лъв;Сашо:Защитник;Слав:Слава;Станислав:Стани славен;Тео:Бог;Траян:Траен;Яни:Бог е милостив;Спиридон:Дар на духа;Харалампи:Сияещ от радост;Еремия:Възвишен от Бога;Трифон:Живеещ в разкош;Филимон:Любящ;Прокопий:Преуспяващ;Софроний:Целомъдрен;Панайот:Всесвят;Анастас:Възкръснал;Аргир:Сребърен;Атанасий:Безсмъртен;Благой:Благ;Ваклин:Силен;Вълчо:Вълк;Герман:Роден от една утроба;Господин:Господар;Груди:Гърди;Дако:Дарен;Дарко:Дар;Дечко:Дете;Дико:Див;Добри:Добър;Дончо:Андон;Драган:Драг;Драгия:Драг;Драго:Драг;Драгой:Драг;Енчо:Еньо;Жеко:Желязо;Желязко:Желязо;Живко:Жив;Жоро:Георги;Златко:Злато;Илко:Илия;Йордан:Спускащ се;Койо:Никола;Кольо:Никола;Кръстьо:Кръст;Кузман:Украсен;Кънчо:Къна;Лало:Лале;Лефтер:Свободен;Лило:Лилия;Лукан:Лука;Манол:Емануил;Манчо:Манол;Марио:Мъжествен;Марко:Мъжествен;Минчо:Михаил;Мирчо:Мир;Митко:Димитър;Михаил:Кой е като Бог;Младен:Млад;Момчил:Момче;Нако:Атанас;Наско:Атанас;Начо:Атанас;Неделчо:Неделя;Недялко:Неделя;Нейко:Нейде;Нико:Никола;Никола:Победа на народа;Николай:Победа на народа;Нино:Нина;Огнян:Огън;Павел:Малък;Панайот:Всесвят;Панко:Панайот;Панчо:Панайот;Паскал:Великден;Пейо:Петър;Пенко:Петър;Пенчо:Петър;Пепо:Петър;Петко:Петък;Петър:Камък;Пламен:Пламък;Продан:Продаден;Ради:Радост;Радко:Радост;Радо:Радост;Радослав:Радост и слава;Радостин:Радост;Райко:Рай;Райчо:Рай;Рангел:Архангел;Рафаил:Бог лекува;Росен:Росен;Румен:Румен;Руси:Руси;Сава:Сава;Сашо:Александър;Свилен:Коприна;Севдалин:Любов;Серафим:Пламенен;Симеон:Бог слуша;Слав:Слава;Слави:Слава;Славчо:Слава;Спас:Спасител;Ставри:Кръст;Стамен:Стан;Станимир:Стани мир;Станислав:Стани славен;Станко:Стан;Станчо:Стан;Стефан:Венец;Стилиян:Стълб;Стоил:Стои;Стойко:Стои;Стойчо:Стои;Стоян:Стои;Страхил:Страх;Сълзица:Сълза;Съби:Събота;Тако:Атанас;Танас:Атанас;Таско:Атанас;Тенчо:Стефан;Теодор:Божи дар;Теодосий:Божи дар;Тихомир:Тих мир;Тодор:Божи дар;Тома:Близнак;Тончо:Антон;Тотьо:Тодор;Траян:Траен;Трифон:Наслада;Филип:Обичащ коне;Христо:Помазаник;Цанко:Александър;Цвятко:Цвете;Цеко:Цвете;Цено:Ценен;Цоньо:Стоян;Чавдар:Чавдар;Явор:Явор;Яким:Бог утвърждава;Яко:Яков;Ян:Бог е милостив;Яни:Ян;Янко:Ян;Ясен:Ясен;Давид:Любим;Аарон:Просветлен;Авел:Дихание;Авраам:Баща на множества;Адам:Човек;Азария:Помощ от Бога;Ананий:Бог е милостив;Ванадий:Син на Бога;Вениамин:Син на десницата;Витяз:Войн;Влас:Власт;Гавриил:Божи човек;Гедеон:Косач;Григорий:Бдящ;Данаил:Бог е съдия;Езекиил:Бог ще укрепи;Елисей:Бог е спасение;Емануил:С нас е Бог;Ефрем:Плодовит;Захария:Бог си спомня;Илия:Яхве е Бог;Йоан:Бог е милостив;Йов:Преследван;Йона:Гълъб;Йосиф:Бог ще прибави;Исаак:Смях;Исая:Спасение от Господа;Калиник:Добър победител;Касиан:Празен;Киприан:От Кипър;Кирил:Господар;Климент:Милостив;Константин:Постоянен;Козма:Украсен;Лазар:Бог помага;Левкий:Бял;Леонид:Лъв;Лука:Светъл;Макарий:Блажен;Максим:Най-голям;Малахия:Божи пратеник;Матей:Божи дар;Мелетий:Грижлив;Методий:Подреден;Мина:Месечина;Михаил:Кой е като Бог;Мойсей:Избавен от водата;Наум:Утешител;Нестор:Завърнал се у дома;Никанор:Който вижда победата;Никита:Победител;Никифор:Победоносец;Никодим:Победа на народа;Нифонт:Трезвен;Павел:Малък;Паисий:Детски;Памфил:Обичан от всички;Панкратий:Всевластен;Пантелеймон:Всемилостив;Парамон:Твърд;Партений:Девствен;Паси:Страдащ;Патрикий:Бащин;Пахомий:Широкоплещест;Петър:Камък;Пимен:Пастир;Платон:Широк;Поликарп:Многоплоден;Порфирий:Пурпурен;Прокопий:Преуспяващ;Протасий:Първи;Рафаил:Изцеление Божие;Роман:Римлянин;Сава:Вино;Самуил:Бог чу;Северин:Строг;Серафим:Пламенен;Сергий:Висок;Сила:Сила;Силуан:Горски;Силвестър:Горски;Симеон:Слушане;Симон:Слушащ;Софроний:Целомъдрен;Спиридон:Кошница;Стефан:Венец;Стратон:Воюващ;Талале:Цъфтящ;Тарасий:Вълнуващ;Терентий:Търкащ;Тимотей:Почитащ Бога;Тит:Почтен;Тихон:Съдба;Трифон:Разкошен;Трофим:Хранител;Урбан:Градски;Фаддей:Хвала;Филарет:Любител на добродетелта;Филимон:Любящ;Филип:Любител на конете;Филотей:Любител на Бога;Флавиан:Русокос;Флегонт:Горящ;Флор:Цвете;Фока:Тюлен;Фома:Близнак;Фотий:Светъл;Фоти:Светлина;Фрол:Цвете;Харалампий:Сияещ от радост;Харитон:Благодатен;Христофор:Христоносец;Ювеналий:Младежки;Юлиан:Юлиев;Юлий:Юлиев;Юстин:Справедлив;Яков:Пета",
-            christian_f: "Мария:Любима;София:Мъдрост;Елена:Светлина;Александра:Защитница;Виктория:Победа;Никол:Победа;Габриела:Божия сила;Йоана:Благодат;Теодора:Божи дар;Рая:Рай;Христина:Християнка;Ивана:Бог е милостив;Магдалена:От Магдала;Катерина:Чиста;Симона:Бог чува;Гергана:Земеделец;Стефани:Венец;Наталия:Рождество;Даниела:Бог е съдия;Елеонора:Бог е светлина;Анна:Благодат;Екатерина:Чиста;Михаела:Коя е като Бог;Василена:Царствена;Силвия:Горска;Кристина:Посветена;Диана:Божествена;Моника:Съветник;Вероника:Победа;Татяна:Уредителка;Юлия:Къдрава;Валерия:Силна;Елисавета:Бог е клетва;Марина:Морска;Надежда:Надежда;Вяра:Вяра;Любов:Любов;Ирина:Мир;Недялка:Неделя;Петя:Камък;Радка:Радост;Румяна:Румена;Светла:Светла;Стоянка:Устойчива;Тинка:Чиста;Цонка:Цвете;Яна:Бог е милостив;Антония:Ценна;Божидара:Дар;Ваня:Бог е милостив;Галина:Спокойствие;Дарина:Дарена;Емилия:Съперничка;Жана:Бог е милостив;Златка:Златна;Ива:Върба;Красимира:Красив мир;Лидия:От Лидия;Мая:Майка;Нина:Нежна;Олга:Свята;Павлина:Малка;Росица:Роса;Снежана:Снежна;Таня:Организатор;Фани:Венец;Християна:Християнка;Цвета:Цвете;Анастасия:Възкресение;Андреа:Мъжествена;Анелия:Ангел;Анита:Благодат;Бистра:Ясна;Боряна:Борец;Валентина:Здрава;Венета:Венец;Виолета:Теменужка;Дафина:Лавър;Десислава:Слава;Ева:Живот;Евелина:Живот;Жаклин:Следваща;Ивелина:Върба;Илина:Светлина;Калина:Калина;Камелия:Камелия;Лилия:Лилия;Людмила:Любима на хората;Милена:Мила;Мира:Мир;Невена:Невен;Пламена:Пламък;Полина:Малка;Радостина:Радост;Ралица:Орион;Ренета:Възраждаща се;Силвана:Горска;Станислава:Слава;Теменужка:Цвете;Цветелина:Цвете;Аделина:Благородна;Албена:Хубава;Божана:Божия;Весела:Весела;Виктория:Победа;Глория:Слава;Дария:Дарена;Елица:Ела;Зорница:Зорница;Ивет:Ива;Йорданка:Йордан;Катя:Чиста;Лора:Лавър;Миглена:Мила;Надя:Надежда;Преслава:Преславна;Радослава:Радост и слава;Севдалина:Любов;Славена:Слава;Теа:Богиня;Цветанка:Цвете;Августина:Величествена;Агапия:Любов;Аглика:Иглика;Агнеса:Чиста;Аделина:Благородна;Албена:Хубава;Александрина:Защитница;Алексина:Защитница;Ана:Благодат;Анастасия:Възкресение;Ангелина:Ангел;Андреана:Мъжествена;Анелия:Ангел;Анета:Благодат;Ани:Благодат;Анка:Благодат;Анна:Благодат;Антоанета:Ценна;Антония:Ценна;Анушка:Благодат;Ася:Възкресение;Атанаска:Безсмъртна;Биляна:Билка;Бистра:Ясна;Блага:Блага;Благовеста:Блага вест;Благуна:Блага;Богдана:Бог дал;Божана:Божия;Божидара:Божи дар;Бойка:Бой;Боряна:Борец;Босилка:Босилек;Валентина:Здрава;Валерия:Силна;Валя:Здрава;Вангелия:Благовестителка;Ваня:Иван;Василка:Царска;Велика:Велика;Величка:Велика;Венета:Венец;Вера:Вяра;Вергиния:Девица;Вероника:Истински образ;Весела:Весела;Веселина:Весела;Веска:Весела;Виктория:Победа;Виолета:Теменужка;Вяра:Вяра;Габи:Божия сила;Габриела:Божия сила;Гала:Мляко;Галина:Спокойствие;Галя:Спокойствие;Гана:Благодат;Ганка:Благодат;Гергана:Земеделец;Гина:Сребро;Гинка:Сребро;Глория:Слава;Горица:Гора;Грозда:Грозде;Грозданка:Грозде;Гълъбина:Гълъб;Даниела:Бог е съдия;Дарина:Дар;Дария:Дар;Дафина:Лавър;Деница:Зорница;Деси:Десислава;Десислава:Слава;Детelina:Детелина;Диана:Божествена;Диляна:Сърце;Дима:Деметра;Димитрина:Деметра;Дина:Съдена;Добра:Добра;Добринка:Добра;Доля:Дял;Дона:Андон;Донка:Андон;Дора:Дар;Доротея:Божи дар;Ева:Живот;Евгения:Благородна;Евдокия:Благоволение;Евелина:Живот;Екатерина:Чиста;Елена:Светлина;Елеонора:Светлина;Ели:Ели;Елин:Елин;Елина:Елина;Елисавета:Бог е клетва;Елица:Ела;Елка:Ела;Емилия:Съперничка;Жана:Бог е милостив;Жанет:Бог е милостив;Жасмина:Жасмин;Желязка:Желязо;Жени:Благородна;Живка:Жива;Жулиета:Млада;Захарина:Бог си спомня;Здравка:Здрава;Злата:Злато;Златина:Злато;Златка:Злато;Зорка:Зора;Зорница:Зора;Зоя:Живот;Ива:Върба;Ивайла:Вълк;Ивана:Бог е милостив;Иванка:Бог е милостив;Ивелина:Върба;Ивет:Ива;Ивона:Ива;Иглика:Иглика;Изабела:Бог е клетва;Илина:Илия;Илияна:Илия;Илка:Илия;Илона:Елена;Ина:Ина;Ирена:Мир;Ирина:Мир;Искра:Искра;Йоана:Бог е милостив;Йовка:Йов;Йолита:Йолита;Йорданка:Йордан;Калина:Калина;Камелия:Камелия;Катерина:Чиста;Катя:Чиста;Кета:Катя;Кина:Катя;Кирилкa:Господарка;Клара:Ясна;Корнелия:Дрян;Красимира:Красива;Кристина:Християнка;Кристияна:Християнка;Лада:Лада;Лазарина:Лазар;Латинка:Латинка;Лидия:Лидия;Лилия:Лилия;Лиляна:Лилия;Лора:Лавър;Люба:Любов;Любима:Любима;Любка:Любов;Любов:Любов;Людмила:Любима на хората;Магда:Магдалена;Магдалена:Магдалена;Малина:Малина;Маргарита:Перла;Мариана:Мария;Мариела:Мария;Мариета:Мария;Марийка:Мария;Марина:Морска;Мария:Любима;Марияна:Мария;Марта:Господарка;Мартина:Войн;Мая:Майка;Миглена:Магдалена;Мила:Мила;Милена:Мила;Милкa:Мила;Мими:Мария;Минка:Мария;Мира:Мир;Мирела:Мира;Мирослава:Мир и слава;Михаела:Коя е като Бог;Моника:Съветник;Надежда:Надежда;Надя:Надежда;Наталия:Рождество;Невена:Невен;Неда:Неделя;Недка:Неделя;Недялка:Неделя;Нели:Елена;Ника:Победа;Николета:Победа на народа;Николина:Победа на народа;Нина:Нина;Нора:Елеонора;Олга:Свята;Оля:Олга;Павлина:Малка;Пепа:Петрана;Петрана:Камък;Петя:Камък;Пламена:Пламък;Полина:Малка;Поля:Полина;Рада:Радост;Радка:Радост;Радослава:Радост и слава;Радостина:Радост;Райна:Райна;Ралица:Орион;Ренета:Възраждаща се;Роза:Роза;Росица:Роса;Ружа:Ружа;Румяна:Румена;Савина:Сабина;Светла:Светла;Светлана:Светла;Севда:Любов;Севдалина:Любов;Силвия:Горска;Силвана:Горска;Симона:Бог чува;Сия:Анастасия;Славка:Слава;Снежана:Снежна;Снежина:Снежна;Соня:София;София:Мъдрост;Станка:Стан;Стефака:Венец;Стефания:Венец;Стефка:Венец;Стоянка:Стои;Сълза:Сълза;Таня:Татяна;Татяна:Уредителка;Теменуга:Теменуга;Теменужка:Теменуга;Теодора:Божи дар;Тереза:Тереза;Тинка:Катерина;Тодора:Божи дар;Тотка:Тодора;Фани:Стефания;Фанка:Стефания;Фидана:Фиданка;Христина:Християнка;Християна:Християнка;Цвета:Цвете;Цветана:Цвете;Цветанка:Цвете;Цветелина:Цвете;Цецка:Цвете;Юлия:Къдрава;Юлияна:Къдрава;Ягода:Ягода;Яна:Бог е милостив;Янка:Бог е милостив;Агапия:Любов;Агата:Добра;Агнеса:Чиста;Аделина:Благородна;Аза:Силна;Акилина:Орлица;Аксиния:Чужденка;Акулина:Орлица;Александра:Защитница;Александрина:Защитница;Алексина:Защитница;Алена:Алена;Алеся:Защитница;Алина:Благородна;Алиса:Истина;Алла:Друга;Алфея:Промяна;Амалия:Трудолюбива;Анастасия:Възкресение;Анатолия:Източна;Ангелина:Вестителка;Андреана:Мъжествена;Андромеда:Владетелка на мъже;Анелия:Светлина;Анета:Благодат;Анжелика:Ангелска;Ани:Благодат;Анисия:Изпълнение;Анита:Благодат;Анка:Благодат;Анна:Благодат;Антонина:Встъпваща в бой;Антония:Встъпваща в бой;Анфиса:Цъфтяща;Аполинария:Слънчева;Ариадна:Силно пееща;Арина:Мир;Аркадия:Пастирка;Арсения:Мъжествена;Артемида:Здрава;Ася:Възкресение;Атанасия:Безсмъртна;Аурелия:Златна;Афродита:Родена от пяната;Ахинора:Ухание на теменуги;Беатрис:Носеща щастие;Бела:Красива;Берта:Великолепна;Бианка:Бяла;Бистра:Ясна;Блага:Блага;Благородна:Благородна;Благуна:Блага;Богдана:Бог дал;Божана:Божия;Божидара:Божи дар;Бойка:Бойка;Бона:Добър;Борислава:Бореща се за слава;Боряна:Бореща се;Босилка:Босилек;Бранимира:Брани мир;Бригита:Силна;Валентина:Здрава;Валерия:Силна;Ванга:Благовестителка;Вангелия:Благовестителка;Варвара:Чужденка;Василена:Царствена;Василия:Царствена;Василка:Царствена;Велика:Велика;Величка:Велика;Венера:Любов;Венета:Венец;Венеция:Венеция;Венцислава:Венец на славата;Вера:Вяра;Вергиния:Девица;Вероника:Истински образ;Весела:Весела;Веселина:Весела;Веселка:Весела;Веска:Весела;Виктория:Победа;Виолета:Теменужка;Виргиния:Девица;Владислава:Владееща слава;Влада:Владееща;Габриела:Божия крепост;Галина:Тишина;Галя:Тишина;Гана:Благодат;Ганка:Благодат;Геновева:Бял дух;Гергана:Земеделка;Герда:Защитница;Герма:Родна;Германа:Родна;Гертруда:Силно копие;Гина:Сребърна;Гинка:Сребърна;Гита:Песен;Глафира:Изящна;Гликерия:Сладка;Глория:Слава;Горица:Горица;Грета:Перла;Грозда:Грозде;Гроздана:Грозде;Гълъбина:Гълъб;Далина:Далечна;Дамяна:Покорителка;Дана:Съди;Даниела:Бог е моят съдия;Дарина:Дар;Дария:Победителка;Дафина:Лавър;Дафна:Лавър;Дебора:Пчела;Деляна:Дяла;Деметра:Майка земя;Деница:Зорница;Десислава:Намираща слава;Деси:Намираща;Детелина:Детелина;Джана:Бог е милостив;Джемма:Скъпоценен камък;Джулия:Юлиева;Джулиана:Юлиева;Диана:Божествена;Диляна:Сърце;Димана:Деметра;Димитрина:Деметра;Димка:Деметра;Дина:Съдба;Добра:Добра;Добринка:Добра;Добромира:Добър мир;Доля:Дял;Домна:Господарка;Дона:Господарка;Донка:Господарка;Дора:Дар;Доротея:Божи дар;Ева:Живот;Евгения:Благородна;Евдокия:Благоволение;Евелина:Лешник;Евлампия:Благосветла;Евпраксия:Благоденствие;Евридика:Справедливост;Евсигния:Благочестива;Евстатия:Стойка;Евтимия:Благодушна;Екатерина:Чиста;Елеонора:Бог е моята светлина;Ели:Бог е моята светлина;Елиза:Бог е моята клетва;Елизабет:Бог е моята клетва;Елисавета:Бог е моята клетва;Елица:Ела;Елка:Ела;Елмира:Мир;Емелина:Съперничка;Емилия:Съперничка;Еми:Съперничка;Емма:Цяла;Ермиония:Свързваща;Естер:Звезда;Ефимия:Благочестива;Ефросина:Радост;Жана:Бог е милостив;Жанет:Бог е милостив;Жасмина:Жасмин;Желязка:Желязна;Жени:Благородна;Живка:Жива;Жулиета:Юлиева;Запряна:Спряна;Захарина:Памет Божия;Звезда:Звезда;Звезделина:Звездна;Здравка:Здрава;Зина:Зевсова;Зинаида:Зевсова;Злата:Златна;Златина:Златна;Златка:Златна;Зоя:Живот;Ива:Върба;Ивайла:Вълк;Ивана:Бог е милостив;Иванка:Бог е милостив;Ивелина:Лешник;Ивет:Тисово дърво;Ивона:Тисово дърво;Иглика:Иглика;Изабела:Красавица;Изидора:Дар на Изида;Илиана:Слънчева;Илина:Слънчева;Илка:Слънчева;Илона:Слънчева;Ина:Силна вода;Инга:Зимна;Инес:Чиста;Инна:Силна вода;Иоанна:Бог е милостив;Ираида:Героиня;Ирена:Мир;Ирина:Мир;Ирис:Дъга;Ирма:Германка;Искра:Искра;Йоана:Бог е милостив;Йовка:Бог е милостив;Йолита:Виолетова;Йорданка:Спускаща се;Йосифа:Бог ще прибави;Калина:Калина;Калиопа:Прекрасногласна;Калия:Хубава;Камелия:Камелия;Капка:Капка;Карина:Мила;Каролина:Королева;Катерина:Чиста;Катя:Чиста;Керана:Господарка;Кера:Господарка;Кина:Господарка;Кира:Господарка;Кирила:Господарка;Кичка:Кичка;Клара:Ясна;Клавдия:Куца;Клементина:Милостива;Клеопатра:Слава на бащата;Койна:Смирена;Констанца:Постоянна;Констанция:Постоянна;Косара:Коса;Костадинка:Постоянна;Красимира:Красива;Кристина:Християнка;Кристияна:Християнка;Ксения:Чужденка;Куна:Смела;Лада:Мила;Лазарина:Бог помага;Лала:Лале;Лариса:Чайка;Латинка:Латинка;Лаура:Лавър;Леда:Лебед;Лена:Светлина;Леонида:Лъвица;Леонтина:Лъвска;Лидия:Лидийка;Лиза:Бог е моята клетва;Лилия:Лилия;Лиляна:Лилия;Лина:Нежна;Линда:Змия;Лоза:Лоза;Лозана:Лоза;Лора:Лавър;Луиза:Славен войн;Луиза:Светлина;Люба:Любов;Любима:Любима;Любка:Любов;Любов:Любов;Людмила:Любима на хората;Люси:Светлина;Магда:От Магдала;Магдалена:От Магдала;Магдалина:От Магдала;Малина:Малина;Маргарита:Перла;Мариана:Мария и Ана;Мариела:Мария;Мариета:Мария;Марийка:Мария;Марина:Морска;Мария:Любима;Марияна:Мария;Марта:Господарка;Мартина:Войнствена;Маруся:Мария;Мая:Майка;Меглена:От Магдала;Мелания:Черен;Мелинда:Медена;Мелиса:Пчела;Миглена:От Магдала;Мила:Мила;Милана:Мила;Милена:Мила;Милкa:Мила;Милка:Мила;Мими:Мария;Минка:Мария;Мира:Мир;Мирела:Възхитителна;Мирослава:Славен мир;Михаела:Коя е като Бог;Моника:Самa;Надежда:Надежда;Надя:Надежда;Нана:Милост;Наталия:Рождена;Наташа:Рождена;Невена:Невен;Неда:Неделя;Недка:Неделя;Недялка:Неделя;Нели:Светлина;Ника:Победа;Николета:Победа на народа;Николина:Победа на народа;Нина:Милост;Нона:Девета;Нора:Почит;Олга:Свята;Оливия:Маслина;Олимпиада:Небесна;Оля:Свята;Павла:Малка;Павлина:Малка;Панка:Всесвета;Параскева:Петък;Патриция:Благородна;Паулина:Малка;Пелагия:Морска;Пенка:Камък;Пепа:Камък;Перла:Перла;Петка:Петък;Петрана:Камък;Петя:Камък;Пламена:Пламък;Полина:Малка;Поля:Малка;Правда:Истина;Преслава:Преславна;Пролетина:Пролет;Рада:Радост;Радка:Радост;Радослава:Радостна слава;Радост:Радост;Радостина:Радост;Раина:Рай;Райна:Рай;Ралица:Орион;Рая:Рай;Ребека:Връзка;Ренета:Възраждаща се;Рита:Перла;Роза:Роза;Розалина:Роза;Розалия:Роза;Росица:Роса;Ружа:Ружа;Румяна:Румена;Русанка:Руса;Сабина:Сабинянка;Савина:Сабинянка;Сандра:Защитница;Светла:Светла;Светлана:Светла;Свобода:Свобода;Севда:Любов;Севдалина:Любов;Северина:Строга;Села:Скала;Селма:Мир;Силва:Гора;Силвана:Горска;Силвия:Горска;Симона:Слушаща;Сирма:Сърма;Сия:Сияйна;Слава:Слава;Славка:Слава;Славена:Слава;Снежана:Снежна;Снежа:Снежна;Снежина:Снежна;Соня:Мъдрост;София:Мъдрост;Станимира:Стани мир;Станислава:Стани славна;Станка:Стан;Стела:Звезда;Стефака:Венец;Стефана:Венец;Стефания:Венец;Стефи:Венец;Стефка:Венец;Стилиана:Стълб;Стоянка:Стои;Султана:Султанка;Сузана:Лилия;Сълза:Сълза;Тамара:Палма;Таня:Уредителка;Татяна:Уредителка;Теменуга:Теменуга;Теменужка:Теменуга;Теодора:Божи дар;Теофана:Богуявление;Тереза:Ловец;Тинка:Чиста;Тодора:Божи дар;Тона:Антония;Тонка:Антония;Тотка:Тодора;Уляна:Юлиева;Урсула:Мечка;Фани:Венец;Фанка:Венец;Фатима:Отбита;Феврония:Лъчезарна;Фелиция:Щастие;Фиданка:Фиданка;Филипа:Любителка на конете;Филка:Любителка на конете;Флора:Цвете;Франка:Свободна;Хана:Благодат;Хелена:Светлина;Хенриета:Владетелка на дома;Хермина:Войн;Хилда:Битка;Христина:Християнка;Християна:Християнка;Цвета:Цвете;Цветана:Цвете;Цветанка:Цвете;Цветелина:Цвете;Цветомира:Цвете на мира;Цецка:Цвете;Яворка:Явор;Ягода:Ягода;Яна:Бог е милостив;Янита:Бог е милостив;Янка:Бог е милостив;Ясмина:Жасмин",
+            christian_m: "Александър:Защитник;Георги:Земеделец;Димитър:Посветен на земята;Никола:Победа;Иван:Бог е милостив;Теодор:Божи дар;Борис:Борец;Стефан:Венец;Михаил:Кой е като Бог;Петър:Камък;Васил:Царствен;Христо:Помазаник;Атанас:Безсмъртен;Константин:Постоянен;Илия:Бог е Яхве;Симеон:Бог чува;Андрей:Мъжествен;Тодор:Божи дар;Гавраил:Божия сила;Йордан:Спускащ се;Данаил:Божи съд;Емануил:Бог е с нас;Матей:Божи дар;Лука:Светлина;Филип:Обичащ конете;Павел:Смирен;Стоян:Здрав;Антон:Ценен;Емил:Съперник;Кирил:Господар;Методий:Подреден;Лазар:Бог помага;Сава:Вино;Григор:Бдящ;Яков:Следващ;Спас:Спасител;Християн:Христов;Валери:Силен;Богомил:Мил на Бога;Тимотей:Почитащ Бога;Захари:Бог помни;Рафаил:Бог лекува;Самуил:Измолен;Давид:Любим;Йосиф:Бог прибавя;Марко:Войнствен;Тома:Близнак;Симон:Слушащ;Апостол:Пратеник;Евгени:Благороден;Иларион:Весел;Климент:Милостив;Леонид:Лъвски;Максим:Най-голям;Николай:Победа;Продан:Даден;Ставри:Кръст;Теофил:Обичащ Бога;Юлиан:Къдрав;Янко:Бог е милостив;Алекси:Защитник;Анатоли:Източен;Вангел:Благовест;Дамян:Покорител;Костадин:Постоянен;Марин:Морски;Милан:Мил;Младен:Млад;Ненчо:Ненагледен;Пантелей:Всемилостив;Румен:Здрав;Ангел:Вестител;Божидар:Божи дар;Виктор:Победител;Владимир:Владетел;Деян:Деен;Евтим:Благодушен;Желязко:Здрав;Живко:Жив;Здравко:Здрав;Калоян:Хубав Иван;Красимир:Красив свят;Любомир:Любим на света;Момчил:Момък;Никодим:Победа на народа;Огнян:Огън;Пламен:Пламък;Радослав:Радост и слава;Светослав:Свята слава;Тихомир:Тих мир;Цветан:Цвете;Чавдар:Водач;Явор:Явор;Ясен:Ясен;Давид:Любим;Аарон:Просветлен;Авел:Дихание;Авраам:Баща на множества;Адам:Човек;Азария:Помощ от Бога;Ананий:Бог е милостив;Ванадий:Син на Бога;Вениамин:Син на десницата;Витяз:Войн;Влас:Власт;Гавриил:Божи човек;Гедеон:Косач;Григорий:Бдящ;Данаил:Бог е съдия;Езекиил:Бог ще укрепи;Елисей:Бог е спасение;Емануил:С нас е Бог;Ефрем:Плодовит;Захария:Бог си спомня;Илия:Яхве е Бог;Йоан:Бог е милостив;Йов:Преследван;Йона:Гълъб;Йосиф:Бог ще прибави;Исаак:Смях;Исая:Спасение от Господа;Калиник:Добър победител;Касиан:Празен;Киприан:От Кипър;Кирил:Господар;Климент:Милостив;Константин:Постоянен;Козма:Украсен;Лазар:Бог помага;Левкий:Бял;Леонид:Лъв;Лука:Светъл;Макарий:Блажен;Максим:Най-голям;Малахия:Божи пратеник;Матей:Божи дар;Мелетий:Грижлив;Методий:Подреден;Мина:Месечина;Михаил:Кой е като Бог;Мойсей:Избавен от водата;Наум:Утешител;Нестор:Завърнал се у дома;Никанор:Който вижда победата;Никита:Победител;Никифор:Победоносец;Никодим:Победа на народа;Нифонт:Трезвен;Павел:Малък;Паисий:Детски;Памфил:Обичан от всички;Панкратий:Всевластен;Пантелеймон:Всемилостив;Парамон:Твърд;Партений:Девствен;Паси:Страдащ;Патрикий:Бащин;Пахомий:Широкоплещест;Петър:Камък;Пимен:Пастир;Платон:Широк;Поликарп:Многоплоден;Порфирий:Пурпурен;Прокопий:Преуспяващ;Протасий:Първи;Рафаил:Изцеление Божие;Роман:Римлянин;Сава:Вино;Самуил:Бог чу;Северин:Строг;Серафим:Пламенен;Сергий:Висок;Сила:Сила;Силуан:Горски;Силвестър:Горски;Симеон:Слушане;Симон:Слушащ;Софроний:Целомъдрен;Спиридон:Кошница;Стефан:Венец;Стратон:Воюващ;Талале:Цъфтящ;Тарасий:Вълнуващ;Терентий:Търкащ;Тимотей:Почитащ Бога;Тит:Почтен;Тихон:Съдба;Трифон:Разкошен;Трофим:Хранител;Урбан:Градски;Фаддей:Хвала;Филарет:Любител на добродетелта;Филимон:Любящ;Филип:Любител на конете;Филотей:Любител на Бога;Флавиан:Русокос;Флегонт:Горящ;Флор:Цвете;Фока:Тюлен;Фома:Близнак;Фотий:Светъл;Фоти:Светлина;Фрол:Цвете;Харалампий:Сияещ от радост;Харитон:Благодатен;Христофор:Христоносец;Ювеналий:Младежки;Юлиан:Юлиев;Юлий:Юлиев;Юстин:Справедлив;Яков:Пета",
+            christian_f: "Мария:Любима;София:Мъдрост;Елена:Светлина;Александра:Защитница;Виктория:Победа;Никол:Победа;Габриела:Божия сила;Йоана:Благодат;Теодора:Божи дар;Рая:Рай;Христина:Християнка;Ивана:Бог е милостив;Магдалена:От Магдала;Катерина:Чиста;Симона:Бог чува;Гергана:Земеделец;Стефани:Венец;Наталия:Рождество;Даниела:Бог е съдия;Елеонора:Бог е светлина;Анна:Благодат;Екатерина:Чиста;Михаела:Коя е като Бог;Василена:Царствена;Силвия:Горска;Кристина:Посветена;Диана:Божествена;Моника:Съветник;Вероника:Победа;Татяна:Уредителка;Юлия:Къдрава;Валерия:Силна;Елисавета:Бог е клетва;Марина:Морска;Надежда:Надежда;Вяра:Вяра;Любов:Любов;Ирина:Мир;Недялка:Неделя;Петя:Камък;Радка:Радост;Румяна:Румена;Светла:Светла;Стоянка:Устойчива;Тинка:Чиста;Цонка:Цвете;Яна:Бог е милостив;Антония:Ценна;Божидара:Дар;Ваня:Бог е милостив;Галина:Спокойствие;Дарина:Дарена;Емилия:Съперничка;Жана:Бог е милостив;Златка:Златна;Ива:Върба;Красимира:Красив мир;Лидия:От Лидия;Мая:Майка;Нина:Нежна;Олга:Свята;Павлина:Малка;Росица:Роса;Снежана:Снежна;Таня:Организатор;Фани:Венец;Християна:Християнка;Цвета:Цвете;Анастасия:Възкресение;Андреа:Мъжествена;Анелия:Ангел;Анита:Благодат;Бистра:Ясна;Боряна:Борец;Валентина:Здрава;Венета:Венец;Виолета:Теменужка;Дафина:Лавър;Десислава:Слава;Ева:Живот;Евелина:Живот;Жаклин:Следваща;Ивелина:Върба;Илина:Светлина;Калина:Калина;Камелия:Камелия;Лилия:Лилия;Людмила:Любима на хората;Милена:Мила;Мира:Мир;Невена:Невен;Пламена:Пламък;Полина:Малка;Радостина:Радост;Ралица:Орион;Ренета:Възраждаща се;Силвана:Горска;Станислава:Слава;Теменужка:Цвете;Цветелина:Цвете;Аделина:Благородна;Албена:Хубава;Божана:Божия;Весела:Весела;Виктория:Победа;Глория:Слава;Дария:Дарена;Елица:Ела;Зорница:Зорница;Ивет:Ива;Йорданка:Йордан;Катя:Чиста;Лора:Лавър;Миглена:Мила;Надя:Надежда;Преслава:Преславна;Радослава:Радост и слава;Севдалина:Любов;Славена:Слава;Теа:Богиня;Цветанка:Цвете",
+            slavic_m: "Божидар:Дар;Владимир:Владетел;Калоян:Хубав;Деян:Деен;Пламен:Огнен;Красимир:Красив свят;Мирослав:Мир и слава;Радослав:Радост;Боян:Войн;Огнян:Огън;Светослав:Свята слава;Драгомир:Драг;Момчил:Момък;Найден:Намерен;Бисер:Ценен;Веселин:Весел;Живко:Жив;Здравко:Здрав;Камен:Камък;Лъчезар:Лъч;Радомир:Радост;Станимир:Стани мир;Тихомир:Тих мир;Цветан:Цвете;Ясен:Ясен;Явор:Явор;Борислав:Слава;Венцислав:Венец;Добромир:Добър;Любомир:Любим;Слави:Слава;Чавдар:Водач;Янко:Бог е милостив;Борил:Борец;Велислав:Велика слава;Десислав:Слава;Златомир:Златен;Искрен:Искрен;Милен:Мил;Преслав:Преславен;Ростислав:Растяща слава;Свилен:Копринен;Страхил:Страх;Траян:Траен;Храбър:Смел;Цветомир:Цвете;Ярослав:Силна слава;Бранко:Защитник;Велко:Голям;Горан:Планинец;Дако:Дар;Желязко:Здрав;Зарко:Злато;Йово:Млад;Койо:Спокоен;Лало:Лале;Манчо:Малък;Ненко:Ненагледен;Първан:Първи;Страцимир:Мир;Тихон:Щастие;Угрин:Унгарец;Хранислав:Храни слава;Цако:Цако;Чанко:Чан;Шишман:Дебел;Щерйо:Звезда;Якуб:Яков;Янкул:Янко;Белослав:Бяла слава;Бойко:Бой;Вихрен:Вихър;Вълко:Вълк;Гроздан:Грозде;Дарин:Дар;Добри:Добър;Жельо:Желан;Звезделин:Звезда;Искра:Искра;Красен:Красив;Миро:Мир;Младен:Млад;Огнян:Огън;Ради:Радост;Румен:Румен;Спас:Спасител;Стоил:Стой;Хранимир:Храни мир;Цвятко:Цвете",
+            slavic_f: "Ралица:Орион;Десислава:Слава;Боряна:Борец;Калина:Хубава;Цветелина:Цвете;Снежана:Снежна;Биляна:Билка;Радостина:Радост;Мира:Мир;Искра:Искра;Жана:Живот;Зорница:Зора;Мила:Мила;Преслава:Преславна;Весела:Весела;Вяра:Вяра;Дарина:Дар;Елица:Ела;Живка:Жива;Златина:Златна;Ивелина:Върба;Красимира:Красива;Людмила:Любима;Милена:Мила;Надежда:Надежда;Райна:Царица;Светлана:Светла;Славяна:Славянка;Станислава:Слава;Цветана:Цвете;Яна:Река;Божидара:Дар;Велислава:Слава;Гергана:Земеделец;Добромира:Добър мир;Елка:Ела;Жени:Благородна;Зорка:Зора;Иглика:Цвете;Йорданка:Спускаща се;Катя:Чиста;Лиляна:Лилия;Мирослава:Мир и слава;Невена:Невен;Орлина:Орел;Пламена:Огнена;Радослава:Радост;Силвана:Горска;Теменужка:Цвете;Христина:Християнка;Цветанка:Цвете;Ягода:Плод;Блага:Блага;Венцислава:Венец;Грозданка:Грозде;Диляна:Сърце;Евдокия:Благоволение;Жасмина:Жасмин;Здравка:Здрава;Илина:Светлина;Косара:Коса;Лазара:Бог помага;Малина:Сладка;Надка:Надежда;Перуника:Перуника;Рада:Радост;Севда:Любов;Тинтява:Тинтява;Фидана:Фиданка;Цонка:Цвете;Череша:Череша;Шипка:Шипка;Ясена:Ясен",
+            muslim_m: "Емир:Принц;Мерт:Мъжествен;Дениз:Море;Мехмед:Похвален;Юсуф:Бог умножава;Али:Възвишен;Ибрахим:Баща;Хасан:Красив;Мустафа:Избраният;Кенан:Обетована земя;Орхан:Велик;Селим:Здрав;Ахмед:Похвален;Керем:Щедрост;Арас:Грижа;Окан:Стрелец;Джан:Душа;Корай:Жарава;Ерен:Светец;Баран:Дъжд;Бурак:Светкавица;Джем:Владетел;Емре:Приятел;Каан:Владетел;Мурат:Желание;Озан:Поет;Серкан:Водач;Толга:Шлем;Умут:Надежда;Хакан:Император;Юнус:Гълъб;Аднан:Заселник;Берк:Силна светлина;Джемал:Красота;Енвер:Светъл;Исмаил:Бог чува;Кадир:Могъщ;Левент:Снажен;Метин:Силен;Назим:Поет;Осман:Младеж;Реджеп:Почит;Самир:Спътник;Таркан:Силен;Фатих:Завоевател;Халил:Приятел;Шабан:Месецът;Явуз:Смел;Айхан:Лунен хан;Байрам:Празник;Джихан:Вселена;Ерхан:Храбър;Зеки:Умен;Илхан:Владетел;Кемал:Съвършенство;Айдин:Светъл;Алпер:Герой;Ариф:Мъдър;Атакан:Предшественик;Барис:Мир;Билал:Вода;Бора:Буря;Волкан:Вулкан;Еге:Море;Ердем:Добродетел;Иляс:Илия;Коркут:Страшен;Кузей:Север;Лютфи:Добър;Махмут:Похвален;Неджет:Спасение;Огюн:Денят;Онур:Чест;Полат:Стомана;Рамис:Символ;Риза:Съгласие;Сабри:Търпелив;Сердар:Командир;Синан:Копие;Танер:Зора;Тунч:Бронз;Уфук:Хоризонт;Харун:Планина;Ченгиз:Океан;Шахин:Сокол;Ясин:Сура",
+            muslim_f: "Айлин:Лунна светлина;Елиф:Стройна;Мелек:Ангел;Селин:Буйна вода;Ясмин:Жасмин;Нур:Светлина;Фатме:Отбита;Емине:Доверена;Айше:Жива;Лейла:Нощ;Дефне:Лавър;Сибел:Житен клас;Дамла:Капка;Есра:Пътуване;Джейда:Красавица;Азра:Девствена;Берна:Млада;Гамизе:Трапчинка;Дилара:Утеха;Еда:Маниери;Зейнеб:Скъпоценен камък;Ирем:Рай;Кюбра:Велика;Мелиса:Пчела;Нехир:Река;Оя:Дантела;Пънар:Извор;Рана:Красива;Седа:Глас;Тугче:Малка принцеса;Филиз:Фиданка;Хазал:Есенни листа;Джансу:Жива вода;Шерин:Сладка;Ягмур:Дъжд;Айла:Лунен ореол;Бахар:Пролет;Гюл:Роза;Деря:Океан;Ебру:Мраморна;Жале:Роса;Зехра:Цвете;Ипек:Коприна;Кадер:Съдба;Лале:Лале;Мирай:Светеща луна;Назлъ:Гальовна;Пелин:Пелин;Рюя:Мечта;Севда:Любов;Алейна:Красива;Асли:Истинска;Башак:Клас;Бегюм:Дама;Бейза:Бяла;Бурджу:Аромат;Гизем:Тайна;Гюлсум:Кръглолика;Дуйгу:Чувство;Едже:Кралица;Есин:Вдъхновение;Зейнеп:Скъпоценен камък;Инджи:Перла;Мерве:Камъче;Нилай:Синя луна;Перихан:Фея;Сание:Секунда;Селма:Мирна;Симге:Символ;Туба:Дърво в рая;Ханде:Усмивка;Хюля:Мечта;Чидем:Цвете;Шебнем:Роса;Ярен:Приятел",
             modern_m: "Мартин:Войн;Виктор:Победител;Даниел:Божи съд;Кристиян:Християнин;Алекс:Защитник;Макс:Велик;Ерик:Вечен;Филип:Любител на коне;Робърт:Ярка слава;Себастиан:Почитан;Оливър:Маслина;Лео:Лъв;Никълъс:Победа;Адриян:От Адрия;Денис:На Дионис;Крис:Христоносец;Тео:Бог;Лукас:Светъл;Матео:Божи дар;Ноа:Почивка;Адам:Човек;Бенджамин:Син на десницата;Габриел:Божия сила;Давид:Любим;Едуард:Пазител;Жул:Млад;Иън:Бог е милостив;Кевин:Красив;Леонардо:Смел лъв;Майкъл:Кой е като Бог;Нейтън:Даден;Патрик:Благородник;Райън:Малък крал;Сам:Бог чува;Томас:Близнак;Уилям:Решителен;Феликс:Щастлив;Хари:Владетел;Чарли:Свободен;Джейкъб:Заместник;Антъни:Ценен;Брайън:Висок;Джордж:Земеделец;Итън:Силен;Кало:Хубав;Луи:Славен;Марк:Войнствен;Нико:Победа;Оскар:Божие копие;Пол:Малък;Ричард:Смел;Стивън:Венец;Тони:Ценен;Франк:Свободен;Хенри:Владетел;Артур:Мечка;Арън:Висок;Бруно:Кафяв;Винсент:Завоевател;Грегор:Бдящ;Доминик:Господен;Ейдън:Огън;Елиас:Илия;Елиът:Бог е високо;Закари:Бог помни;Илай:Възвишен;Йонас:Гълъб;Калеб:Предан;Каспър:Съкровище;Колин:Победа;Лиъм:Войн;Логан:Малка дупка;Лука:Светлина;Майлс:Войник;Максимилиан:Най-голям;Марсел:Малък войн;Матиас:Божи дар;Мика:Кой е като Бог;Морис:Тъмен;Оуен:Благороден;Питър:Камък;Рафаел:Бог лекува;Робин:Ярка слава;Роман:Римлянин;Рубен:Виж сина;Саймън:Слушащ;Самюел:Бог чу;Сантяго:Свети Яков;Соломон:Мир;Спенсър:Домакин;Стенли:Каменна поляна;Теодор:Божи дар;Тимур:Желязо;Тобиас:Бог е добър;Тристан:Тъжен;Троя:Пехотинец;Фреди:Мирен;Фредерик:Мирен;Хуго:Ум;Чарлз:Свободен;Шон:Бог е милостив;Юри:Земеделец;Ян:Бог е милостив;Джак:Бог е милостив;Джеймс:Заместник;Алберт:Благороден;Бенедикт:Благословен;Валтер:Владетел;Гилбърт:Светъл залог;Д Джъстин:Справедлив;Денислав:Ден и слава;Едгар:Богат копиеносец;Ейдриън:От Адрия;Жан:Бог е милостив;Иво:Тис;Каломан:Красив;Клаус:Победа;Курт:Смел;Ленни:Лъв;Марио:Мъжествен;Норман:Северен;Орлин:Орел;Паскал:Великден;Радо:Радост;Роко:Почивка;Силвио:Горски;Тино:Малък;Урбан:Градски;Фаббиан:Бобов;Хавиер:Нова къща;Цезар:Космат;Абел:Дихание;Август:Величествен;Аксел:Баща на мира;Алан:Красив;Алдо:Стар;Алесандро:Защитник;Алесио:Защитник;Алонсо:Готов за бой;Алфред:Мъдър съветник;Амадео:Обичащ Бога;Амброуз:Безсмъртен;Анджело:Ангел;Армандо:Войн;Арнолд:Силен като орел;Арон:Просветлен;Базил:Царствен;Балтазар:Да пази царя;Барнаби:Син на утехата;Барт:Син на Толомей;Бенедето:Благословен;Бернар:Смел като мечка;Бертрам:Светъл гарван;Блейк:Тъмен;Боби:Слава;Брайс:Пъстър;Брандън:Хълм;Брендан:Принц;Брус:От гората;Вал:Силен;Ван:От;Вернер:Защитник;Вито:Живот;Владислав:Владеещ слава;Гавин:Бял ястреб;Гаспар:Съкровище;Гастон:Гост;Герхард:Смело копие;Глен:Долина;Гордън:Голям хълм;Грант:Голям;Гуидо:Водач;Густав:Скиптър;Даниеле:Бог е съдия;Дарио:Притежаващ добро;Дарън:Малък велик;Дейвид:Любим;Деймън:Укротител;Дейн:Даничанин;Декстър:Десен;Дерек:Владетел на хората;Джакомо:Заместник;Джаред:Спускащ се;Джаспър:Съкровище;Джералд:Владетел с копие;Джереми:Бог въздига;Джеф:Божи мир;Джино:Добре роден;Джоел:Яхве е Бог;Джонатан:Яхве даде;Джордан:Спускащ се;Джошуа:Яхве е спасение;Джулиан:Юлиев;Джулиус:Юлиев;Диего:Учение;Дилан:Син на морето;Димитри:Посветен на Деметра;Дино:Малък;Доналд:Световен владетел;Дориан:Дорийски;Дъглас:Тъмна река;Дъстин:Камък на Тор;Еван:Бог е милостив;Едуин:Богат приятел;Ейдън:Огън;Еймъс:Товар;Ели:Възвишен;Елмо:Благороден защитник;Емануел:Бог е с нас;Емил:Съперник;Енцо:Владетел на дома;Еразъм:Любим;Ернест:Сериозен;Еруин:Приятел на глигана;Ефраим:Плодовит;Захария:Бог си спомня;Зигмунд:Защитник на победата;Игнацио:Огнен;Игор:Войн на Инг;Илайджа:Яхве е Бог;Имануел:Бог е с нас;Инго:Инг;Исак:Смях;Йенс:Бог е милостив;Йохан:Бог е милостив;Кай:Пазител на ключовете;Карло:Мъж;Карлос:Мъж;Касиус:Празен;Квентин:Пети;Кейси:Бдъщ;Келвин:Тясна река;Кен:Красив;Кенет:Красив;Керъл:Мъж;Кийт:Гора;Килиан:Църква;Кларънс:Ясен;Клод:Куц;Клей:Глина;Клиф:Скала;Клайв:Скала;Конрад:Смел съветник;Корнелиус:Рог;Кристиан:Християнин;Кристофър:Христоносец;Ксвиер:Нова къща;Куентин:Пети;Къртис:Учтив;Ларс:Лавър;Ласло:Славен владетел;Лейф:Наследник;Ленърд:Лъвска сила;Леонард:Лъвска сила;Леополд:Смел народ;Линус:Лен;Лойд:Сив;Лорънс:Лавър;Луиджи:Славен войн;Луис:Славен войн;Лукас:Светъл;Лучано:Светъл;Люк:Светъл;Магнус:Велик;Малкълм:Ученик на свети Колумба;Мануел:Бог е с нас;Марк:На Марс;Маркус:На Марс;Марлон:Малък сокол;Марсел:Малък войн;Марчело:Малък войн;Масимо:Най-голям;Матю:Божи дар;Маурицио:Тъмен;Мелвин:Главен приятел;Мерлин:Морска крепост;Микеле:Кой е като Бог;Мико:Кой е като Бог;Майлс:Войник;Милтън:Мелничен град;Мичъл:Кой е като Бог;Морган:Морски кръг;Морис:Тъмен;Мъри:Морски;Натаниел:Божи дар;Нейл:Облак;Нелсън:Син на Нейл;Невил:Нов град;Нем:Ням;Ники:Победа;Николай:Победа на народа;Нилс:Победа на народа;Ноел:Коледа;Норберт:Светъл север;Нортън:Северен град;Оливие:Маслина;Омар:Дълголетен;Орландо:Слава на земята;Оскар:Божие копие;Освалд:Божия сила;Ото:Богат;Пабло:Малък;Паоло:Малък;Паскал:Великден;Патрик:Благородник;Перси:През долината;Пиер:Камък;Пиетро:Камък;Пласидо:Спокоен;Престън:Свещенически град;Раймонд:Мъдър защитник;Ралф:Вълк съветник;Рамиро:Велик съдия;Раул:Вълк съветник;Рафаеле:Бог изцелява;Рекс:Цар;Рене:Възраждащ се;Ренато:Възраждащ се;Рикардо:Смел владетел;Рик:Смел владетел;Роберто:Светла слава;Роджър:Славно копие;Родни:Остров на славата;Родолфо:Славен вълк;Родриго:Славен владетел;Рой:Цар;Роланд:Слава на земята;Ролф:Вълк;Ромео:Римлянин;Роналд:Мъдър владетел;Рос:Нос;Руди:Славен вълк;Рудолф:Славен вълк;Рупърт:Светла слава;Ръсел:Червен;Салваторе:Спасител;Самсон:Слънце;Самуел:Бог чу;Себастиян:Почитан;Сеймур:Свети Мавър;Серджо:Слуга;Сет:Поставен;Сидни:Широк остров;Силвестър:Горски;Силвио:Горски;Симоне:Слушащ;Сирил:Господар;Скот:Шотландец;Спенсър:Домакин;Стен:Камък;Стив:Венец;Стюарт:Домакин;Тадеуш:Сърце;Тед:Божи дар;Терънс:Търкащ;Тим:Почитащ Бога;Тимъти:Почитащ Бога;Тито:Тит;Тоби:Бог е добър;Том:Близнак;Томи:Близнак;Тони:Безценен;Торино:Бик;Тристан:Тъжен;Трой:Пехотинец;Тъкър:Тъкач;Тъли:Мирен;Уил:Решителен;Уилбър:Светло желание;Уилям:Решителен защитник;Уинстън:Приятелски камък;Уолтър:Владетел на армията;Уорън:Пазач;Уесли:Западна поляна;Уейн:Колар;Федерико:Мирен владетел;Фелипе:Любител на конете;Фердинанд:Смел пътник;Фернандо:Смел пътник;Фил:Любител на конете;Фин:Бял;Флавио:Русокос;Флориан:Цъфтящ;Форест:Гора;Франклин:Свободен земевладелец;Франсоа:Французин;Франческо:Французин;Фредерик:Мирен владетел;Фридрих:Мирен владетел;Хавиер:Нова къща;Ханс:Бог е милостив;Харалд:Вожд на армията;Харви:Боен;Харолд:Вожд на армията;Хауърд:Смел сърце;Хектор:Държащ;Хелмут:Смел защитник;Хенри:Владетел на дома;Хърбърт:Светла армия;Хю:Ум;Чад:Битка;Чарлс:Свободен мъж;Честър:Крепост;Шелдън:Долина с колиби;Шерлок:Светлокос;Шон:Бог е милостив;Щефан:Венец;Юджийн:Благороден;Юлиус:Юлиев;Юрген:Земеделец;Юрий:Земеделец;Якоб:Заместник;Ян:Бог е милостив;Яспер:Съкровище",
-            modern_f: "Ема:Цяла;Мия:Моя;Сара:Принцеса;Леа:Лъвица;Лили:Лилиум;Изабела:Обещание;Нора:Чест;Ева:Живот;Анна:Благодат;Джулия:Млада;Алис:Благородна;Карина:Скъпа;Мелиса:Пчела;Никол:Победа;Бела:Красива;Лора:Лавър;Дара:Дар;Ния:Цел;Амелия:Трудолюбива;Софи:Мъдрост;Оливия:Маслина;Емили:Съперничка;Ава:Живот;Шарлот:Свободна;Хана:Благодат;Зоя:Живот;Клара:Ясна;Луна:Луна;Мая:Илюзия;Натали:Рождество;Стела:Звезда;Вики:Победа;Елина:Светлина;Ивет:Тисово дърво;Кая:Чиста;Лара:Защитница;Мира:Мир;Неда:Родена в неделя;Поли:Малка;Рая:Рай;Симон:Бог чува;Теа:Богиня;Яна:Бог е милостив;Алина:Благородна;Бриджит:Силна;Ванеса:Пеперуда;Глория:Слава;Деа:Богиня;Елвира:Истина;Жизел:Залог;Ина:Силна;Кейт:Чиста;Лиза:Бог е клетва;Мона:Желание;Ника:Победа;Адел:Благородна;Адриана:Тъмна;Алекса:Защитница;Алми:Хранителна;Аманда:Достойна;Амбър:Кехлибар;Амели:Трудолюбива;Андреа:Смела;Аника:Благодат;Антоанета:Ценна;Ариана:Свята;Беатрис:Носеща щастие;Бети:Бог е клетва;Бланка:Бяла;Бренда:Меч;Валерия:Силна;Вероника:Образ;Вивиан:Жива;Габи:Божия сила;Грейс:Благодат;Дария:Богата;Дебора:Пчела;Джесика:Богатство;Джина:Кралица;Джоана:Бог е милостив;Джулиана:Млада;Дина:Съдена;Доротея:Божи дар;Евелин:Живот;Едит:Богатство;Елеонор:Светлина;Елиза:Бог е клетва;Елинор:Светлина;Емануела:Бог е с нас;Ерика:Вечна;Естер:Звезда;Жанет:Бог е милостив;Жозефина:Бог прибавя;Зара:Принцеса;Зинаида:Божествена;Иванина:Бог е милостив;Ивон:Тисово дърво;Изабел:Бог е клетва;Илона:Светлина;Ингрид:Красива;Инес:Чиста;Ирена:Мир;Ирма:Цяла;Йоана:Бог е милостив;Карла:Свободна;Каролина:Свободна;Касандра:Пророчица;Кели:Война;Киара:Ясна;Клара:Ясна;Клео:Слава;Кора:Девица;Кристиана:Християнка;Лаура:Лавър;Лена:Светлина;Леона:Лъвица;Летисия:Радост;Лиана:Ляна;Линда:Красива;Лола:Скръб;Лорета:Лавър;Луиза:Славен;Луси:Светлина;Маделин:От Магдала;Майя:Майка;Мануела:Бог е с нас;Марго:Перла;Мариса:На морето;Меган:Перла;Мелани:Тъмна;Мелинда:Мед;Мишел:Коя е като Бог;Моли:Море;Надя:Надежда;Наоми:Приятна;Агнес:Чиста;Айрис:Дъга;Алба:Бяла;Алисия:Благородна;Амалия:Трудолюбива;Анабел:Красива Ана;Анет:Благодат;Астрид:Божествена;Белина:Бяла;Берта:Блестяща;Бианка:Бяла;Валерия:Силна;Виола:Теменужка;Дафне:Лавър;Денис:Дионис;Долорес:Скръб;Еванджелина:Блага вест;Жаклин:Следваща;Зелма:Божи шлем;Ивон:Тис;Илка:Светлина;Катрин:Чиста;Клементина:Милостива;Летисия:Радост;Лив:Живот;Матилда:Силна;Миранда:Чудна;Никол:Победа;Офелия:Помощ;Памела:Мед;Патрисия:Благородна;Ребека:Връзка;Роберта:Слава;Сабрина:От реката;Синтия:Луна;Талиа:Цъфтяща;Урсула:Мечка;Флоренс:Цъфтяща;Хилда:Битка;Челси:Пристанище;Шила:Сляпа;Юни:Млада;Аврора:Зора;Ада:Благородна;Айла:Лунна светлина;Алексия:Защитница;Алия:Възвишена;Алмира:Принцеса;Амая:Нощен дъжд;Анабела:Красива;Анелия:Ангел;Анисия:Завършена;Ария:Мелодия;Белослава:Бяла слава;Бояна:Богата;Вая:Силна;Вивиан:Жива;Даная:Даная;Дара:Дар;Дея:Богиня;Елия:Илия;Елина:Гъркиня;Елица:Ела;Зара:Цвете;Ивайла:Вълк;Изабела:Бог е клетва;Ина:Силна вода;Калина:Калина;Кая:Земя;Крисия:Християнка;Лея:Лъвица;Лора:Лавър;Луиза:Славен войн;Марая:Мария;Мелани:Тъмна;Микаела:Коя е като Бог;Мира:Мир;Моника:Самотна;Ная:Нова;Никол:Победа на народа;Ния:Блясък;Паола:Малка;Прея:Любима;Рая:Рай;Ренета:Възраждаща се;Савина:Сабинянка;Сандра:Защитница;Селена:Луна;Сиана:Бог е милостив;Симона:Бог чува;Стефани:Венец;Тали:Роса;Теа:Богиня;Тиана:Принцеса;Яра:Силна;Абигейл:Бащина радост;Агата:Добра;Аделаида:Благородна;Айви:Бръшлян;Айлийн:Светлина;Айша:Жива;Аксела:Баща на мира;Алана:Красива;Александра:Защитница;Алесандра:Защитница;Алесия:Защитница;Алика:Истина;Алиса:Истина;Алисън:Благородна;Алма:Душа;Алона:Дъб;Алтея:Лечителка;Аманда:Достойна за любов;Амбър:Кехлибар;Амели:Трудолюбива;Анаис:Благодат;Анастасия:Възкресение;Анджелина:Ангел;Анджела:Ангел;Анита:Благодат;Аннабел:Красива Анна;Антонела:Ценна;Аня:Благодат;Април:Отваряща;Арабела:Олтар;Ариана:Най-свeта;Ариел:Божи лъв;Арлин:Обещание;Астрид:Божествена сила;Атина:Мъдрост;Ауда:Богата;Аудра:Благородна сила;Аурелия:Златна;Аурора:Зора;Барбара:Чужденка;Беатрис:Пътешественичка;Беки:Връзка;Белинда:Красива змия;Белла:Красива;Бернадет:Смела като мечка;Берил:Скъпоценен камък;Бес:Бог е моята клетва;Бет:Бог е моята клетва;Бетси:Бог е моята клетва;Бети:Бог е моята клетва;Били:Решителна защитница;Бланш:Бяла;Бони:Красива;Бренда:Меч;Бриджит:Сила;Британи:От Британия;Брук:Поток;Бянка:Бяла;Валеска:Славна владетелка;Ванда:Скитница;Ванеса:Пеперуда;Велма:Решителна защитница;Вера:Вяра;Вероника:Истински образ;Вивиан:Жива;Виктория:Победа;Виола:Теменужка;Вирджиния:Девица;Габриела:Божия сила;Гейл:Баща на радостта;Гертруд:Силно копие;Глория:Слава;Грейс:Благодат;Грета:Перла;Гуен:Бяла;Гленда:Чиста;Дакота:Приятел;Далия:Далия;Дана:Съдия;Даниела:Бог е съдия;Дафне:Лавър;Деби:Пчела;Дебора:Пчела;Делфин:Делфин;Дениз:На Дионис;Дженифър:Бяла вълна;Джесика:Богатство;Джил:Млада;Джина:Кралица;Джоан:Бог е милостив;Джоди:Хвалена;Джозефин:Бог ще прибави;Джой:Радост;Джойс:Господар;Джуди:Хвалена;Джудит:Хвалена;Джулия:Млада;Джун:Юни;Даяна:Божествена;Долорес:Скръб;Доминика:Господня;Дона:Дама;Дора:Дар;Дорис:Дар;Дороти:Божи дар;Ева:Живот;Еванджелин:Блага вест;Евелин:Живот;Едит:Богатство;Една:Удоволствие;Ейми:Любима;Ейприл:Април;Елеанор:Светлина;Елена:Светлина;Елиза:Бог е моята клетва;Елизабет:Бог е моята клетва;Елинор:Светлина;Елиса:Бог е моята клетва;Елисон:Благородна;Елла:Всички;Еллен:Светлина;Елоиз:Здрава;Елси:Бог е моята клетва;Елспет:Бог е моята клетва;Еми:Цяла;Емили:Съперничка;Емилия:Съперничка;Емма:Цяла;Ерика:Вечна владетелка;Ерин:Ирландия;Ерма:Цяла;Естел:Звезда;Естер:Звезда;Етел:Благородна;Жаклин:Заместник;Жана:Бог е милостив;Жанет:Бог е милостив;Женевиев:Бяла вълна;Жермен:Братска;Жизел:Залог;Жозефин:Бог ще прибави;Жулиет:Млада;Жустин:Справедлива;Зара:Принцеса;Зелда:Сива девица;Зое:Живот;Зои:Живот;Ива:Бог е милостив;Ивет:Тисово дърво;Ивон:Тисово дърво;Ида:Трудолюбива;Изабел:Бог е моята клетва;Изабела:Бог е моята клетва;Илзе:Бог е моята клетва;Илона:Светлина;Имоджен:Момиче;Ина:Силна вода;Ингрид:Красива;Инес:Чиста;Ирен:Мир;Ирина:Мир;Ирис:Дъга;Ирма:Цяла;Йоланда:Виолетова;Йордана:Спускаща се;Кайла:Венец;Кейтлин:Чиста;Камил:Служителка на храма;Кара:Приятел;Карен:Чиста;Карин:Чиста;Карина:Мила;Карла:Свободна;Карли:Свободна;Кармен:Песен;Карол:Свободна;Каролин:Свободна;Касандра:Пророчица;Каси:Защитница;Катрин:Чиста;Кей:Радост;Кейт:Чиста;Кейти:Чиста;Кели:Война;Кендра:Висша сила;Кери:Тъмна;Ким:Кралска поляна;Кимбърли:Кралска поляна;Кира:Господарка;Кирстен:Християнка;Кит:Христоносец;Клара:Ясна;Клариса:Ясна;Клео:Слава;Клеър:Ясна;Клои:Зеленина;Колет:Победа на народа;Колийн:Момиче;Кони:Постоянна;Кора:Девица;Корина:Девица;Кортни:Къс нос;Криста:Християнка;Кристен:Християнка;Кристи:Християнка;Кристин:Християнка;Кристина:Християнка;Кристал:Кристал;Лана:Светлина;Лара:Защитница;Лариса:Чайка;Лаура:Лавър;Лейла:Нощ;Лена:Светлина;Леона:Лъвица;Лесли:Градина от джел;Летисия:Радост;Либи:Бог е моята клетва;Лидия:Лидийка;Лиз:Бог е моята клетва;Лиза:Бог е моята клетва;Лизбет:Бог е моята клетва;Лила:Нощ;Лили:Лилия;Лилиан:Лилия;Лилит:Нощ;Лина:Нежна;Линда:Красива;Линдзи:Остров на липите;Лиса:Бог е моята клетва;Лола:Скръб;Лора:Лавър;Лорелай:Скала на елфите;Лорета:Лавър;Лори:Лавър;Лорна:Лисица;Лота:Свободна;Лоти:Свободна;Лу:Славен войн;Луиза:Славен войн;Луиз:Славен войн;Луси:Светлина;Лусил:Светлина;Лусинда:Светлина;Лучия:Светлина;Лидия:Лидийка;Лин:Езеро;Люн:Луна;Мабел:Красива;Магдалена:От Магдала;Маделин:От Магдала;Мадисън:Син на Мод;Майра:Смирна;Майя:Майка;Максин:Най-голяма;Малала:Тъжна;Малика:Кралица;Манди:Достойна за любов;Мануела:Бог е с нас;Мара:Горчива;Маргарет:Перла;Марго:Перла;Марджъри:Перла;Мариана:Мария и Ана;Мариан:Мария и Ана;Марибел:Красива Мария;Мариета:Мария;Марилин:Мария и Лин;Марина:Морска;Мариса:На морето;Мария:Любима;Марла:Любима;Марлен:Мария и Магдалена;Марта:Господарка;Мартина:Войнствена;Матилда:Силна в битка;Меган:Перла;Мей:Май;Мейбъл:Красива;Мелани:Тъмна;Мелинда:Медена;Мелиса:Пчела;Мел:Приятел;Мередит:Велик владетел;Мери:Любима;Мерилин:Мария и Лин;Мерседес:Милост;Мила:Мила;Милдред:Нежна сила;Мили:Трудолюбива;Милисент:Силна в работа;Мими:Любима;Мина:Любов;Минерва:Мъдрост;Минна:Любов;Мира:Мир;Миранда:Чудна;Мириам:Любима;Мишел:Коя е като Бог;Мойра:Съдба;Моли:Море от горчивина;Мона:Благородна;Моника:Съветник;Моргана:Морски кръг;Мюриел:Морска светлина;Надя:Надежда;Нана:Милост;Нанси:Милост;Наоми:Приятна;Натали:Рождество;Наталия:Рождество;Наташа:Рождество;Нели:Светлина;Нери:Моя свещ;Никол:Победа на народа;Николет:Победа на народа;Нина:Милост;Ноел:Коледа;Нола:Благородна;Нора:Почит;Норма:Модел;Одета:Богатство;Одри:Благородна сила;Оливия:Маслина;Олга:Свята;Олимпия:Небесна;Офелия:Помощ;Памела:Мед;Паола:Малка;Патриша:Благородна;Патриция:Благородна;Паула:Малка;Паулина:Малка;Пенелопе:Тъкачка;Пени:Тъкачка;Петра:Камък;Пия:Благочестива;Поли:Малка;Присила:Стара;Прудънс:Предвидливост;Рейчъл:Овца;Рамона:Мъдър защитник;Ракел:Овца;Ребека:Връзка;Реджина:Кралица;Рене:Възраждаща се;Ренета:Възраждаща се;Рея:Поток;Рита:Перла;Роберта:Светла слава;Робин:Светла слава;Роза:Роза;Розали:Роза;Розалин:Роза;Розамунд:Роза на света;Розана:Роза на благодатта;Розмари:Роса на морето;Роксана:Зора;Роми:Римлянка;Рона:Печат;Рони:Образ;Роса:Роса;Росита:Роса;Роуан:Офика;Руби:Рубин;Рут:Приятелка;Сабина:Сабинянка;Сабрина:От реката;Сади:Принцеса;Сали:Принцеса;Саломе:Мир;Саманта:Слушаща;Сандра:Защитница;Сара:Принцеса;Сарина:Принцеса;Саша:Защитница;Светлана:Светла;Селена:Луна;Селина:Луна;Селма:Божи шлем;Серафина:Пламенна;Серена:Спокойна;Сесил:Сляпа;Сесилия:Сляпа;Сибила:Пророчица;Силва:Гора;Силвана:Горска;Силвия:Горска;Симон:Слушаща;Синди:Луна;Синтия:Луна;Скарлет:Алено;Соня:Мъдрост;Софи:Мъдрост;София:Мъдрост;Стейси:Възкресение;Стела:Звезда;Стефани:Венец;Сузан:Лилия;Сузана:Лилия;Сю:Лилия;Сюзан:Лилия;Табита:Сърна;Талиа:Цъфтяща;Тамара:Палма;Тами:Палма;Таня:Кралица на феите;Тара:Кула;Татяна:Кралица на феите;Текла:Слава на Бога;Телма:Воля;Теодора:Божи дар;Тереза:Ловец;Тес:Жътварка;Теса:Жътварка;Тиана:Християнка;Тина:Християнка;Тифани:Богуявление;Тоня:Ценна;Трейси:Храбра;Тринити:Троица;Триша:Благородна;Уилма:Решителна защитница;Уинифред:Бял мир;Уитни:Бял остров;Уна:Агне;Урсула:Мечка;Фей:Фея;Фейт:Вяра;Фелисити:Щастие;Фелисия:Щастлива;Филипа:Любителка на конете;Фиона:Бяла;Флора:Цвете;Флоренс:Цъфтяща;Фран:Свободна;Франсин:Свободна;Франсис:Французойка;Фреда:Мир;Фрида:Мир;Хазе:Лешник;Хана:Благодат;Хариет:Владетелка на дома;Хейди:Благородна;Хейли:Поляна със сено;Хелън:Светлина;Хелена:Светлина;Хенриета:Владетелка на дома;Хестър:Звезда;Хилда:Битка;Хилари:Весела;Холи:Джел;Хоуп:Надежда;Христина:Християнка;Черил:Любима;Чери:Вишна;Шантал:Каменна;Шарлин:Свободна;Шарлот:Свободна;Шарън:Равнина;Шейла:Сляпа;Шели:Скала;Шерил:Любима;Шърли:Светла поляна;Едит:Богатство;Ейми:Любима;Ейдриън:Тъмна;Ейлин:Светлина;Елинор:Светлина;Елиза:Бог е клетва;Ема:Цяла;Емили:Съперничка;Ерика:Вечна;Естер:Звезда;Юдита:Хвалена;Южени:Благородна;Юлиана:Юлиева;Юлия:Юлиева;Юстина:Справедлива;Яна:Бог е милостив;Янита:Бог е милостив;Ясмин:Жасмин",
+            modern_f: "Ема:Цяла;Мия:Моя;Сара:Принцеса;Леа:Лъвица;Лили:Лилиум;Изабела:Обещание;Нора:Чест;Ева:Живот;Анна:Благодат;Джулия:Млада;Алис:Благородна;Карина:Скъпа;Мелиса:Пчела;Никол:Победа;Бела:Красива;Лора:Лавър;Дара:Дар;Ния:Цел;Амелия:Трудолюбива;Софи:Мъдрост;Оливия:Маслина;Емили:Съперничка;Ава:Живот;Шарлот:Свободна;Хана:Благодат;Зоя:Живот;Клара:Ясна;Луна:Луна;Мая:Илюзия;Натали:Рождество;Стела:Звезда;Вики:Победа;Елина:Светлина;Ивет:Тисово дърво;Кая:Чиста;Лара:Защитница;Мира:Мир;Неда:Родена в неделя;Поли:Малка;Рая:Рай;Симон:Бог чува;Теа:Богиня;Яна:Бог е милостив;Алина:Благородна;Бриджит:Силна;Ванеса:Пеперуда;Глория:Слава;Деа:Богиня;Елвира:Истина;Жизел:Залог;Ина:Силна;Кейт:Чиста;Лиза:Бог е клетва;Мона:Желание;Ника:Победа;Адел:Благородна;Адриана:Тъмна;Алекса:Защитница;Алми:Хранителна;Аманда:Достойна;Амбър:Кехлибар;Амели:Трудолюбива;Андреа:Смела;Аника:Благодат;Антоанета:Ценна;Ариана:Свята;Беатрис:Носеща щастие;Бети:Бог е клетва;Бланка:Бяла;Бренда:Меч;Валерия:Силна;Вероника:Образ;Вивиан:Жива;Габи:Божия сила;Грейс:Благодат;Дария:Богата;Дебора:Пчела;Джесика:Богатство;Джина:Кралица;Джоана:Бог е милостив;Джулиана:Млада;Дина:Съдена;Доротея:Божи дар;Евелин:Живот;Едит:Богатство;Елеонор:Светлина;Елиза:Бог е клетва;Елинор:Светлина;Емануела:Бог е с нас;Ерика:Вечна;Естер:Звезда;Жанет:Бог е милостив;Жозефина:Бог прибавя;Зара:Принцеса;Зинаида:Божествена;Иванина:Бог е милостив;Ивон:Тисово дърво;Изабел:Бог е клетва;Илона:Светлина;Ингрид:Красива;Инес:Чиста;Ирена:Мир;Ирма:Цяла;Йоана:Бог е милостив;Карла:Свободна;Каролина:Свободна;Касандра:Пророчица;Кели:Война;Киара:Ясна;Клара:Ясна;Клео:Слава;Кора:Девица;Кристиана:Християнка;Лаура:Лавър;Лена:Светлина;Леона:Лъвица;Летисия:Радост;Лиана:Ляна;Линда:Красива;Лола:Скръб;Лорета:Лавър;Луиза:Славен;Луси:Светлина;Маделин:От Магдала;Майя:Майка;Мануела:Бог е с нас;Марго:Перла;Мариса:На морето;Меган:Перла;Мелани:Тъмна;Мелинда:Медена;Мишел:Коя е като Бог;Моли:Море;Надя:Надежда;Наоми:Приятна;Агнес:Чиста;Айрис:Дъга;Алба:Бяла;Алисия:Благородна;Амалия:Трудолюбива;Анабел:Красива Ана;Анет:Благодат;Астрид:Божествена;Белина:Бяла;Берта:Блестяща;Бианка:Бяла;Валерия:Силна;Виола:Теменужка;Дафне:Лавър;Денис:Дионис;Долорес:Скръб;Еванджелина:Блага вест;Жаклин:Следваща;Зелма:Божи шлем;Ивон:Тис;Илка:Светлина;Катрин:Чиста;Клементина:Милостива;Летисия:Радост;Лив:Живот;Матилда:Силна;Миранда:Чудна;Никол:Победа;Офелия:Помощ;Памела:Мед;Патрисия:Благородна;Ребека:Връзка;Роберта:Слава;Сабрина:От реката;Синтия:Луна;Талиа:Цъфтяща;Урсула:Мечка;Флоренс:Цъфтяща;Хилда:Битка;Челси:Пристанище;Шила:Сляпа;Юни:Млада;Аврора:Зора;Ада:Благородна;Айла:Лунна светлина;Алексия:Защитница;Алия:Възвишена;Алмира:Принцеса;Амая:Нощен дъжд;Анабела:Красива;Анелия:Ангел;Анисия:Завършена;Ария:Мелодия;Белослава:Бяла слава;Бояна:Богата;Вая:Силна;Вивиан:Жива;Даная:Даная;Дара:Дар;Дея:Богиня;Елия:Илия;Елина:Гъркиня;Елица:Ела;Зара:Цвете;Ивайла:Вълк;Изабела:Бог е клетва;Ина:Силна вода;Калина:Калина;Кая:Земя;Крисия:Християнка;Лея:Лъвица;Лора:Лавър;Луиза:Славен войн;Марая:Мария;Мелани:Тъмна;Микаела:Коя е като Бог;Мира:Мир;Моника:Самотна;Ная:Нова;Никол:Победа на народа;Ния:Блясък;Паола:Малка;Прея:Любима;Рая:Рай;Ренета:Възраждаща се;Савина:Сабинянка;Сандра:Защитница;Селена:Луна;Сиана:Бог е милостив;Симона:Бог чува;Стефани:Венец;Тали:Роса;Теа:Богиня;Тиана:Принцеса;Яра:Силна;Абигейл:Бащина радост;Агата:Добра;Аделаида:Благородна;Айви:Бръшлян;Айлийн:Светлина;Айша:Жива;Аксела:Баща на мира;Алана:Красива;Александра:Защитница;Алесандра:Защитница;Алесия:Защитница;Алика:Истина;Алиса:Истина;Алисън:Благородна;Алма:Душа;Алона:Дъб;Алтея:Лечителка;Аманда:Достойна за любов;Амбър:Кехлибар;Амели:Трудолюбива;Анаис:Благодат;Анастасия:Възкресение;Анджелина:Ангел;Анджела:Ангел;Анита:Благодат;Аннабел:Красива Анна;Антонела:Ценна;Аня:Благодат;Април:Отваряща;Арабела:Олтар;Ариана:Най-свeта;Ариел:Божи лъв;Арлин:Обещание;Астрид:Божествена сила;Атина:Мъдрост;Ауда:Богата;Аудра:Благородна сила;Аурелия:Златна;Аурора:Зора;Барбара:Чужденка;Беатрис:Пътешественичка;Беки:Връзка;Белинда:Красива змия;Белла:Красива;Бернадет:Смела като мечка;Берил:Скъпоценен камък;Бес:Бог е моята клетва;Бет:Бог е моята клетва;Бетси:Бог е моята клетва;Бети:Бог е моята клетва;Били:Решителна защитница;Бланш:Бяла;Бони:Красива;Бренда:Меч;Бриджит:Сила;Британи:От Британия;Брук:Поток;Бянка:Бяла;Валеска:Славна владетелка;Ванда:Скитница;Ванеса:Пеперуда;Велма:Решителна защитница;Вера:Вяра;Вероника:Истински образ;Вивиан:Жива;Виктория:Победа;Виола:Теменужка;Вирджиния:Девица;Габриела:Божия сила;Гейл:Баща на радостта;Гертруд:Силно копие;Глория:Слава;Грейс:Благодат;Грета:Перла;Гуен:Бяла;Гленда:Чиста;Дакота:Приятел;Далия:Далия;Дана:Съдия;Даниела:Бог е съдия;Дафне:Лавър;Деби:Пчела;Дебора:Пчела;Делфин:Делфин;Дениз:На Дионис;Дженифър:Бяла вълна;Джесика:Богатство;Джил:Млада;Джина:Кралица;Джоан:Бог е милостив;Джоди:Хвалена;Джозефин:Бог ще прибави;Джой:Радост;Джойс:Господар;Джуди:Хвалена;Джудит:Хвалена;Джулия:Млада;Джун:Юни;Даяна:Божествена;Долорес:Скръб;Доминика:Господня;Дона:Дама;Дора:Дар;Дорис:Дар;Дороти:Божи дар;Ева:Живот;Еванджелин:Блага вест;Евелин:Живот;Едит:Богатство;Една:Удоволствие;Ейми:Любима;Ейприл:Април;Елеанор:Светлина;Елена:Светлина;Елиза:Бог е моята клетва;Елизабет:Бог е моята клетва;Елинор:Светлина;Елиса:Бог е моята клетва;Елисон:Благородна;Елла:Всички;Еллен:Светлина;Елоиз:Здрава;Елси:Бог е моята клетва;Елспет:Бог е моята клетва;Еми:Цяла;Емили:Съперничка;Емилия:Съперничка;Емма:Цяла;Ерика:Вечна владетелка;Ерин:Ирландия;Ерма:Цяла;Естел:Звезда;Естер:Звезда;Етел:Благородна;Жаклин:Заместник;Жана:Бог е милостив;Жанет:Бог е милостив;Женевиев:Бяла вълна;Жермен:Братска;Жизел:Залог;Жозефин:Бог ще прибави;Жулиет:Млада;Жустин:Справедлива;Зара:Принцеса;Зелда:Сива девица;Зое:Живот;Зои:Живот;Ива:Бог е милостив;Ивет:Тисово дърво;Ивон:Тисово дърво;Ида:Трудолюбива;Изабел:Бог е моята клетва;Изабела:Бог е моята клетва;Илзе:Бог е моята клетва;Илона:Светлина;Имоджен:Момиче;Ина:Силна вода;Ингрид:Красива;Инес:Чиста;Ирен:Мир;Ирина:Мир;Ирис:Дъга;Ирма:Цяла;Йоланда:Виолетова;Йордана:Спускаща се;Кайла:Венец;Кейтлин:Чиста;Камил:Служителка на храма;Кара:Приятел;Карен:Чиста;Карин:Чиста;Карина:Мила;Карла:Свободна;Карли:Свободна;Кармен:Песен;Карол:Свободна;Каролин:Свободна;Касандра:Пророчица;Каси:Защитница;Катрин:Чиста;Кей:Радост;Кейт:Чиста;Кейти:Чиста;Кели:Война;Кендра:Висша сила;Кери:Тъмна;Ким:Кралска поляна;Кимбърли:Кралска поляна;Кира:Господарка;Кирстен:Християнка;Кит:Христоносец;Клара:Ясна;Клариса:Ясна;Клео:Слава;Клеър:Ясна;Клои:Зеленина;Колет:Победа на народа;Колийн:Момиче;Кони:Постоянна;Кора:Девица;Корина:Девица;Кортни:Къс нос;Криста:Християнка;Кристен:Християнка;Кристи:Християнка;Кристин:Християнка;Кристина:Християнка;Кристал:Кристал;Лана:Светлина;Лара:Защитница;Лариса:Чайка;Лаура:Лавър;Лейла:Нощ;Лена:Светлина;Леона:Лъвица;Лесли:Градина от джел;Летисия:Радост;Либи:Бог е моята клетва;Лидия:Лидийка;Лиз:Бог е моята клетва;Лиза:Бог е моята клетва;Лизбет:Бог е моята клетва;Лила:Нощ;Лили:Лилия;Лилиан:Лилия;Лилит:Нощ;Лина:Нежна;Линда:Красива;Линдзи:Остров на липите;Лиса:Бог е моята клетва;Лола:Скръб;Лора:Лавър;Лорелай:Скала на елфите;Лорета:Лавър;Лори:Лавър;Лорна:Лисица;Лота:Свободна;Лоти:Свободна;Лу:Славен войн;Луиза:Славен войн;Луиз:Славен войн;Луси:Светлина;Лусил:Светлина;Лусинда:Светлина;Лучия:Светлина;Лидия:Лидийка;Лин:Езеро;Люн:Луна;Мабел:Красива;Магдалена:От Магдала;Маделин:От Магдала;Мадисън:Син на Мод;Майра:Смирна;Майя:Майка;Максин:Най-голяма;Малала:Тъжна;Малика:Кралица;Манди:Достойна за любов;Мануела:Бог е с нас;Мара:Горчива;Маргарет:Перла;Марго:Перла;Марджъри:Перла;Мариана:Мария и Ана;Мариан:Мария и Ана;Марибел:Красива Мария;Мариета:Мария;Марилин:Мария и Лин;Марина:Морска;Мариса:На морето;Мария:Любима;Марла:Любима;Марлен:Мария и Магдалена;Марта:Господарка;Мартина:Войнствена;Матилда:Силна в битка;Меган:Перла;Мей:Май;Мейбъл:Красива;Мелани:Тъмна;Мелинда:Медена;Мелиса:Пчела;Мел:Приятел;Мередит:Велик владетел;Мери:Любима;Мерилин:Мария и Лин;Мерседес:Милост;Мила:Мила;Милдред:Нежна сила;Мили:Трудолюбива;Милисент:Силна в работа;Мими:Любима;Мина:Любов;Минерва:Мъдрост;Минна:Любов;Мира:Мир;Миранда:Чудна;Мириам:Любима;Мишел:Коя е като Бог;Мойра:Съдба;Моли:Море от горчивина;Мона:Благородна;Моника:Съветник;Моргана:Морски кръг;Мюриел:Морска светлина;Надя:Надежда;Нана:Милост;Нанси:Милост;Наоми:Приятна;Натали:Рождество;Наталия:Рождество;Наташа:Рождество;Нели:Светлина;Нери:Моя свещ;Никол:Победа на народа;Николет:Победа на народа;Нина:Милост;Ноел:Коледа;Нола:Благородна;Нора:Почит;Норма:Модел;Одета:Богатство;Одри:Благородна сила;Оливия:Маслина;Олга:Свята;Олимпия:Небесна;Офелия:Помощ;Памела:Мед;Паола:Малка;Патриша:Благородна;Патриция:Благородна;Паула:Малка;Паулина:Малка;Пенелопе:Тъкачка;Пени:Тъкачка;Петра:Камък;Пия:Благочестива;Поли:Малка;Присила:Стара;Прудънс:Предвидливост;Рейчъл:Овца;Рамона:Мъдър защитник;Ракел:Овца;Ребека:Връзка;Реджина:Кралица;Рене:Възраждаща се;Ренета:Възраждаща се;Рея:Поток;Рита:Перла;Роберта:Светла слава;Робин:Светла слава;Роза:Роза;Розали:Роза;Розалин:Роза;Розамунд:Роза на света;Розана:Роза на благодатта;Розмари:Роса на морето;Роксана:Зора;Роми:Римлянка;Рона:Печат;Рони:Образ;Роса:Роса;Росита:Роса;Роуан:Офика;Руби:Рубин;Рут:Приятелка;Сабина:Сабинянка;Сабрина:От реката;Сади:Принцеса;Сали:Принцеса;Саломе:Мир;Саманта:Слушаща;Сандра:Защитница;Сара:Принцеса;Сарина:Принцеса;Саша:Защитница;Светлана:Светла;Селена:Луна;Селина:Луна;Селма:Божи шлем;Серафина:Пламенна;Серена:Спокойна;Сесил:Сляпа;Сесилия:Сляпа;Сибила:Пророчица;Силва:Гора;Силвана:Горска;Силвия:Горска;Симон:Слушаща;Синди:Луна;Синтия:Луна;Скарлет:Алено;Соня:Мъдрост;Софи:Мъдрост;София:Мъдрост;Стейси:Възкресение;Стела:Звезда;Стефани:Венец;Сузан:Лилия;Сузана:Лилия;Сю:Лилия;Сюзан:Лилия;Табита:Сърна;Талиа:Цъфтяща;Тамара:Палма;Тами:Палма;Таня:Кралица на феите;Тара:Кула;Татяна:Кралица на феите;Текла:Слава на Бога;Телма:Воля;Теодора:Божи дар;Тереза:Ловец;Тес:Жътварка;Теса:Жътварка;Тиана:Християнка;Тина:Християнка;Тифани:Богуявление;Тоня:Ценна;Трейси:Храбра;Тринити:Троица;Триша:Благородна;Уилма:Решителна защитница;Уинифред:Бял мир;Уитни:Бял остров;Уна:Агне;Урсула:Мечка;Фей:Фея;Фейт:Вяра;Фелисити:Щастие;Фелисия:Щастлива;Филипа:Любителка на конете;Фиона:Бяла;Флора:Цвете;Флоренс:Цъфтяща;Фран:Свободна;Франсин:Свободна;Франсис:Французойка;Фреда:Мир;Фрида:Мир;Хазе:Лешник;Хана:Благодат;Хариет:Владетелка на дома;Хейди:Благородна;Хейли:Поляна със сено;Хелън:Светлина;Хелена:Светлина;Хенриета:Владетелка на дома;Хестър:Звезда;Хилда:Битка;Хилари:Весела;Холи:Джел;Хоуп:Надежда;Христина:Християнка;Черил:Любима;Чери:Вишна;Шантал:Каменна;Шарлин:Свободна;Шарлот:Свободна;Шарън:Равнина;Шейла:Сляпа;Шели:Скала;Шерил:Любима;Шърли:Светла поляна;Едит:Богатство;Ейми:Любима;Ейдриън:Тъмна;Ейлин:Светлина;Елинор:Светлина;Елиза:Бог е клетва;Ема:Цяла;Емили:Съперничка;Ерика:Вечна;Естер:Звезда;Юдита:Хвалена;Южени:Благородна;Юлиана:Юлиева;Юлия:Юлиева;Юстина:Справедлива;Яна:Бог е милостив;Янита:Бог е милостив;Ясмин:Жасмин",
             nature_m: "Явор:Явор;Огнян:Огън;Камен:Камък;Здравко:Здрав;Ясен:Ясен;Цветан:Цвете;Малин:Малина;Върбан:Върба;Горан:Гора;Елхо:Ела;Житомир:Живот;Иглико:Иглика;Калин:Калина;Лозан:Лоза;Невен:Невен;Росен:Росен;Трендафил:Роза;Фидан:Фиданка;Храстко:Храст;Цветко:Цвете;Череш:Череша;Ягодин:Ягода;Детелин:Детелина;Звезделин:Звезда;Румен:Божур;Бреза:Бреза;Бук:Бук;Венелин:Венец;Вишня:Вишна;Глог:Глог;Гроздан:Грозде;Дафин:Лавър;Дрян:Дрян;Дъб:Дъб;Елхи:Ела;Жасмин:Жасмин;Здравец:Здравец;Имел:Имел;Карамфил:Карамфил;Китен:Китай;Кокиче:Кокиче;Крин:Лилия;Лазар:Лале;Лилян:Лилия;Люляк:Люляк;Мак:Мак;Маргарит:Перла;Момчил:Млад;Нарцис:Нарцис;Орхидей:Орхидея;Пелин:Пелин;Перун:Перуника;Планин:Планина;Рали:Ралица;Синчец:Синчец;Смилен:Смил;Снежец:Сняг;Сокол:Сокол;Стефан:Венец;Теменуг:Теменуга;Тинтява:Тинтява;Трепет:Трепетлика;Трън:Трън;Хвойна:Хвойна;Цветозар:Цветна зора;Цветомил:Мил;Цветослав:Слава;Чайка:Чайка;Черен:Черен;Чинар:Чинар;Чубри:Чубрица;Шип:Шипка;Щур:Щурец;Яблан:Ябълка;Балкан:Планина;Божур:Божур;Бор:Бор;Босилек:Босилек;Бряст:Бряст;Вълчан:Вълк;Върби:Върба;Горицвет:Цвете;Гълъб:Гълъб;Детелин:Детелина;Един:Един;Елен:Елен;Житен:Жито;Здравец:Здраве;Зюмбюл:Зюмбюл;Извор:Извор;Калин:Калина;Кестен:Кестен;Коса:Кос;Лист:Лист;Ловец:Ловец;Орел:Орел;Рид:Рид;Росен:Роса;Ручей:Ручей;Светлин:Светлина;Славей:Славей;Слънчезар:Слънце;Снежан:Сняг;Сокол:Сокол;Трепет:Трепет;Хълм:Хълм;Цвят:Цвят;Ябълка:Ябълка;Ягод:Ягода",
             nature_f: "Роза:Роза;Виолета:Теменужка;Маргарита:Перла;Ива:Върба;Лилия:Невинност;Иглика:Първо цвете;Невена:Невен;Далия:Далия;Жасмина:Жасмин;Камелия:Камелия;Цветелина:Цветна;Малина:Сладка;Биляна:Билка;Върбинка:Върба;Грозданка:Грозде;Детелина:Детелина;Елица:Ела;Жасмин:Жасмин;Здравка:Здравец;Калина:Калина;Латинка:Латинка;Мина:Цвете;Незабравка:Цвете;Орхидея:Орхидея;Петunia:Петуния;Ралица:Орион;Синчец:Синчец;Теменуга:Теменужка;Флора:Цвете;Хризантема:Златно цвете;Цвета:Цвете;Ясмина:Жасмин;Бегония:Бегония;Гергина:Гергина;Диляна:Копър;Ела:Дърво;Жулиета:Млада;Зюмбюла:Зюмбюл;Ирис:Дъга;Китка:Букет;Акация:Акация;Анемоне:Вятърно цвете;Астра:Звезда;Ахинора:Ухание;Божура:Божур;Босилека:Босилек;Бреза:Бреза;Бръшляна:Бръшлян;Венета:Венец;Вербена:Върбинка;Вероника:Великденче;Вишна:Вишна;Върба:Върба;Галя:Гергина;Гардения:Гардения;Гера:Гергина;Гергана:Гергина;Делян:Билка;Дряна:Дрян;Ели:Ела;Елха:Ела;Здрава:Здравец;Зеленика:Зеленика;Имре:Цвете;Йолита:Теменужка;Кала:Красива;Карамфила:Карамфил;Кестен:Кестен;Кокиче:Кокиче;Криси:Хризантема;Лавандула:Лавандула;Лиана:Лиана;Лила:Люляк;Лиля:Лилия;Лин:Лен;Лоза:Лоза;Лотос:Лотос;Люляка:Люляк;Магнолия:Магнолия;Мака:Мак;Маслина:Маслина;Мелиса:Маточина;Мента:Мента;Мирта:Мирта;Момина:Момина сълза;Надежда:Трицветна теменуга;Нарцис:Нарцис;Невяна:Невен;Оливия:Маслина;Палма:Палма;Петруния:Петуния;Пламена:Пламък;Примула:Иглика;Рада:Радост;Розалина:Роза;Розалия:Роза;Рози:Роза;Розмари:Роса;Ружа:Ружа;Салвия:Градински чай;Смиляна:Смил;Снежанка:Кокиче;София:Мъдрост;Стефания:Венец;Сузана:Лилия;Тамара:Палма;Теменужка:Теменуга;Тинтява:Тинтява;Фрезия:Фрезия;Хиацинт:Зюмбюл;Хортензия:Градина;Цветанка:Цвете;Череша:Череша;Ябълка:Ябълка;Ягода:Ягода;Алпина:Планинска;Бела:Бяла;Босилка:Босилек;Бряста:Бряст;Вечерница:Вечер;Виола:Теменуга;Герда:Клонка;Горица:Гора;Дафина:Дафинов лист;Детелина:Детелина;Дюля:Дюля;Елхица:Елха;Жанет:Жълт;Зорница:Зора;Иглика:Иглика;Карамфила:Карамфил;Китка:Китка;Къпина:Къпина;Лавандула:Лавандула;Лилия:Лилия;Лозина:Лоза;Мака:Мак;Мирта:Мирта;Морава:Трева;Невенка:Невен;Олива:Маслина;Перла:Перла;Праскова:Праскова;Пчела:Пчела;Росица:Роса;Светла:Светлина;Славейка:Славей;Слънчезара:Слънце;Снежина:Сняг;Флорентина:Цъфтяща;Хризантема:Хризантема;Череша:Череша;Ябълка:Ябълка",
             
@@ -394,7 +428,6 @@
             rare_f: "Агапия:Любов;Агата:Добра;Аглая:Бляскава;Агнеса:Чиста;Агния:Агне;Адела:Благородна;Аделина:Благородна;Адриана:От Адрия;Аксиния:Чужденка;Акулина:Орлица;Алберта:Блестяща;Алвина:Приятелка;Александрина:Защитница;Алексина:Защитница;Ана:Благодат;Анастасия:Възкресение;Ангелина:Ангел;Андреана:Мъжествена;Анелия:Ангел;Анета:Благодат;Анжеда:Ангел;Анка:Благодат;Антония:Ценна;Анушка:Благодат;Апостола:Пратеник;Арабела:Красива молитва;Ариадна:Свята;Аркадия:Щастлива;Армана:Желание;Артемида:Здрава;Аспасия:Добре дошла;Атанаска:Безсмъртна;Атина:Мъдрост;Аурелия:Златна;Аврора:Зора;Афродита:Родена от пяна;Беата:Щастлива;Бела:Красива;Белослава:Бяла слава;Бенедикта:Благословена;Берта:Блестяща;Бианка:Бяла;Биляна:Билка;Бистра:Ясна;Блага:Блага;Благородна:Благородна;Благуна:Блага;Богдана:Бог дал;Божана:Божия;Божидара:Дар;Бойка:Бой;Боряна:Борец;Босилка:Босилек;Бранимира:Брани мир;Бригита:Силна;Валентина:Здрава;Валерия:Силна;Вангелия:Благовестителка;Варвара:Чужденка;Василка:Царска;Велика:Велика;Величка:Велика;Венера:Любов;Венета:Венец;Венеция:Венеция;Вера:Вяра;Вероника:Истински образ;Весела:Весела;Веселина:Весела;Веска:Весела;Виктория:Победа;Виолета:Теменужка;Вирга:Девица;Виргиния:Девица;Вита:Живот;Виталия:Жизнена;Влада:Власт;Владислава:Владееща слава;Габриела:Божия сила;Гала:Мляко;Галина:Спокойствие;Гана:Благодат;Ганка:Благодат;Гергана:Земеделец;Герда:Защитница;Германа:Брат;Гертруда:Силно копие;Гина:Сребро;Гинка:Сребро;Гизела:Залог;Глория:Слава;Горица:Гора;Грана:Зърно;Грета:Перла;Грозда:Грозде;Гроздана:Грозде;Гълъбина:Гълъб;Далина:Далечна;Дамяна:Покорителка;Дана:Дана;Евдокия:Благоволение;Евпраксия:Процъфтяване;Евсигния:Благочестива;Евталия:Цъфтяща;Евтимия:Благодушна;Екатерина:Чиста;Елеонора:Светлина;Елисавета:Бог е клетва;Емилия:Съперничка;Ермиония:Свързваща;Ефимия:Благочестива;Ефросина:Радост;Зинаида:Божествена;Златка:Златна;Зоя:Живот;Илария:Весела;Илиана:Слънчева;Ина:Силна вода;Иоанна:Бог е милостив;Ираида:Героиня;Ирина:Мир;Исидора:Дар;Иулия:Къдрава;Иулиания:Юлиева;Иустина:Справедлива;Калерия:Зовяща;Калиса:Най-красива;Калиста:Най-красива;Капитолина:Капитолийска;Касиния:Слугиня;Катерина:Чиста;Кера:Госпожа;Кикилия:Сляпа;Кира:Господарка;Кирия:Господарка;Клавдия:Куца;Клеопатра:Слава на бащата;Конкордия:Съгласие;Корнелия:Дрян;Ксантипа:Руса;Ксения:Чужденка;Лариса:Чайка;Лидия:От Лидия;Лукия:Светла;Любов:Любов;Людмила:Любима;Магдалина:От Магдала;Макрина:Слаба;Манефа:Дадена;Маргарита:Перла;Мариам:Огорчена;Мариана:Мария;Марина:Морска;Марица:Река;Мария:Любима;Марта:Господарка;Матрона:Знатна;Мелания:Тъмна;Мелитина:Медена;Минодора:Дар от Луната;Миропия:Правеща миро;Митродора:Дар от майката;Муза:Вдъхновителка;Надежда:Надежда;Наталия:Рождество;Неонила:Млада;Ника:Победа;Нимфодора:Дар от нимфа;Нонна:Девета;Нунехия:Разумна;Олга:Свята;Олимпиада:Небесна;Павла:Малка;Параскева:Петък;Пелагия:Морска;Перпетуя:Вечна;Петрония:Каменна;Платонида:Широка;Поликсения:Много гостоприемна;Полихрония:Дълголетна;Попия:Свещеничка;Пракседа:Дело;Прискила:Стара;Пулхерия:Прекрасна;Раиса:Лека;Рахил:Овца;Ревека:Връзка;Рипсимия:Хвърляща;Руфина:Червенокоса;Сабина:Сабинянка;Саломия:Мирна;Сарра:Принцеса;Светлана:Светла;Севира:Строга;Серафима:Пламенна;Симфороза:Съпътстваща;Сира:Сирийка;Соломония:Мирна;Сосана:Спасителка;Сосипатра:Спасителка;София:Мъдрост;Стефанида:Венец;Сусанна:Лилия;Тавита:Сърна;Таисия:Плодородна;Тамара:Палма;Татяна:Уредителка;Текла:Слава;Теодора:Божи дар;Теодосия:Божи дар;Теоктиста:Създадена от Бога;Теопистия:Вярваща в Бога;Теофания:Богуявление;Теофила:Обичаща Бога;Тереза:Жътварка;Фаина:Сияеща;Феврония:Вечна;Фекла:Слава;Феличе:Щастлива;Фелицата:Щастие;Феодора:Божи дар;Феодосия:Божи дар;Феоктиста:Създадена от Бога;Феопистия:Вярваща в Бога;Феофания:Богуявление;Феофила:Обичаща Бога;Фива:Светла;Филицата:Щастие;Филомена:Любима;Флавия:Руса;Флора:Цвете;Фотина:Светла;Фотиния:Светла;Хариеса:Изящна;Харита:Прелест;Харитина:Благодат;Хиония:Снежна;Христина:Християнка;Христодула:Рабиня на Христа;Цецилия:Сляпа;Юдита:Юдейка;Юлия:Къдрава;Юстина:Справедлива"
         };
 
-        // Parse Database
         const nameDatabase = {};
         for (const key in rawData) {
             nameDatabase[key] = rawData[key].split(';').map(entry => {
@@ -403,10 +436,10 @@
             });
         }
 
-        // --- STATE & UTILS ---
         let sessionRejections = JSON.parse(localStorage.getItem('nomeno_dislikes')) || [];
         let favorites = JSON.parse(localStorage.getItem('nomeno_favorites')) || [];
-        let generatedHistory = new Set(); 
+        let generatedHistory = new Set();
+        let lastGeneratedName = ""; // To check for immediate repetition in shuffle mode
 
         updateFavoritesUI();
 
@@ -418,36 +451,36 @@
             });
         }
 
-        // --- GENERATION ENGINE ---
         function startGeneration(skipAnimation = false) {
-            const delay = skipAnimation ? 500 : 2500;
+            const delay = skipAnimation ? 300 : 2000;
             
             if(!skipAnimation) {
                 document.getElementById('inputSection').classList.add('hidden');
                 document.getElementById('resultSection').classList.add('hidden');
                 document.getElementById('aiLoader').classList.remove('hidden');
+                document.getElementById('aiLoader').classList.add('flex');
 
                 let pct = 0;
                 const interval = setInterval(() => {
-                    pct += Math.floor(Math.random() * 8) + 2;
+                    pct += Math.floor(Math.random() * 12) + 5;
                     if(pct > 100) pct = 100;
                     document.getElementById('percentage').innerText = pct + '%';
                     
-                    const statuses = ["Анализ на фонетика...", "Проверка за поток...", "Традиции (Баби/Дядовци)...", "Фина настройка...", "Нумерология..."];
-                    if(pct % 20 === 0 && pct < 100) {
-                        document.getElementById('aiStatus').innerText = statuses[Math.floor(pct/20)];
+                    const statuses = ["Зареждане на невронната мрежа...", "Анализ на фонетичен поток...", "Проверка на родословието...", "Синхронизиране с фамилията...", "Финална селекция..."];
+                    if(pct % 25 === 0 && pct < 100) {
+                        document.getElementById('aiStatus').innerText = statuses[Math.floor(pct/25)];
                     }
 
                     if(pct === 100) clearInterval(interval);
-                }, delay / 40);
+                }, delay / 20);
             }
 
             setTimeout(() => {
-                generateNameLogic();
+                generateNameLogic(skipAnimation);
             }, delay);
         }
 
-        function generateNameLogic() {
+        function generateNameLogic(isShuffle) {
             const p1 = document.getElementById('parent1').value.trim();
             const p2 = document.getElementById('parent2').value.trim();
             const grandMaM = document.getElementById('grandMaM').value.trim();
@@ -478,15 +511,27 @@
             
             keysToUse.forEach(k => { if(nameDatabase[k]) pool = pool.concat(nameDatabase[k]); });
 
-            // Fallback
+            // Ensure Variety Logic (Phoenix Core)
+            if(originM === 'modern' || originF === 'modern') {
+                 // Dilute common names slightly
+                 if(Math.random() > 0.5) pool = pool.filter(n => n.name.length > 4); // Prefer longer modern names
+            }
+
             if(pool.length < 20) pool = pool.concat(nameDatabase['modern' + genderKey]);
             
-            // Unique Filter
+            // Unique Filter & History
             pool = pool.filter((v,i,a) => a.findIndex(t => t.name === v.name) === i);
             pool = pool.filter(n => !generatedHistory.has(n.name) && !sessionRejections.includes(n.name));
 
+            // Smart Shuffle Logic: Avoid same starting letter as last time if possible
+            if(isShuffle && lastGeneratedName && pool.length > 10) {
+                const lastChar = lastGeneratedName.charAt(0);
+                const filteredPool = pool.filter(n => n.name.charAt(0) !== lastChar);
+                if(filteredPool.length > 0) pool = filteredPool;
+            }
+
             if(pool.length === 0) {
-                generatedHistory.clear();
+                generatedHistory.clear(); // Soft reset
                 pool = pool.concat(nameDatabase['modern' + genderKey]);
             }
 
@@ -495,71 +540,76 @@
             let maxScore = -1000;
             let logicText = "";
 
-            pool.forEach(candidate => {
+            // Shuffle array for randomness base
+            pool.sort(() => Math.random() - 0.5);
+
+            for (let candidate of pool) {
                 let score = 0;
                 let reasons = [];
 
-                // 1. Initial Matching (Reduced)
+                // 1. Initial Matching (Reduced Weight)
                 if(p1 && candidate.name.startsWith(p1[0].toUpperCase())) { score += 5; reasons.push("инициал на майката"); }
                 if(p2 && candidate.name.startsWith(p2[0].toUpperCase())) { score += 5; reasons.push("инициал на бащата"); }
 
-                // 2. Grandparents Matching (High Priority for Tradition)
+                // 2. Grandparents Matching (High Priority)
                 const grandparents = [grandMaM, grandPaM, grandMaD, grandPaD].filter(Boolean);
                 grandparents.forEach(gp => {
                     if (candidate.name.startsWith(gp[0].toUpperCase())) {
                         score += 15;
-                        // Avoid duplicates in reasons
-                        const r = `носи буквичката на баба/дядо ${gp}`;
+                        const r = `наследство от ${gp}`;
                         if (!reasons.includes(r)) reasons.push(r);
                     }
                 });
 
-                // 2. Phonetic Flow with Surname
+                // 3. Phonetic Flow with Surname
                 if(surname) {
                     const lastCharName = candidate.name.slice(-1).toLowerCase();
                     const firstCharSur = surname.charAt(0).toLowerCase();
                     const surLen = surname.length;
                     const nameLen = candidate.name.length;
 
-                    // A. Clash Avoidance
+                    // Clash Avoidance
                     if(lastCharName === firstCharSur) { score -= 15; }
 
-                    // B. Vowel Hiatus Check
-                    const vowels = ['а', 'ъ', 'о', 'у', 'е', 'и'];
-                    if (vowels.includes(lastCharName) && vowels.includes(firstCharSur) && lastCharName === firstCharSur) {
-                         score -= 5; 
+                    // Consonant Cluster Check (Phoenix Core Update)
+                    // If name ends with consonant and surname starts with consonant (heavy sound)
+                    const isConsonant = (c) => !['а','ъ','о','у','е','и','ю','я'].includes(c);
+                    if(isConsonant(lastCharName) && isConsonant(firstCharSur)) {
+                        score -= 5; // Slight penalty for flow
                     }
 
-                    // C. Length Balance
+                    // Length Balance
                     if (surLen < 5 && nameLen > 5) {
                         score += 10;
-                        if (!reasons.includes("ритмичен баланс")) reasons.push("балансира кратката фамилия");
+                        if (!reasons.includes("баланс")) reasons.push("балансира кратката фамилия");
                     }
                     else if (surLen > 8 && nameLen <= 6) {
                         score += 10;
-                        if (!reasons.includes("ритмичен баланс")) reasons.push("олекотява дългата фамилия");
+                        if (!reasons.includes("баланс")) reasons.push("олекотява дългата фамилия");
                     }
                 }
 
-                // 3. Sibling Harmony
+                // 4. Sibling Harmony
                 if(sibling) {
                     if(Math.abs(sibling.length - candidate.name.length) <= 1) { score += 10; }
                     if(sibling[0] === candidate.name[0]) { score += 5; }
                 }
 
-                // 4. Learning Penalty
-                sessionRejections.forEach(badName => {
-                    if(badName[0] === candidate.name[0]) score -= 5;
-                });
+                // 5. Uniqueness Boost (Phoenix Core Update)
+                // Randomly boost score for rarer names to surface hidden gems
+                if (Math.random() > 0.8) {
+                    score += 10;
+                    // reasons.push("уникалност");
+                }
 
                 score += Math.random() * 40; 
 
                 if(score > maxScore) {
                     maxScore = score;
                     bestCandidate = candidate;
-                    logicText = reasons.length > 0 ? `Оптимизирано заради: ${reasons.join(", ")}.` : "Отличен звуков баланс.";
+                    logicText = reasons.length > 0 ? `Оптимизирано заради: ${reasons.join(", ")}.` : "Отличен звуков баланс и стил.";
                 }
-            });
+            }
 
             if(!bestCandidate) bestCandidate = pool[0];
             
@@ -577,9 +627,11 @@
             }
 
             generatedHistory.add(finalName);
+            lastGeneratedName = finalName;
 
             // --- DISPLAY ---
             document.getElementById('aiLoader').classList.add('hidden');
+            document.getElementById('aiLoader').classList.remove('flex');
             document.getElementById('resultSection').classList.remove('hidden');
             document.getElementById('resultSection').classList.add('fade-in');
 
@@ -587,7 +639,7 @@
             document.getElementById('generatedSurname').innerText = surname;
             document.getElementById('nameMeaning').innerText = finalMeaning;
             document.getElementById('nameReason').innerText = logicText;
-            document.getElementById('matchScore').innerText = Math.floor(90 + Math.random() * 9) + "%";
+            document.getElementById('matchScore').innerText = Math.floor(89 + Math.random() * 10) + "%";
 
             // Update DNA Stats
             updateDNA(finalName);
@@ -625,22 +677,15 @@
             }
 
             const meanings = {
-                1: "Лидер, Иноватор",
-                2: "Дипломат, Партньор",
-                3: "Творец, Оптимист",
-                4: "Строител, Практик",
-                5: "Свободен дух, Пътешественик",
-                6: "Защитник, Грижовен",
-                7: "Мистик, Анализатор",
-                8: "Управител, Успешен",
-                9: "Хуманист, Мъдрец"
+                1: "Лидер", 2: "Дипломат", 3: "Творец", 4: "Практик",
+                5: "Пътешественик", 6: "Защитник", 7: "Мистик",
+                8: "Управител", 9: "Хуманист"
             };
 
             document.getElementById('numerologyNum').innerText = sum;
             document.getElementById('numerologyText').innerText = meanings[sum] || "Мистерия";
         }
 
-        // --- FEEDBACK & FAVORITES ---
         function feedback(type) {
             const currentName = document.getElementById('generatedName').innerText;
             if(type === 'dislike') {
@@ -673,19 +718,20 @@
             const list = document.getElementById('favoritesList');
             const count = document.getElementById('favCount');
             count.innerText = favorites.length;
+            count.style.opacity = favorites.length > 0 ? 1 : 0;
             
             if(favorites.length === 0) {
-                list.innerHTML = '<div class="text-center text-gray-500 mt-10 text-sm">Все още нямате запазени имена.</div>';
+                list.innerHTML = '<div class="text-center text-gray-500 mt-20 text-sm">Все още нямате запазени имена.<br>Кликнете "Запази", когато харесате име.</div>';
                 return;
             }
 
             list.innerHTML = favorites.map(f => `
-                <div class="bg-white/5 p-3 rounded-lg border border-white/5 flex justify-between items-center group">
+                <div class="bg-white/5 p-4 rounded-xl border border-white/5 flex justify-between items-center group hover:bg-white/10 transition">
                     <div>
-                        <div class="font-bold text-white text-sm">${f.name} ${f.surname}</div>
-                        <div class="text-[10px] text-gray-400 italic">${f.meaning}</div>
+                        <div class="font-bold text-white text-base">${f.name} ${f.surname}</div>
+                        <div class="text-[10px] text-gray-400 italic mt-1">${f.meaning}</div>
                     </div>
-                    <button onclick="removeFavorite('${f.name}')" class="text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition">
+                    <button onclick="removeFavorite('${f.name}')" class="text-gray-500 hover:text-red-400 p-2 rounded-lg hover:bg-white/5 transition">
                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -700,15 +746,19 @@
         }
 
         function clearFavorites() {
-            favorites = [];
-            localStorage.setItem('nomeno_favorites', JSON.stringify(favorites));
-            updateFavoritesUI();
+            if(confirm("Сигурни ли сте, че искате да изтриете всички любими?")) {
+                favorites = [];
+                localStorage.setItem('nomeno_favorites', JSON.stringify(favorites));
+                updateFavoritesUI();
+            }
         }
 
         function exportFavorites() {
+            if(favorites.length === 0) return;
             const text = favorites.map(f => `${f.name} ${f.surname} - ${f.meaning}`).join('\n');
-            navigator.clipboard.writeText(text);
-            alert("Списъкът е копиран в клипборда!");
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Списъкът е копиран успешно!");
+            });
         }
 
         function resetApp() {
