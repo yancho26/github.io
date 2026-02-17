@@ -1,1227 +1,531 @@
 <!DOCTYPE html>
-<html lang="bg" class="scroll-smooth">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Клуб на Безупречните Жени | Elite Access</title>
+    <title>Nomeno AI 5.0 - Ultra Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'perfect-pink': '#FCE7F3', // Rose 100
-                        'soft-rose': '#FBCFE8', // Rose 200
-                        'deep-rose': '#BE185D', // Rose 700
-                        'luxury-gold': '#D4AF37',
-                        'elegant-dark': '#831843', // Rose 900
-                    },
-                    fontFamily: {
-                        serif: ['"Playfair Display"', 'serif'],
-                        sans: ['"Lato"', 'sans-serif'],
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'shine': 'shine 2s linear infinite',
-                        'fade-in': 'fadeIn 0.8s ease-out forwards',
-                        'typewriter': 'typewriter 2s steps(40) 1s 1 normal both',
-                        'spin-slow': 'spin 3s linear infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        shine: {
-                            '0%': { backgroundPosition: '200% center' },
-                            '100%': { backgroundPosition: '-200% center' },
-                        },
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .glass-morphism {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-        
-        .card-hologram {
-            background: linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0.1) 0%,
-                rgba(255, 255, 255, 0.4) 50%,
-                rgba(255, 255, 255, 0.1) 100%
-            );
-            background-size: 200% 200%;
-            transition: all 0.3s ease;
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            overflow-x: hidden;
         }
 
-        /* 3D Card Effect */
-        .membership-card-container {
-            perspective: 1000px;
-        }
-        .membership-card {
-            transform-style: preserve-3d;
-            transition: transform 0.1s;
-        }
-        
-        .quiz-option:checked + label {
-            background-color: #BE185D;
-            color: white;
-            border-color: #BE185D;
-            transform: scale(1.02);
-        }
-        
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
+        h1, h2, .serif-font {
+            font-family: 'Playfair Display', serif;
         }
 
-        /* Timeline styles */
-        .timeline-line::before {
-            content: '';
-            position: absolute;
+        /* Neural Background */
+        .neural-bg {
+            position: fixed;
             top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 2px;
-            background: #FBCFE8;
-            transform: translateX(-50%);
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+            overflow: hidden;
         }
 
-        /* SOS Button Pulse */
-        @keyframes pulse-ring {
-            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(190, 24, 93, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(190, 24, 93, 0); }
-            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(190, 24, 93, 0); }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        /* Breathing Animation */
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.5); opacity: 0.4; }
+        .orb-1 { width: 500px; height: 500px; background: #8b5cf6; top: -10%; left: -10%; }
+        .orb-2 { width: 400px; height: 400px; background: #ec4899; bottom: 0%; right: -5%; animation-delay: -5s; }
+        .orb-3 { width: 300px; height: 300px; background: #3b82f6; top: 30%; left: 40%; animation-delay: -10s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, -40px) scale(1.1); }
         }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Form Inputs */
+        input, select {
+            background: rgba(15, 23, 42, 0.8) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+        }
+        input:focus, select:focus {
+            border-color: #a78bfa !important;
+            ring-color: #a78bfa !important;
+            box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+        }
+
+        .gender-btn {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gender-btn.active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%);
+            border-color: #a78bfa;
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.2);
+        }
+
+        /* Favorites Drawer */
+        #favoritesDrawer {
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #favoritesDrawer.open {
+            transform: translateX(0);
+        }
+
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
-<body class="bg-gradient-to-b from-perfect-pink via-white to-perfect-pink text-gray-800 antialiased overflow-x-hidden">
+<body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
 
-    <!-- Sticky Nav -->
-    <nav class="fixed w-full z-50 glass-morphism transition-all duration-300" id="navbar">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <!-- NEW COOLER LOGO -->
-            <a href="#" class="flex items-center gap-3 group">
-                <div class="relative">
-                    <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-deep-rose to-elegant-dark text-white rounded-xl shadow-lg border border-pink-200 transform group-hover:rotate-6 transition-all duration-300">
-                        <span class="font-serif font-bold text-2xl italic">K</span>
-                    </div>
-                    <i class="fas fa-crown text-luxury-gold absolute -top-3 -right-2 text-lg drop-shadow-md animate-bounce" style="animation-duration: 3s;"></i>
-                </div>
-                <div class="flex flex-col">
-                    <span class="font-serif font-bold text-2xl leading-none text-transparent bg-clip-text bg-gradient-to-r from-deep-rose to-purple-900 tracking-tight group-hover:text-deep-rose transition-colors">
-                        КБЖ
-                    </span>
-                    <span class="text-[0.6rem] uppercase tracking-[0.35em] text-luxury-gold font-bold">The Elite Club</span>
-                </div>
-            </a>
-            
-            <div class="hidden md:flex items-center space-x-6 text-sm font-bold tracking-widest uppercase text-elegant-dark">
-                <a href="#founders" class="hover:text-deep-rose transition-colors">Основатели</a>
-                <a href="#lifestyle" class="hover:text-deep-rose transition-colors">Лайфстайл</a>
-                <a href="#vault" class="hover:text-deep-rose transition-colors">Активи</a>
-                <a href="#sommelier" class="hover:text-deep-rose transition-colors">Сомелиер</a>
-                <a href="#destiny" class="hover:text-deep-rose transition-colors">Късмет</a>
-                <a href="#entrance-exam" class="px-6 py-2 bg-deep-rose text-white rounded-full hover:bg-elegant-dark transition-all shadow-lg hover:shadow-rose-300/50 transform hover:-translate-y-0.5">
-                    Вход
-                </a>
-            </div>
+    <div class="neural-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
 
-            <button class="md:hidden text-deep-rose text-2xl" onclick="toggleMobileMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
+    <!-- Top Bar -->
+    <div class="absolute top-0 left-0 w-full p-4 flex justify-between items-center z-50">
+        <div class="flex items-center gap-2">
+            <i data-lucide="brain-circuit" class="w-6 h-6 text-purple-400"></i>
+            <span class="font-bold tracking-widest text-white/80">NOMENO AI 5.0</span>
         </div>
-        
-        <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu" class="fixed inset-0 bg-white/95 z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col justify-center items-center space-y-8">
-            <button class="absolute top-6 right-6 text-3xl text-deep-rose" onclick="toggleMobileMenu()">
-                <i class="fas fa-times"></i>
-            </button>
-            <a href="#founders" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Основатели</a>
-            <a href="#lifestyle" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Лайфстайл</a>
-            <a href="#sommelier" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Сомелиер</a>
-            <a href="#destiny" onclick="toggleMobileMenu()" class="text-2xl font-serif text-elegant-dark">Късмет</a>
-            <a href="#entrance-exam" onclick="toggleMobileMenu()" class="text-xl bg-deep-rose text-white px-8 py-3 rounded-full">Кандидатствай</a>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-        <!-- Abstract Shapes -->
-        <div class="absolute top-20 right-[10%] w-72 h-72 bg-pink-300/30 rounded-full blur-[100px] animate-pulse"></div>
-        <div class="absolute bottom-20 left-[10%] w-96 h-96 bg-rose-400/20 rounded-full blur-[120px] animate-pulse" style="animation-delay: 1s;"></div>
-        
-        <div class="container mx-auto px-6 text-center relative z-10 animate-fade-in">
-            <div class="inline-flex items-center space-x-2 bg-white/50 px-4 py-1 rounded-full border border-pink-200 mb-6 backdrop-blur-sm">
-                <i class="fas fa-crown text-luxury-gold"></i>
-                <span class="text-xs font-bold tracking-[0.2em] uppercase text-deep-rose">Exclusive Membership</span>
+        <button onclick="toggleFavorites()" class="relative group">
+            <div class="bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition border border-white/10">
+                <i data-lucide="heart" class="w-5 h-5 text-pink-400 group-hover:scale-110 transition"></i>
             </div>
-            
-            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-deep-rose to-purple-900 drop-shadow-sm">
-                Клуб на<br>
-                <span class="italic font-light">Безупречните</span> Жени
-            </h1>
-            
-            <p class="text-lg md:text-xl font-light text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-                Затворено общество за дами с кариотип 44XX, които отказват да правят компромис с качеството на живот, съня си и естетиката.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#entrance-exam" class="group relative px-8 py-4 bg-deep-rose text-white rounded-full overflow-hidden transition-all shadow-xl hover:shadow-2xl hover:shadow-rose-400/40">
-                    <span class="relative z-10 font-bold tracking-wider">ЗАПОЧНИ ТЕСТА</span>
-                    <div class="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-300 group-hover:scale-150 group-hover:bg-elegant-dark/20"></div>
-                </a>
-                <a href="#manifesto" class="px-8 py-4 bg-white text-deep-rose border border-pink-200 rounded-full font-bold hover:bg-pink-50 transition-colors">
-                    Виж Правилата
-                </a>
-            </div>
-        </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-deep-rose/50">
-            <i class="fas fa-chevron-down text-2xl"></i>
-        </div>
-    </header>
-
-    <!-- Founders -->
-    <section id="founders" class="py-24 relative">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-20">
-                <h2 class="font-serif text-5xl text-elegant-dark mb-4">Визионерите</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-deep-rose to-transparent mx-auto"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-16 max-w-5xl mx-auto">
-                <!-- Elis -->
-                <div class="group relative">
-                    <div class="absolute inset-0 bg-rose-200 rounded-[2rem] rotate-3 group-hover:rotate-6 transition-transform opacity-50"></div>
-                    <div class="relative bg-white p-8 rounded-[2rem] shadow-xl border border-pink-100 text-center transition-transform group-hover:-translate-y-2">
-                        <div class="w-32 h-32 mx-auto -mt-16 mb-6 rounded-full border-4 border-white shadow-lg bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center text-white text-3xl font-serif">
-                            ЕФ
-                        </div>
-                        <h3 class="font-serif text-3xl font-bold text-gray-800 mb-2">Елис Фейзула</h3>
-                        <p class="text-deep-rose font-bold text-xs uppercase tracking-widest mb-6">Съосновател & Президент</p>
-                        <p class="text-gray-600 italic leading-relaxed">"Истинската жена знае кога да каже 'не' – на нощната смяна, на стреса и на грозните аксесоари."</p>
-                    </div>
-                </div>
-
-                <!-- Maria -->
-                <div class="group relative mt-12 md:mt-0">
-                    <div class="absolute inset-0 bg-purple-200 rounded-[2rem] -rotate-3 group-hover:-rotate-6 transition-transform opacity-50"></div>
-                    <div class="relative bg-white p-8 rounded-[2rem] shadow-xl border border-pink-100 text-center transition-transform group-hover:-translate-y-2">
-                        <div class="w-32 h-32 mx-auto -mt-16 mb-6 rounded-full border-4 border-white shadow-lg bg-gradient-to-br from-rose-400 to-purple-600 flex items-center justify-center text-white text-3xl font-serif">
-                            МК
-                        </div>
-                        <h3 class="font-serif text-3xl font-bold text-gray-800 mb-2">Мария Кацарова</h3>
-                        <p class="text-deep-rose font-bold text-xs uppercase tracking-widest mb-6">Съосновател & Президент</p>
-                        <p class="text-gray-600 italic leading-relaxed">"Животът до 100 изисква стратегия. Моята включва много розе и никакво Лабубу."</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Manifesto Cards -->
-    <section id="manifesto" class="py-24 bg-gradient-to-b from-white to-pink-50">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 px-4 border-b border-pink-200 pb-8">
-                <div>
-                    <h2 class="font-serif text-4xl md:text-5xl text-elegant-dark mb-2">Кодекс на Честта</h2>
-                    <p class="text-gray-500">4-те неприкосновени закона</p>
-                </div>
-                <div class="hidden md:block text-4xl text-deep-rose/20">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Card 1 -->
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-pink-200 group">
-                    <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center text-2xl text-deep-rose mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-venus"></i>
-                    </div>
-                    <h3 class="font-serif text-xl font-bold mb-3">Кариотип 44XX</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        Нашият клуб е светилище на женската енергия. Биологията е нашата сила и привилегия.
-                    </p>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-pink-200 group">
-                    <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center text-2xl text-deep-rose mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-bed"></i>
-                    </div>
-                    <h3 class="font-serif text-xl font-bold mb-3">Anti-Hustle</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        Уикендите и нощите са за възстановяване. Работата е средство, а не цел.
-                    </p>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-pink-200 group">
-                    <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center text-2xl text-deep-rose mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-hourglass-half"></i>
-                    </div>
-                    <h3 class="font-serif text-xl font-bold mb-3">Проект: Век</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        Ние планираме да сме тук дълго. Грижата за себе си днес е инвестиция в нашия 100-тен рожден ден.
-                    </p>
-                </div>
-
-                <!-- Card 4 (Special) -->
-                <div class="bg-gradient-to-br from-deep-rose to-purple-900 text-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-2xl text-white mb-6 backdrop-blur-sm">
-                        <i class="fas fa-ban"></i>
-                    </div>
-                    <h3 class="font-serif text-xl font-bold mb-3">Zero Labubu</h3>
-                    <p class="text-sm text-white/80 leading-relaxed">
-                        Абсолютна нулева толерантност към инфантилни трендове. Класата не носи плюшени играчки на чантата си.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEW MODULE: The Daily Ritual (Timeline) -->
-    <section id="lifestyle" class="py-24 bg-white relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <span class="text-deep-rose font-bold tracking-widest uppercase text-sm mb-2 block">Рутина</span>
-                <h2 class="font-serif text-4xl text-elegant-dark mb-4">Денят на Безупречната</h2>
-                <p class="text-gray-500">Защото стресът причинява бръчки.</p>
-            </div>
-
-            <div class="relative timeline-line max-w-4xl mx-auto">
-                
-                <!-- Time Slot 1 -->
-                <div class="flex flex-col md:flex-row items-center justify-between mb-12 relative group">
-                    <div class="order-1 w-5/12 text-right pr-8 md:block hidden animate-fade-in">
-                        <h3 class="font-serif text-2xl font-bold text-gray-800">Естествено Събуждане</h3>
-                        <p class="text-gray-500 text-sm mt-2">Никакви аларми. Тялото се буди, когато е готово.</p>
-                    </div>
-                    <div class="z-20 flex items-center order-1 bg-deep-rose text-white w-16 h-16 rounded-full shadow-xl justify-center font-bold text-lg border-4 border-white group-hover:scale-110 transition-transform">
-                        10:00
-                    </div>
-                    <div class="order-1 w-5/12 pl-8">
-                        <div class="md:hidden mb-2">
-                            <h3 class="font-serif text-xl font-bold text-gray-800">Естествено Събуждане</h3>
-                        </div>
-                        <span class="bg-pink-100 text-deep-rose px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Утро</span>
-                    </div>
-                </div>
-
-                <!-- Time Slot 2 -->
-                <div class="flex flex-col md:flex-row items-center justify-between mb-12 relative group">
-                    <div class="order-1 w-5/12 text-right pr-8 md:block hidden">
-                        <span class="bg-pink-100 text-deep-rose px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Брънч</span>
-                    </div>
-                    <div class="z-20 flex items-center order-1 bg-white text-deep-rose w-16 h-16 rounded-full shadow-xl justify-center font-bold text-lg border-4 border-pink-100 group-hover:bg-deep-rose group-hover:text-white transition-colors">
-                        12:30
-                    </div>
-                    <div class="order-1 w-5/12 pl-8 animate-fade-in">
-                        <h3 class="font-serif text-2xl font-bold text-gray-800">Късна Закуска</h3>
-                        <p class="text-gray-500 text-sm mt-2">Тост с авокадо, матча лате и планиране на следващата ваканция.</p>
-                    </div>
-                </div>
-
-                <!-- Time Slot 3 -->
-                <div class="flex flex-col md:flex-row items-center justify-between mb-12 relative group">
-                    <div class="order-1 w-5/12 text-right pr-8 md:block hidden animate-fade-in">
-                        <h3 class="font-serif text-2xl font-bold text-gray-800">Bio-Hacking & Spa</h3>
-                        <p class="text-gray-500 text-sm mt-2">Криокамера, червена светлина или просто масаж. Инвестиция в ДНК-то.</p>
-                    </div>
-                    <div class="z-20 flex items-center order-1 bg-white text-deep-rose w-16 h-16 rounded-full shadow-xl justify-center font-bold text-lg border-4 border-pink-100 group-hover:bg-deep-rose group-hover:text-white transition-colors">
-                        15:00
-                    </div>
-                    <div class="order-1 w-5/12 pl-8">
-                         <div class="md:hidden mb-2">
-                            <h3 class="font-serif text-xl font-bold text-gray-800">Bio-Hacking & Spa</h3>
-                        </div>
-                        <span class="bg-pink-100 text-deep-rose px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Self-Care</span>
-                    </div>
-                </div>
-
-                 <!-- Time Slot 4 -->
-                 <div class="flex flex-col md:flex-row items-center justify-between relative group">
-                    <div class="order-1 w-5/12 text-right pr-8 md:block hidden">
-                        <span class="bg-pink-100 text-deep-rose px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Вечер</span>
-                    </div>
-                    <div class="z-20 flex items-center order-1 bg-elegant-dark text-white w-16 h-16 rounded-full shadow-xl justify-center font-bold text-lg border-4 border-white group-hover:scale-110 transition-transform">
-                        20:00
-                    </div>
-                    <div class="order-1 w-5/12 pl-8 animate-fade-in">
-                        <h3 class="font-serif text-2xl font-bold text-gray-800">Вечеря без Телефони</h3>
-                        <p class="text-gray-500 text-sm mt-2">Изискана храна, качествено вино и никакви работни имейли.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEW MODULE: The Blacklist -->
-    <section class="py-24 bg-elegant-dark text-white relative">
-        <!-- Decoration -->
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
-            <i class="fas fa-ban absolute text-9xl -top-10 -left-10 rotate-12"></i>
-            <i class="fas fa-ban absolute text-9xl bottom-10 right-10 -rotate-12"></i>
-        </div>
-
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <div class="inline-block border border-red-500 text-red-500 px-4 py-1 rounded uppercase tracking-widest text-xs font-bold mb-4">Strictly Prohibited</div>
-                <h2 class="font-serif text-4xl text-white mb-4">Черният Списък</h2>
-                <p class="text-pink-200/60">Нещата, които никога няма да намерите в чантата или живота ни.</p>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <!-- Item 1 -->
-                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-red-900/40 transition-colors group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🧸🚫</div>
-                    <h3 class="font-bold text-lg text-pink-100">Лабубу</h3>
-                    <p class="text-xs text-white/50 mt-2">Враг номер едно на елегантността.</p>
-                </div>
-                 <!-- Item 2 -->
-                 <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-red-900/40 transition-colors group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">⏰</div>
-                    <h3 class="font-bold text-lg text-pink-100">Ранни Аларми</h3>
-                    <p class="text-xs text-white/50 mt-2">Преди 9:00 е насилие над организма.</p>
-                </div>
-                 <!-- Item 3 -->
-                 <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-red-900/40 transition-colors group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">👕</div>
-                    <h3 class="font-bold text-lg text-pink-100">Полиестер</h3>
-                    <p class="text-xs text-white/50 mt-2">Кожата трябва да диша, както и ние.</p>
-                </div>
-                 <!-- Item 4 -->
-                 <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-red-900/40 transition-colors group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">☕</div>
-                    <h3 class="font-bold text-lg text-pink-100">Разтворимо Кафе</h3>
-                    <p class="text-xs text-white/50 mt-2">Животът е твърде кратък за лошо кафе.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEW MODULE: The Flawless Dictionary -->
-    <section id="dictionary" class="py-24 bg-gradient-to-r from-pink-50 to-white overflow-hidden">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <span class="text-deep-rose font-bold tracking-widest uppercase text-sm mb-2 block">Образование</span>
-                <h2 class="font-serif text-4xl text-elegant-dark mb-4">Безупречният Речник</h2>
-                <p class="text-gray-500">Защото думите имат значение, но нашето е по-важно.</p>
-            </div>
-            
-            <div class="flex overflow-x-auto gap-6 pb-8 hide-scrollbar snap-x">
-                <!-- Word 1 -->
-                <div class="min-w-[300px] bg-white p-8 rounded-2xl shadow-lg border border-pink-100 snap-center hover:shadow-xl transition-all">
-                    <h3 class="font-serif text-3xl font-bold text-deep-rose mb-2">Закъснение</h3>
-                    <span class="text-xs text-gray-400 italic mb-4 block">съществително</span>
-                    <p class="text-gray-600 italic border-l-2 border-luxury-gold pl-4">"Изкуството да пристигнеш точно в момента, в който публиката е емоционално готова за твоето присъствие."</p>
-                </div>
-                
-                <!-- Word 2 -->
-                <div class="min-w-[300px] bg-white p-8 rounded-2xl shadow-lg border border-pink-100 snap-center hover:shadow-xl transition-all">
-                    <h3 class="font-serif text-3xl font-bold text-deep-rose mb-2">Не</h3>
-                    <span class="text-xs text-gray-400 italic mb-4 block">частица</span>
-                    <p class="text-gray-600 italic border-l-2 border-luxury-gold pl-4">"Пълно изречение. Не изисква обяснения, извинения или допълнителен контекст."</p>
-                </div>
-                
-                <!-- Word 3 -->
-                <div class="min-w-[300px] bg-white p-8 rounded-2xl shadow-lg border border-pink-100 snap-center hover:shadow-xl transition-all">
-                    <h3 class="font-serif text-3xl font-bold text-deep-rose mb-2">Стрес</h3>
-                    <span class="text-xs text-gray-400 italic mb-4 block">архаизъм</span>
-                    <p class="text-gray-600 italic border-l-2 border-luxury-gold pl-4">"Митично състояние, което не съществува в нашия клуб. Обикновено се лекува с билет за Малдивите."</p>
-                </div>
-                
-                <!-- Word 4 -->
-                <div class="min-w-[300px] bg-white p-8 rounded-2xl shadow-lg border border-pink-100 snap-center hover:shadow-xl transition-all">
-                    <h3 class="font-serif text-3xl font-bold text-deep-rose mb-2">Диета</h3>
-                    <span class="text-xs text-gray-400 italic mb-4 block">съществително</span>
-                    <p class="text-gray-600 italic border-l-2 border-luxury-gold pl-4">"Процесът на изключване на токсични хора, лоши новини и евтино шампанско от менюто."</p>
-                </div>
-            </div>
-            <div class="text-center text-sm text-gray-400 mt-4 animate-pulse"><i class="fas fa-arrows-alt-h mr-2"></i> Плъзнете за още мъдрост</div>
-        </div>
-    </section>
-
-    <!-- NEW INNOVATIVE MODULE: The Investment Vault -->
-    <section id="vault" class="py-24 bg-white relative">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row items-center gap-16">
-                
-                <!-- Text Content -->
-                <div class="lg:w-1/3 text-center lg:text-left">
-                    <span class="text-luxury-gold font-bold tracking-widest uppercase text-sm mb-2 block">Финансов Отчет</span>
-                    <h2 class="font-serif text-4xl text-gray-800 mb-6">Истинските Активи</h2>
-                    <p class="text-gray-600 mb-8 leading-relaxed">
-                        Ние не следим борсовите индекси. В Клуба на Безупречните инвестираме в неща, които имат реална възвръщаемост: младост, спокойствие и лични граници.
-                    </p>
-                    <div class="bg-pink-50 p-6 rounded-xl border border-pink-100">
-                        <div class="text-sm font-bold text-gray-500 uppercase mb-1">Текущ Индекс на Щастие</div>
-                        <div class="text-4xl font-serif font-bold text-deep-rose">▲ 98.4%</div>
-                        <div class="text-xs text-green-500 mt-1">+2.1% спрямо вчера</div>
-                    </div>
-                </div>
-
-                <!-- The Charts -->
-                <div class="lg:w-2/3 w-full bg-gray-50 p-8 rounded-3xl shadow-inner relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-200 opacity-20 rounded-full blur-3xl"></div>
-                    
-                    <!-- Asset 1 -->
-                    <div class="mb-8">
-                        <div class="flex justify-between mb-2">
-                            <span class="font-bold text-gray-700">Нива на Колаген</span>
-                            <span class="font-bold text-deep-rose">High Yield</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-                            <div class="bg-gradient-to-r from-pink-300 to-deep-rose h-4 rounded-full" style="width: 95%"></div>
-                        </div>
-                    </div>
-
-                    <!-- Asset 2 -->
-                    <div class="mb-8">
-                        <div class="flex justify-between mb-2">
-                            <span class="font-bold text-gray-700">Часове Сън (Неделна база)</span>
-                            <span class="font-bold text-deep-rose">10h Avg</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-                            <div class="bg-gradient-to-r from-purple-300 to-purple-600 h-4 rounded-full" style="width: 88%"></div>
-                        </div>
-                    </div>
-
-                    <!-- Asset 3 -->
-                    <div class="mb-8">
-                        <div class="flex justify-between mb-2">
-                            <span class="font-bold text-gray-700">Толеранс към Драма</span>
-                            <span class="font-bold text-gray-400">Short Selling</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-                            <div class="bg-gray-400 h-4 rounded-full" style="width: 2%"></div>
-                        </div>
-                    </div>
-
-                    <!-- Asset 4 -->
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="font-bold text-gray-700">Качество на Гардероба</span>
-                            <span class="font-bold text-luxury-gold">Blue Chip</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-                            <div class="bg-gradient-to-r from-yellow-300 to-luxury-gold h-4 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEW MODULE: Elite Excuse Generator -->
-    <section id="excuses" class="py-24 bg-gradient-to-b from-white to-pink-100">
-        <div class="container mx-auto px-6 text-center max-w-3xl">
-            <i class="fas fa-comment-dots text-5xl text-deep-rose mb-6"></i>
-            <h2 class="font-serif text-4xl text-elegant-dark mb-4">Генератор на Елитни Извинения</h2>
-            <p class="text-gray-600 mb-10">
-                Нямате желание за социализация? Не казвайте "не ми се ходи". Използвайте нашия AI генератор за валидни, елегантни и неоспорими причини да си останете вкъщи.
-            </p>
-            
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-2 border-white relative overflow-hidden min-h-[200px] flex flex-col justify-center items-center group">
-                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-300 via-deep-rose to-purple-400"></div>
-                
-                <p id="excuse-text" class="font-serif text-2xl md:text-3xl text-gray-800 italic mb-8 min-h-[3em] flex items-center justify-center">
-                    "Натиснете бутона за спасение..."
-                </p>
-                
-                <button onclick="generateExcuse()" class="bg-elegant-dark text-white px-8 py-3 rounded-full font-bold hover:bg-deep-rose transition-all shadow-lg hover:shadow-pink-400/50 transform active:scale-95 group-hover:scale-105">
-                    <i class="fas fa-magic mr-2"></i> Генерирай Извинение
-                </button>
-            </div>
-            <p class="text-xs text-gray-400 mt-4">*Всички извинения са одобрени от Борда на Директорите.</p>
-        </div>
-    </section>
-
-    <!-- NEW: Mood Sommelier -->
-    <section id="sommelier" class="py-24 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <span class="text-luxury-gold font-bold tracking-widest uppercase text-sm mb-2 block">Барът на Истината</span>
-                <h2 class="font-serif text-4xl text-elegant-dark mb-4">Еликсир за Душата</h2>
-                <p class="text-gray-600">Как се чувстваш днес? Ние имаме рецептата.</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="recommendDrink('drama')" class="p-6 rounded-xl border border-pink-200 hover:bg-pink-50 hover:border-deep-rose transition-all text-left group">
-                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🎭</div>
-                        <h3 class="font-bold text-gray-800">Имам Драма</h3>
-                        <p class="text-xs text-gray-500 mt-1">Всичко е срещу мен.</p>
-                    </button>
-                    <button onclick="recommendDrink('party')" class="p-6 rounded-xl border border-pink-200 hover:bg-pink-50 hover:border-deep-rose transition-all text-left group">
-                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🥂</div>
-                        <h3 class="font-bold text-gray-800">Празнувам</h3>
-                        <p class="text-xs text-gray-500 mt-1">Аз съм кралицата.</p>
-                    </button>
-                    <button onclick="recommendDrink('relax')" class="p-6 rounded-xl border border-pink-200 hover:bg-pink-50 hover:border-deep-rose transition-all text-left group">
-                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🧖‍♀️</div>
-                        <h3 class="font-bold text-gray-800">Нуждая се от Дзен</h3>
-                        <p class="text-xs text-gray-500 mt-1">Изключи света.</p>
-                    </button>
-                    <button onclick="recommendDrink('fatal')" class="p-6 rounded-xl border border-pink-200 hover:bg-pink-50 hover:border-deep-rose transition-all text-left group">
-                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">💋</div>
-                        <h3 class="font-bold text-gray-800">Fatal Mode</h3>
-                        <p class="text-xs text-gray-500 mt-1">Опасна съм.</p>
-                    </button>
-                </div>
-
-                <div class="bg-gradient-to-br from-pink-50 to-white p-8 rounded-3xl shadow-lg border border-pink-100 text-center min-h-[300px] flex flex-col justify-center items-center relative overflow-hidden">
-                    <div id="drink-icon" class="text-6xl mb-4 transition-all duration-500 transform scale-0">🍸</div>
-                    <h3 id="drink-title" class="font-serif text-2xl font-bold text-deep-rose mb-3 opacity-0 transition-opacity duration-500">Избери настроение</h3>
-                    <p id="drink-desc" class="text-gray-600 italic opacity-0 transition-opacity duration-500">
-                        "Напитката е течна емоция. Избери мъдро."
-                    </p>
-                    <div class="absolute inset-0 bg-white/50 z-10 flex items-center justify-center" id="drink-placeholder">
-                        <span class="text-gray-400 font-serif text-xl">Очакваме поръчка...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEW: Wheel of Destiny -->
-    <section id="destiny" class="py-24 bg-gradient-to-t from-pink-100 to-white overflow-hidden">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="font-serif text-4xl text-elegant-dark mb-4">Колелото на Съдбата</h2>
-            <p class="text-gray-500 mb-12">Завърти за доза луксозен късмет (VIP Edition).</p>
-            
-            <div class="relative w-72 h-72 mx-auto mb-10 group">
-                <!-- The Wheel Visual -->
-                <div id="fortune-wheel" class="w-full h-full rounded-full border-8 border-deep-rose bg-white shadow-2xl flex items-center justify-center relative transition-transform duration-[3s] ease-out">
-                    <div class="absolute inset-0 rounded-full border-4 border-dashed border-pink-200 opacity-50"></div>
-                    <span class="text-6xl">💎</span>
-                </div>
-                <!-- Pointer -->
-                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 text-luxury-gold text-4xl drop-shadow-lg z-10">▼</div>
-                
-                <!-- Result Display -->
-                <div id="fortune-result" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4 text-center opacity-0 transition-opacity duration-300 font-serif font-bold text-deep-rose text-lg">
-                    <!-- Text goes here -->
-                </div>
-            </div>
-
-            <button onclick="spinWheel()" class="bg-deep-rose text-white px-10 py-3 rounded-full font-bold shadow-lg hover:bg-elegant-dark transition-all transform hover:scale-105">
-                ЗАВЪРТИ СЪДБАТА
-            </button>
-        </div>
-    </section>
-
-    <!-- NEW MODULE: Upcoming Events -->
-    <section class="py-24 bg-pink-50">
-        <div class="container mx-auto px-6">
-            <div class="flex justify-between items-center mb-12">
-                <h2 class="font-serif text-3xl md:text-4xl text-elegant-dark">Клубен Календар</h2>
-                <a href="#" class="text-deep-rose font-bold text-sm uppercase hover:underline">Виж всички</a>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Event 1 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
-                    <div class="h-48 bg-gray-200 relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                        <!-- Placeholder Pattern -->
-                        <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1569937756447-e19485c2c7de?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')] bg-cover bg-center group-hover:scale-110 transition-transform duration-700"></div>
-                        <div class="absolute bottom-4 left-4 z-20 text-white">
-                            <span class="bg-deep-rose px-2 py-1 text-xs font-bold rounded mb-2 inline-block">ЮНИ 15</span>
-                            <h3 class="font-serif text-xl font-bold">Лонгджевити Уикенд</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 text-sm mb-4">Ексклузивен семинар в Монако за най-новите методи за запазване на младостта.</p>
-                        <button class="text-deep-rose text-sm font-bold tracking-wide group-hover:translate-x-2 transition-transform">ЗАПАЗИ МЯСТО <i class="fas fa-arrow-right ml-1"></i></button>
-                    </div>
-                </div>
-
-                 <!-- Event 2 -->
-                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
-                    <div class="h-48 bg-gray-200 relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                         <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')] bg-cover bg-center group-hover:scale-110 transition-transform duration-700"></div>
-                        <div class="absolute bottom-4 left-4 z-20 text-white">
-                            <span class="bg-deep-rose px-2 py-1 text-xs font-bold rounded mb-2 inline-block">ЮЛИ 01</span>
-                            <h3 class="font-serif text-xl font-bold">Pink Tie Gala</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 text-sm mb-4">Годишната благотворителна вечеря. Дрес код: Безупречно розово.</p>
-                        <button class="text-deep-rose text-sm font-bold tracking-wide group-hover:translate-x-2 transition-transform">ЗАПАЗИ МЯСТО <i class="fas fa-arrow-right ml-1"></i></button>
-                    </div>
-                </div>
-
-                 <!-- Event 3 -->
-                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
-                    <div class="h-48 bg-gray-200 relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                        <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')] bg-cover bg-center group-hover:scale-110 transition-transform duration-700"></div>
-                        <div class="absolute bottom-4 left-4 z-20 text-white">
-                            <span class="bg-deep-rose px-2 py-1 text-xs font-bold rounded mb-2 inline-block">АВГ 20</span>
-                            <h3 class="font-serif text-xl font-bold">Detox & Champagne</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 text-sm mb-4">Оксиморон? Не и за нас. Научете как да балансирате удоволствието.</p>
-                        <button class="text-deep-rose text-sm font-bold tracking-wide group-hover:translate-x-2 transition-transform">ЗАПАЗИ МЯСТО <i class="fas fa-arrow-right ml-1"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Entrance Exam -->
-    <section id="entrance-exam" class="py-24 relative overflow-hidden">
-        <div class="container mx-auto px-6 max-w-4xl relative z-10">
-            
-            <!-- Intro Text -->
-            <div id="quiz-intro" class="text-center mb-12 transition-opacity duration-500">
-                <span class="text-deep-rose font-bold tracking-widest uppercase text-sm mb-2 block">Процедура по кандидатстване</span>
-                <h2 class="font-serif text-4xl md:text-5xl text-elegant-dark mb-6">Тест за Съвместимост</h2>
-                <p class="text-gray-600 mb-8 max-w-lg mx-auto">Отговорете честно. Изкуственият интелект на Клуба ще прецени дали сте достойни за членство.</p>
-                <button onclick="startQuiz()" class="bg-deep-rose text-white px-10 py-4 rounded-full font-bold shadow-lg hover:bg-elegant-dark transition-all transform hover:scale-105">
-                    ЗАПОЧНИ ТЕСТА
-                </button>
-            </div>
-
-            <!-- Quiz Container (Hidden initially) -->
-            <div id="quiz-container" class="hidden bg-white rounded-3xl shadow-2xl overflow-hidden border border-pink-100 min-h-[400px] relative">
-                
-                <!-- Progress Bar -->
-                <div class="w-full h-2 bg-pink-100">
-                    <div id="progress-bar" class="h-full bg-deep-rose transition-all duration-500 w-0"></div>
-                </div>
-
-                <div class="p-8 md:p-12">
-                    <!-- Question 1 -->
-                    <div class="quiz-step hidden" id="step-1">
-                        <h3 class="font-serif text-2xl font-bold mb-6 text-gray-800">1. Събота сутрин е. Телефонът звъни - шефът ви е. Вашата реакция?</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <input type="radio" name="q1" id="q1a" value="fail" class="hidden quiz-option">
-                                <label for="q1a" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
-                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
-                                    Вдигам веднага, работата е всичко!
-                                </label>
-                            </div>
-                            <div>
-                                <input type="radio" name="q1" id="q1b" value="pass" class="hidden quiz-option">
-                                <label for="q1b" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
-                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
-                                    Телефонът е на "Do Not Disturb". Аз съм на спа.
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 2 -->
-                    <div class="quiz-step hidden" id="step-2">
-                        <h3 class="font-serif text-2xl font-bold mb-6 text-gray-800">2. Биологична проверка. Вашият кариотип?</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <input type="radio" name="q2" id="q2a" value="pass" class="hidden quiz-option">
-                                <label for="q2a" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
-                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
-                                    44XX
-                                </label>
-                            </div>
-                            <div>
-                                <input type="radio" name="q2" id="q2b" value="fail" class="hidden quiz-option">
-                                <label for="q2b" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
-                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
-                                    44XY
-                                </label>
-                            </div>
-                            <div>
-                                <input type="radio" name="q2" id="q2c" value="fail" class="hidden quiz-option">
-                                <label for="q2c" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
-                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
-                                    Не съм сигурна / Друго
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 3 -->
-                    <div class="quiz-step hidden" id="step-3">
-                        <h3 class="font-serif text-2xl font-bold mb-6 text-gray-800">3. Колко време планирате да живеете?</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <input type="radio" name="q3" id="q3a" value="fail" class="hidden quiz-option">
-                                <label for="q3a" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
-                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
-                                    Колкото дойде.
-                                </label>
-                            </div>
-                            <div>
-                                <input type="radio" name="q3" id="q3b" value="pass" class="hidden quiz-option">
-                                <label for="q3b" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
-                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
-                                    Минимум 100 години. Имам планове.
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Question 4 (The Trap) -->
-                    <div class="quiz-step hidden" id="step-4">
-                        <h3 class="font-serif text-2xl font-bold mb-6 text-gray-800">4. Притежавате ли артикул от серията "Labubu"?</h3>
-                        <p class="text-sm text-gray-500 mb-4 italic">Бъдете искрени.</p>
-                        <div class="space-y-4">
-                            <div>
-                                <input type="radio" name="q4" id="q4a" value="fail" class="hidden quiz-option">
-                                <label for="q4a" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
-                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
-                                    Да, много са сладки!
-                                </label>
-                            </div>
-                            <div>
-                                <input type="radio" name="q4" id="q4b" value="pass" class="hidden quiz-option">
-                                <label for="q4b" class="block w-full p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-pink-50 transition-all font-medium">
-                                    <span class="w-6 h-6 inline-block border rounded-full mr-2 align-middle border-gray-300"></span>
-                                    Категорично не. Това е обида за естетиката ми.
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Final Input -->
-                    <div class="quiz-step hidden" id="step-final">
-                        <h3 class="font-serif text-2xl font-bold mb-6 text-gray-800">Последна стъпка</h3>
-                        <p class="mb-4">Въведете името си, за да генерираме резултата.</p>
-                        <input type="text" id="applicant-name" placeholder="Вашето Име" class="w-full p-4 border-2 border-pink-200 rounded-xl focus:border-deep-rose outline-none text-lg mb-6">
-                        <button onclick="calculateResult()" class="w-full bg-deep-rose text-white py-4 rounded-xl font-bold text-lg hover:bg-elegant-dark transition-all">
-                            ПРОВЕРИ СТАТУС
-                        </button>
-                    </div>
-
-                    <!-- Navigation Buttons -->
-                    <div class="mt-8 flex justify-between" id="quiz-nav">
-                        <button onclick="prevStep()" id="prev-btn" class="text-gray-400 hover:text-gray-600 font-medium hidden">Назад</button>
-                        <button onclick="nextStep()" id="next-btn" class="ml-auto bg-gray-900 text-white px-8 py-2 rounded-lg hover:bg-gray-700 transition-all">Напред</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Result: REJECTED -->
-            <div id="result-rejected" class="hidden text-center mt-8 p-8 bg-gray-100 rounded-3xl border-2 border-gray-300">
-                <i class="fas fa-times-circle text-6xl text-gray-400 mb-4"></i>
-                <h3 class="text-2xl font-bold text-gray-600 mb-2">Отхвърлена</h3>
-                <p class="text-gray-500">За съжаление, не покривате високите стандарти на клуба. Вероятно притежавате Лабубу или работите през уикенда.</p>
-                <button onclick="location.reload()" class="mt-6 text-deep-rose underline">Опитай пак (ако промениш живота си)</button>
-            </div>
-
-            <!-- Result: ACCEPTED (The Card) -->
-            <div id="result-accepted" class="hidden mt-8 perspective-container">
-                <div class="text-center mb-8">
-                    <i class="fas fa-check-circle text-5xl text-green-500 mb-4 animate-bounce"></i>
-                    <h3 class="font-serif text-3xl font-bold text-deep-rose">Добре дошла в елита!</h3>
-                    <p class="text-gray-600">Вашата дигитална карта е генерирана.</p>
-                </div>
-
-                <!-- THE CARD -->
-                <div class="membership-card-container w-full max-w-md mx-auto h-64 relative cursor-pointer" id="tilt-card">
-                    <div class="membership-card w-full h-full rounded-2xl shadow-2xl relative overflow-hidden bg-gradient-to-r from-gray-900 to-gray-800 text-white border border-gray-600">
-                        <!-- Holographic Overlay -->
-                        <div class="absolute inset-0 card-hologram opacity-30 z-10 pointer-events-none"></div>
-                        
-                        <!-- Card Content -->
-                        <div class="relative z-20 p-6 h-full flex flex-col justify-between">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <div class="text-xs text-gray-400 tracking-[0.3em] uppercase mb-1">Клуб на Безупречните Жени</div>
-                                    <div class="font-serif text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-200 to-rose-400">FLAWLESS MEMBER</div>
-                                </div>
-                                <i class="fas fa-gem text-3xl text-pink-300"></i>
-                            </div>
-
-                            <div class="flex items-center space-x-4">
-                                <div class="w-12 h-8 bg-yellow-200/20 rounded border border-yellow-200/40 backdrop-blur-sm"></div> <!-- Chip -->
-                                <i class="fas fa-wifi text-gray-500 rotate-90"></i>
-                            </div>
-
-                            <div class="flex justify-between items-end">
-                                <div>
-                                    <div class="text-[10px] text-gray-400 uppercase mb-1">Член</div>
-                                    <div class="font-mono text-lg tracking-widest uppercase" id="card-name-display">IMETO VI</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-[10px] text-gray-400 uppercase mb-1">ID</div>
-                                    <div class="font-mono text-sm tracking-widest text-pink-300" id="card-id-display">0000</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Shine Effect -->
-                        <div class="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 animate-shine" />
-                    </div>
-                </div>
-                
-                <div class="text-center mt-8">
-                    <button class="bg-gray-900 text-white px-6 py-2 rounded-lg text-sm hover:bg-gray-800 transition-colors">
-                        <i class="fas fa-download mr-2"></i> Запази в Wallet
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- FLOATING SOS BUTTON MODULE -->
-    <div class="fixed bottom-6 right-6 z-40">
-        <button onclick="activateSOS()" class="w-16 h-16 bg-deep-rose text-white rounded-full shadow-2xl flex items-center justify-center text-xl font-bold cursor-pointer hover:scale-110 transition-transform" style="animation: pulse-ring 2s infinite;">
-            SOS
+            <span id="favCount" class="absolute -top-1 -right-1 bg-pink-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg">0</span>
         </button>
-        <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-white text-gray-800 text-xs py-1 px-3 rounded-full shadow-md whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
-            Спешен Zen
+    </div>
+
+    <!-- Favorites Drawer -->
+    <div id="favoritesDrawer" class="fixed top-0 right-0 h-full w-80 bg-[#0f172a]/95 backdrop-blur-xl border-l border-white/10 z-50 shadow-2xl flex flex-col">
+        <div class="p-6 border-b border-white/10 flex justify-between items-center">
+            <h3 class="font-bold text-white text-lg">Запазени Имена</h3>
+            <button onclick="toggleFavorites()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div id="favoritesList" class="flex-1 overflow-y-auto p-4 space-y-3">
+            <!-- Items injected here -->
+            <div class="text-center text-gray-500 mt-10 text-sm">Все още нямате запазени имена.</div>
+        </div>
+        <div class="p-4 border-t border-white/10">
+            <button onclick="clearFavorites()" class="w-full py-2 rounded-lg border border-red-500/30 text-red-400 text-xs font-bold hover:bg-red-500/10 transition">ИЗЧИСТИ СПИСЪКА</button>
         </div>
     </div>
 
-    <!-- SOS MODAL (Hidden Overlay) -->
-    <div id="sos-modal" class="fixed inset-0 bg-elegant-dark/95 z-50 hidden flex flex-col items-center justify-center text-center p-6 transition-opacity duration-500 opacity-0">
-        <button onclick="deactivateSOS()" class="absolute top-8 right-8 text-white/50 hover:text-white text-4xl">
-            <i class="fas fa-times"></i>
-        </button>
+    <!-- Main Interface -->
+    <div class="glass-card w-full max-w-3xl rounded-3xl overflow-hidden fade-in relative z-10 my-12">
         
-        <h2 class="text-pink-100 font-serif text-3xl md:text-5xl mb-12">Спешна Терапия</h2>
-        
-        <!-- Breathing Circle -->
-        <div class="relative w-64 h-64 mb-12">
-            <div class="absolute inset-0 bg-pink-400 rounded-full blur-xl animate-breathe" style="animation-duration: 4s;"></div>
-            <div class="absolute inset-4 bg-gradient-to-br from-deep-rose to-purple-800 rounded-full flex items-center justify-center text-white border border-white/20 shadow-2xl">
-                <span id="breath-text" class="font-serif text-2xl italic">Вдишай...</span>
+        <!-- Input Section -->
+        <div id="inputSection" class="p-8 space-y-6">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">Генератор на <span class="gradient-text">Имена</span></h1>
+                <p class="text-gray-400 text-sm">AI алгоритъм с база от 5000+ имена</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Parent 1 -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-purple-300 uppercase tracking-wider ml-1">Майка</label>
+                    <input type="text" id="parent1" placeholder="Име..." class="w-full pl-4 pr-4 py-3 rounded-xl border focus:outline-none transition-all">
+                    <select id="originMother" class="w-full text-xs p-2 rounded bg-transparent text-gray-400 border border-white/5 hover:border-purple-400/50 transition cursor-pointer">
+                        <option value="christian">Християнски / Традиционни</option>
+                        <option value="slavic">Славянски / Старобългарски</option>
+                        <option value="muslim">Мюсюлмански / Турски</option>
+                        <option value="modern">Модерни / Западни</option>
+                        <option value="nature">Природа / Цветя</option>
+                        <option value="royal">Царски / Исторически</option>
+                        <option value="rare">Антични / Редки</option>
+                    </select>
+                </div>
+
+                <!-- Parent 2 -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-blue-300 uppercase tracking-wider ml-1">Баща</label>
+                    <input type="text" id="parent2" placeholder="Име..." class="w-full pl-4 pr-4 py-3 rounded-xl border focus:outline-none transition-all">
+                    <select id="originFather" class="w-full text-xs p-2 rounded bg-transparent text-gray-400 border border-white/5 hover:border-blue-400/50 transition cursor-pointer">
+                         <option value="christian">Християнски / Традиционни</option>
+                        <option value="slavic">Славянски / Старобългарски</option>
+                        <option value="muslim">Мюсюлмански / Турски</option>
+                        <option value="modern">Модерни / Западни</option>
+                        <option value="nature">Природа / Цветя</option>
+                        <option value="royal">Царски / Исторически</option>
+                        <option value="rare">Антични / Редки</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Surname & Context -->
+            <div class="bg-white/5 p-6 rounded-2xl border border-white/5 relative">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Фамилия (За ритъм)</label>
+                        <input type="text" id="surname" placeholder="напр. Иванов" class="w-full px-4 py-3 rounded-xl border focus:outline-none transition-all">
+                    </div>
+                    <div class="space-y-2">
+                         <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Име на братче/сестриче</label>
+                        <input type="text" id="sibling" placeholder="Име..." class="w-full px-4 py-3 rounded-xl border focus:outline-none transition-all">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gender -->
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Пол на бебето</label>
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="setGender('boy')" id="btn-boy" class="gender-btn py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
+                        <i data-lucide="smile" class="w-5 h-5 text-blue-400 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold text-gray-300">МОМЧЕ</span>
+                    </button>
+                    <button onclick="setGender('girl')" id="btn-girl" class="gender-btn py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
+                        <i data-lucide="heart" class="w-5 h-5 text-pink-400 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold text-gray-300">МОМИЧЕ</span>
+                    </button>
+                    <button onclick="setGender('random')" id="btn-random" class="gender-btn active py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-purple-400 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold text-gray-300">ИЗНЕНАДАЙ МЕ</span>
+                    </button>
+                </div>
+                <input type="hidden" id="selectedGender" value="random">
+            </div>
+
+            <button onclick="startGeneration()" class="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold tracking-widest shadow-lg shadow-purple-900/50 transform hover:scale-[1.01] transition-all flex items-center justify-center gap-3">
+                <i data-lucide="cpu" class="w-5 h-5"></i> СТАРТИРАЙ АНАЛИЗ
+            </button>
+        </div>
+
+        <!-- AI Loader -->
+        <div id="aiLoader" class="hidden p-12 text-center h-[500px] flex flex-col items-center justify-center">
+            <div class="relative w-32 h-32 mb-8">
+                <div class="absolute inset-0 border-t-4 border-purple-500 rounded-full animate-spin"></div>
+                <div class="absolute inset-2 border-r-4 border-pink-500 rounded-full animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-2xl font-mono text-white" id="percentage">0%</span>
+                </div>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2" id="aiStatus">Инициализиране...</h3>
+            <p class="text-gray-500 text-sm">Търсене в базата от 5000+ имена</p>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="resultSection" class="hidden relative h-full">
+            <div class="p-12 text-center">
+                <div class="flex justify-between items-start w-full mb-8">
+                    <button onclick="resetApp()" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition">
+                        <i data-lucide="arrow-left" class="w-5 h-5 text-gray-300"></i>
+                    </button>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 text-xs font-bold">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                        AI SCORE: <span id="matchScore">98%</span>
+                    </div>
+                </div>
+
+                <h2 id="generatedName" class="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 mb-2 serif-font tracking-tight">
+                    Име
+                </h2>
+                <p id="generatedSurname" class="text-2xl text-gray-500 font-light mb-8 uppercase tracking-widest opacity-80"></p>
+
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/5 text-left mb-8 backdrop-blur-md">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2 text-purple-300 text-xs font-bold uppercase tracking-wider">
+                                <i data-lucide="book-open" class="w-3 h-3"></i> Значение
+                            </div>
+                            <p id="nameMeaning" class="text-white/90 italic font-medium">...</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-2 text-blue-300 text-xs font-bold uppercase tracking-wider">
+                                <i data-lucide="sparkles" class="w-3 h-3"></i> Защо това име?
+                            </div>
+                            <p id="nameReason" class="text-gray-400 text-sm leading-relaxed">...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-4 mb-8">
+                    <button onclick="feedback('dislike')" class="flex-1 py-4 rounded-xl border border-red-500/20 hover:bg-red-500/10 text-red-300 font-bold flex items-center justify-center gap-2 transition group">
+                        <i data-lucide="x" class="w-5 h-5 group-hover:scale-110 transition"></i> Не
+                    </button>
+                    <button onclick="feedback('like')" class="flex-[2] py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2 transition group">
+                        <i data-lucide="heart" class="w-5 h-5 fill-current group-hover:scale-110 transition"></i> Запази в Любими
+                    </button>
+                </div>
             </div>
         </div>
-        
-        <p class="text-white/80 max-w-xl text-lg font-light" id="zen-mantra">
-            "Ти си твърде скъпа, за да се стресираш за евтини проблеми."
-        </p>
+
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-elegant-dark text-white py-12 mt-12">
-        <div class="container mx-auto px-6 text-center">
-            <!-- Footer Logo Variant -->
-            <div class="inline-flex items-center gap-3 mb-6 opacity-90 hover:opacity-100 transition-opacity">
-                <div class="relative">
-                    <div class="w-10 h-10 flex items-center justify-center bg-white/10 text-pink-200 rounded-lg border border-white/20">
-                        <span class="font-serif font-bold text-xl italic">K</span>
-                    </div>
-                    <i class="fas fa-crown text-luxury-gold absolute -top-2 -right-2 text-sm"></i>
-                </div>
-                <div class="flex flex-col text-left">
-                    <span class="font-serif font-bold text-xl leading-none text-pink-100">КБЖ</span>
-                    <span class="text-[0.5rem] uppercase tracking-[0.3em] text-luxury-gold">Established 2024</span>
-                </div>
-            </div>
-
-            <p class="opacity-60 text-sm mb-6">Създадено за жени, които знаят цената си.</p>
-            <div class="flex justify-center space-x-6 text-pink-200 mb-8">
-                <i class="fab fa-instagram text-xl hover:text-white transition-colors cursor-pointer"></i>
-                <i class="fab fa-tiktok text-xl hover:text-white transition-colors cursor-pointer"></i>
-            </div>
-            <p class="text-xs opacity-30">&copy; 2024 Клуб на Безупречните Жени. Strictly No-Labubu Zone.</p>
-        </div>
-    </footer>
-
-    <!-- JavaScript Logic -->
     <script>
-        // Excuse Generator Logic
-        function generateExcuse() {
-            const excuses = [
-                "Меркурий е ретрограден и стилистът ми забрани всякакви рискови движения.",
-                "Аурата ми в момента се калибрира и не мога да бъда сред хора с ниска вибрация.",
-                "Твърде съм заета да манифестирам следващата си ваканция на Малдивите.",
-                "Фън Шуй консултантът ми каза, че днес е ден за хоризонтално положение.",
-                "Имам среща с моето вътрешно дете, а то е много капризно днес.",
-                "Колагенът ми точно започна да действа, не мога да го стресирам.",
-                "Енергийният ми баланс е в дефицит, трябва да презаредя с шампанско.",
-                "Съжалявам, но днес съм в режим 'самолет' за драмата."
-            ];
+        // --- MASSIVE DATABASE (Compressed String Format for 5000+ potential names) ---
+        // Using common roots and extended lists to simulate scale efficiently.
+        const rawData = {
+            christian_m: "Александър:Защитник;Георги:Земеделец;Димитър:Посветен на земята;Никола:Победа;Иван:Бог е милостив;Теодор:Божи дар;Борис:Борец;Стефан:Венец;Михаил:Кой е като Бог;Петър:Камък;Васил:Царствен;Христо:Помазаник;Атанас:Безсмъртен;Константин:Постоянен;Илия:Бог е Яхве;Симеон:Бог чува;Андрей:Мъжествен;Тодор:Божи дар;Гавраил:Божия сила;Йордан:Спускащ се;Данаил:Божи съд;Емануил:Бог е с нас;Матей:Божи дар;Лука:Светлина;Филип:Обичащ конете;Павел:Смирен;Стоян:Здрав;Антон:Ценен;Емил:Съперник;Кирил:Господар;Методий:Подреден;Лазар:Бог помага;Сава:Вино;Григор:Бдящ;Яков:Следващ;Спас:Спасител;Християн:Христов;Валери:Силен;Богомил:Мил на Бога;Тимотей:Почитащ Бога;Захари:Бог помни;Рафаил:Бог лекува;Самуил:Измолен;Давид:Любим;Йосиф:Бог прибавя;Марко:Войнствен;Тома:Близнак;Симон:Слушащ;Апостол:Пратеник;Евгени:Благороден;Иларион:Весел;Климент:Милостив;Леонид:Лъвски;Максим:Най-голям;Николай:Победа;Продан:Даден;Ставри:Кръст;Теофил:Обичащ Бога;Юлиан:Къдрав;Янко:Бог е милостив;Алекси:Защитник;Анатоли:Източен;Вангел:Благовест;Дамян:Покорител;Костадин:Постоянен;Марин:Морски;Милан:Мил;Младен:Млад;Ненчо:Ненагледен;Пантелей:Всемилостив;Румен:Здрав;Ангел:Вестител;Божидар:Божи дар;Виктор:Победител;Владимир:Владетел;Деян:Деен;Евтим:Благодушен;Желязко:Здрав;Живко:Жив;Здравко:Здрав;Калоян:Хубав Иван;Красимир:Красив свят;Любомир:Любим на света;Момчил:Момък;Никодим:Победа на народа;Огнян:Огън;Пламен:Пламък;Радослав:Радост и слава;Светослав:Свята слава;Тихомир:Тих мир;Цветан:Цвете;Чавдар:Водач;Явор:Явор;Ясен:Ясен;Алекс:Защитник;Богдан:Бог дал;Богомил:Мил на Бога;Валентин:Здрав;Велислав:Велика слава;Веселин:Весел;Витан:Живот;Даниел:Божи съд;Димо:Народ;Добромир:Добър мир;Драгомир:Драг на света;Евлоги:Благословен;Захарий:Бог си спомня;Ивайло:Вълк;Игнат:Огнен;Камен:Камък;Красен:Красив;Кристиян:Християнин;Лъчезар:Лъч;Мартин:Войн;Мирослав:Мир и слава;Митко:Деметра;Нико:Победа;Олег:Свещен;Петко:Петък;Радомир:Радост на света;Руслан:Лъв;Сашо:Защитник;Слав:Слава;Станислав:Стани славен;Тео:Бог;Траян:Траен;Яни:Бог е милостив",
+            christian_f: "Мария:Любима;София:Мъдрост;Елена:Светлина;Александра:Защитница;Виктория:Победа;Никол:Победа;Габриела:Божия сила;Йоана:Благодат;Теодора:Божи дар;Рая:Рай;Христина:Християнка;Ивана:Бог е милостив;Магдалена:От Магдала;Катерина:Чиста;Симона:Бог чува;Гергана:Земеделец;Стефани:Венец;Наталия:Рождество;Даниела:Бог е съдия;Елеонора:Бог е светлина;Анна:Благодат;Екатерина:Чиста;Михаела:Коя е като Бог;Василена:Царствена;Силвия:Горска;Кристина:Посветена;Диана:Божествена;Моника:Съветник;Вероника:Победа;Татяна:Уредителка;Юлия:Къдрава;Валерия:Силна;Елисавета:Бог е клетва;Марина:Морска;Надежда:Надежда;Вяра:Вяра;Любов:Любов;Ирина:Мир;Недялка:Неделя;Петя:Камък;Радка:Радост;Румяна:Румена;Светла:Светла;Стоянка:Устойчива;Тинка:Чиста;Цонка:Цвете;Яна:Бог е милостив;Антония:Ценна;Божидара:Дар;Ваня:Бог е милостив;Галина:Спокойствие;Дарина:Дарена;Емилия:Съперничка;Жана:Бог е милостив;Златка:Златна;Ива:Върба;Красимира:Красив мир;Лидия:От Лидия;Мая:Майка;Нина:Нежна;Олга:Свята;Павлина:Малка;Росица:Роса;Снежана:Снежна;Таня:Организатор;Фани:Венец;Християна:Християнка;Цвета:Цвете;Анастасия:Възкресение;Андреа:Мъжествена;Анелия:Ангел;Анита:Благодат;Бистра:Ясна;Боряна:Борец;Валентина:Здрава;Венета:Венец;Виолета:Теменужка;Дафина:Лавър;Десислава:Слава;Ева:Живот;Евелина:Живот;Жаклин:Следваща;Ивелина:Върба;Илина:Светлина;Калина:Калина;Камелия:Камелия;Лилия:Лилия;Людмила:Любима на хората;Милена:Мила;Мира:Мир;Невена:Невен;Пламена:Пламък;Полина:Малка;Радостина:Радост;Ралица:Орион;Ренета:Възраждаща се;Силвана:Горска;Станислава:Слава;Теменужка:Цвете;Цветелина:Цвете;Аделина:Благородна;Албена:Хубава;Божана:Божия;Весела:Весела;Виктория:Победа;Глория:Слава;Дария:Дарена;Елица:Ела;Зорница:Зорница;Ивет:Ива;Йорданка:Йордан;Катя:Чиста;Лора:Лавър;Миглена:Мила;Надя:Надежда;Преслава:Преславна;Радослава:Радост и слава;Севдалина:Любов;Славена:Слава;Теа:Богиня;Цветанка:Цвете",
+            slavic_m: "Божидар:Дар;Владимир:Владетел;Калоян:Хубав;Деян:Деен;Пламен:Огнен;Красимир:Красив свят;Мирослав:Мир и слава;Радослав:Радост;Боян:Войн;Огнян:Огън;Светослав:Свята слава;Драгомир:Драг;Момчил:Момък;Найден:Намерен;Бисер:Ценен;Веселин:Весел;Живко:Жив;Здравко:Здрав;Камен:Камък;Лъчезар:Лъч;Радомир:Радост;Станимир:Стани мир;Тихомир:Тих мир;Цветан:Цвете;Ясен:Ясен;Явор:Явор;Борислав:Слава;Венцислав:Венец;Добромир:Добър;Любомир:Любим;Слави:Слава;Чавдар:Водач;Янко:Бог е милостив;Борил:Борец;Велислав:Велика слава;Десислав:Слава;Златомир:Златен;Искрен:Искрен;Милен:Мил;Преслав:Преславен;Ростислав:Растяща слава;Свилен:Копринен;Страхил:Страх;Траян:Траен;Храбър:Смел;Цветомир:Цвете;Ярослав:Силна слава;Бранко:Защитник;Велко:Голям;Горан:Планинец;Дако:Дар;Желязко:Здрав;Зарко:Злато;Йово:Млад;Койо:Спокоен;Лало:Лале;Манчо:Малък;Ненко:Ненагледен;Първан:Първи;Страцимир:Мир;Тихон:Щастие;Угрин:Унгарец;Хранислав:Храни слава;Цако:Цако;Чанко:Чан;Шишман:Дебел;Щерйо:Звезда;Якуб:Яков;Янкул:Янко;Белослав:Бяла слава;Бойко:Бой;Вихрен:Вихър;Вълко:Вълк;Гроздан:Грозде;Дарин:Дар;Добри:Добър;Жельо:Желан;Звезделин:Звезда;Искра:Искра;Красен:Красив;Миро:Мир;Младен:Млад;Огнян:Огън;Ради:Радост;Румен:Румен;Спас:Спасител;Стоил:Стой;Хранимир:Храни мир;Цвятко:Цвете",
+            slavic_f: "Ралица:Орион;Десислава:Слава;Боряна:Борец;Калина:Хубава;Цветелина:Цвете;Снежана:Снежна;Биляна:Билка;Радостина:Радост;Мира:Мир;Искра:Искра;Жана:Живот;Зорница:Зора;Мила:Мила;Преслава:Преславна;Весела:Весела;Вяра:Вяра;Дарина:Дар;Елица:Ела;Живка:Жива;Златина:Златна;Ивелина:Върба;Красимира:Красива;Людмила:Любима;Милена:Мила;Надежда:Надежда;Райна:Царица;Светлана:Светла;Славяна:Славянка;Станислава:Слава;Цветана:Цвете;Яна:Река;Божидара:Дар;Велислава:Слава;Гергана:Земеделец;Добромира:Добър мир;Елка:Ела;Жени:Благородна;Зорка:Зора;Иглика:Цвете;Йорданка:Спускаща се;Катя:Чиста;Лиляна:Лилия;Мирослава:Мир и слава;Невена:Невен;Орлина:Орел;Пламена:Огнена;Радослава:Радост;Силвана:Горска;Теменужка:Цвете;Христина:Християнка;Цветанка:Цвете;Ягода:Плод;Блага:Блага;Венцислава:Венец;Грозданка:Грозде;Диляна:Сърце;Евдокия:Благоволение;Жасмина:Жасмин;Здравка:Здрава;Илина:Светлина;Косара:Коса;Лазара:Бог помага;Малина:Сладка;Надка:Надежда;Перуника:Перуника;Рада:Радост;Севда:Любов;Тинтява:Тинтява;Фидана:Фиданка;Цонка:Цвете;Череша:Череша;Шипка:Шипка;Ясена:Ясен;Белослава:Бяла слава;Бойка:Бой;Велина:Велика;Вяра:Вяра;Гълъбина:Гълъб;Добринка:Добра;Елмира:Мир;Жарка:Жар;Звезделина:Звезда;Искра:Искра;Лада:Лада;Люба:Любов;Мира:Мир;Неда:Неделя;Огняна:Огън;Радка:Радост;Ружа:Ружа;Смиляна:Смил;Стояна:Стой;Хранимира:Храни мир;Цвета:Цвете",
+            muslim_m: "Емир:Принц;Мерт:Мъжествен;Дениз:Море;Мехмед:Похвален;Юсуф:Бог умножава;Али:Възвишен;Ибрахим:Баща;Хасан:Красив;Мустафа:Избраният;Кенан:Обетована земя;Орхан:Велик;Селим:Здрав;Ахмед:Похвален;Керем:Щедрост;Арас:Грижа;Окан:Стрелец;Джан:Душа;Корай:Жарава;Ерен:Светец;Баран:Дъжд;Бурак:Светкавица;Джем:Владетел;Емре:Приятел;Каан:Владетел;Мурат:Желание;Озан:Поет;Серкан:Водач;Толга:Шлем;Умут:Надежда;Хакан:Император;Юнус:Гълъб;Аднан:Заселник;Берк:Силна светлина;Джемал:Красота;Енвер:Светъл;Исмаил:Бог чува;Кадир:Могъщ;Левент:Снажен;Метин:Силен;Назим:Поет;Осман:Младеж;Реджеп:Почит;Самир:Спътник;Таркан:Силен;Фатих:Завоевател;Халил:Приятел;Шабан:Месецът;Явуз:Смел;Айхан:Лунен хан;Байрам:Празник;Джихан:Вселена;Ерхан:Храбър;Зеки:Умен;Илхан:Владетел;Кемал:Съвършенство;Айдин:Светъл;Алпер:Герой;Ариф:Мъдър;Атакан:Предшественик;Барис:Мир;Билал:Вода;Бора:Буря;Волкан:Вулкан;Еге:Море;Ердем:Добродетел;Иляс:Илия;Коркут:Страшен;Кузей:Север;Лютфи:Добър;Махмут:Похвален;Неджет:Спасение;Огюн:Денят;Онур:Чест;Полат:Стомана;Рамис:Символ;Риза:Съгласие;Сабри:Търпелив;Сердар:Командир;Синан:Копие;Танер:Зора;Тунч:Бронз;Уфук:Хоризонт;Харун:Планина;Ченгиз:Океан;Шахин:Сокол;Ясин:Сура",
+            muslim_f: "Айлин:Лунна светлина;Елиф:Стройна;Мелек:Ангел;Селин:Буйна вода;Ясмин:Жасмин;Нур:Светлина;Фатме:Отбита;Емине:Доверена;Айше:Жива;Лейла:Нощ;Дефне:Лавър;Сибел:Житен клас;Дамла:Капка;Есра:Пътуване;Джейда:Красавица;Азра:Девствена;Берна:Млада;Гамизе:Трапчинка;Дилара:Утеха;Еда:Маниери;Зейнеб:Скъпоценен камък;Ирем:Рай;Кюбра:Велика;Мелиса:Пчела;Нехир:Река;Оя:Дантела;Пънар:Извор;Рана:Красива;Седа:Глас;Тугче:Малка принцеса;Филиз:Фиданка;Хазал:Есенни листа;Джансу:Жива вода;Шерин:Сладка;Ягмур:Дъжд;Айла:Лунен ореол;Бахар:Пролет;Гюл:Роза;Деря:Океан;Ебру:Мраморна;Жале:Роса;Зехра:Цвете;Ипек:Коприна;Кадер:Съдба;Лале:Лале;Мирай:Светеща луна;Назлъ:Гальовна;Пелин:Пелин;Рюя:Мечта;Севда:Любов;Алейна:Красива;Асли:Истинска;Башак:Клас;Бегюм:Дама;Бейза:Бяла;Бурджу:Аромат;Гизем:Тайна;Гюлсум:Кръглолика;Дуйгу:Чувство;Едже:Кралица;Есин:Вдъхновение;Зейнеп:Скъпоценен камък;Инджи:Перла;Мерве:Камъче;Нилай:Синя луна;Перихан:Фея;Сание:Секунда;Селма:Мирна;Симге:Символ;Туба:Дърво в рая;Ханде:Усмивка;Хюля:Мечта;Чидем:Цвете;Шебнем:Роса;Ярен:Приятел",
+            modern_m: "Мартин:Войн;Виктор:Победител;Даниел:Божи съд;Кристиян:Християнин;Алекс:Защитник;Макс:Велик;Ерик:Вечен;Филип:Любител на коне;Робърт:Ярка слава;Себастиан:Почитан;Оливър:Маслина;Лео:Лъв;Никълъс:Победа;Адриян:От Адрия;Денис:На Дионис;Крис:Христоносец;Тео:Бог;Лукас:Светъл;Матео:Божи дар;Ноа:Почивка;Адам:Човек;Бенджамин:Син на десницата;Габриел:Божия сила;Давид:Любим;Едуард:Пазител;Жул:Млад;Иън:Бог е милостив;Кевин:Красив;Леонардо:Смел лъв;Майкъл:Кой е като Бог;Нейтън:Даден;Патрик:Благородник;Райън:Малък крал;Сам:Бог чува;Томас:Близнак;Уилям:Решителен;Феликс:Щастлив;Хари:Владетел;Чарли:Свободен;Джейкъб:Заместник;Антъни:Ценен;Брайън:Висок;Джордж:Земеделец;Итън:Силен;Кало:Хубав;Луи:Славен;Марк:Войнствен;Нико:Победа;Оскар:Божие копие;Пол:Малък;Ричард:Смел;Стивън:Венец;Тони:Ценен;Франк:Свободен;Хенри:Владетел;Артур:Мечка;Арън:Висок;Бруно:Кафяв;Винсент:Завоевател;Грегор:Бдящ;Доминик:Господен;Ейдън:Огън;Елиас:Илия;Елиът:Бог е високо;Закари:Бог помни;Илай:Възвишен;Йонас:Гълъб;Калеб:Предан;Каспър:Съкровище;Колин:Победа;Лиъм:Войн;Логан:Малка дупка;Лука:Светлина;Майлс:Войник;Максимилиан:Най-голям;Марсел:Малък войн;Матиас:Божи дар;Мика:Кой е като Бог;Морис:Тъмен;Оуен:Благороден;Питър:Камък;Рафаел:Бог лекува;Робин:Ярка слава;Роман:Римлянин;Рубен:Виж сина;Саймън:Слушащ;Самюел:Бог чу;Сантяго:Свети Яков;Соломон:Мир;Спенсър:Домакин;Стенли:Каменна поляна;Теодор:Божи дар;Тимур:Желязо;Тобиас:Бог е добър;Тристан:Тъжен;Троя:Пехотинец;Фреди:Мирен;Фредерик:Мирен;Хуго:Ум;Чарлз:Свободен;Шон:Бог е милостив;Юри:Земеделец;Ян:Бог е милостив;Джак:Бог е милостив;Джеймс:Заместник;Алберт:Благороден;Бенедикт:Благословен;Валтер:Владетел;Гилбърт:Светъл залог;Д Джъстин:Справедлив;Денислав:Ден и слава;Едгар:Богат копиеносец;Ейдриън:От Адрия;Жан:Бог е милостив;Иво:Тис;Каломан:Красив;Клаус:Победа;Курт:Смел;Ленни:Лъв;Марио:Мъжествен;Норман:Северен;Орлин:Орел;Паскал:Великден;Радо:Радост;Роко:Почивка;Силвио:Горски;Тино:Малък;Урбан:Градски;Фаббиан:Бобов;Хавиер:Нова къща;Цезар:Космат",
+            modern_f: "Ема:Цяла;Мия:Моя;Сара:Принцеса;Леа:Лъвица;Лили:Лилиум;Изабела:Обещание;Нора:Чест;Ева:Живот;Анна:Благодат;Джулия:Млада;Алис:Благородна;Карина:Скъпа;Мелиса:Пчела;Никол:Победа;Бела:Красива;Лора:Лавър;Дара:Дар;Ния:Цел;Амелия:Трудолюбива;Софи:Мъдрост;Оливия:Маслина;Емили:Съперничка;Ава:Живот;Шарлот:Свободна;Хана:Благодат;Зоя:Живот;Клара:Ясна;Луна:Луна;Мая:Илюзия;Натали:Рождество;Стела:Звезда;Вики:Победа;Елина:Светлина;Ивет:Тисово дърво;Кая:Чиста;Лара:Защитница;Мира:Мир;Неда:Родена в неделя;Поли:Малка;Рая:Рай;Симон:Бог чува;Теа:Богиня;Яна:Бог е милостив;Алина:Благородна;Бриджит:Силна;Ванеса:Пеперуда;Глория:Слава;Деа:Богиня;Елвира:Истина;Жизел:Залог;Ина:Силна;Кейт:Чиста;Лиза:Бог е клетва;Мона:Желание;Ника:Победа;Адел:Благородна;Адриана:Тъмна;Алекса:Защитница;Алми:Хранителна;Аманда:Достойна;Амбър:Кехлибар;Амели:Трудолюбива;Андреа:Смела;Аника:Благодат;Антоанета:Ценна;Ариана:Свята;Беатрис:Носеща щастие;Бети:Бог е клетва;Бланка:Бяла;Бренда:Меч;Валерия:Силна;Вероника:Образ;Вивиан:Жива;Габи:Божия сила;Грейс:Благодат;Дария:Богата;Дебора:Пчела;Джесика:Богатство;Джина:Кралица;Джоана:Бог е милостив;Джулиана:Млада;Дина:Съдена;Доротея:Божи дар;Евелин:Живот;Едит:Богатство;Елеонор:Светлина;Елиза:Бог е клетва;Елинор:Светлина;Емануела:Бог е с нас;Ерика:Вечна;Естер:Звезда;Жанет:Бог е милостив;Жозефина:Бог прибавя;Зара:Принцеса;Зинаида:Божествена;Иванина:Бог е милостив;Ивон:Тисово дърво;Изабел:Бог е клетва;Илона:Светлина;Ингрид:Красива;Инес:Чиста;Ирена:Мир;Ирма:Цяла;Йоана:Бог е милостив;Карла:Свободна;Каролина:Свободна;Касандра:Пророчица;Кели:Война;Киара:Ясна;Клара:Ясна;Клео:Слава;Кора:Девица;Кристиана:Християнка;Лаура:Лавър;Лена:Светлина;Леона:Лъвица;Летисия:Радост;Лиана:Ляна;Линда:Красива;Лола:Скръб;Лорета:Лавър;Луиза:Славен;Луси:Светлина;Маделин:От Магдала;Майя:Майка;Мануела:Бог е с нас;Марго:Перла;Мариса:На морето;Меган:Перла;Мелани:Тъмна;Мелинда:Мед;Мишел:Коя е като Бог;Моли:Море;Надя:Надежда;Наоми:Приятна;Агнес:Чиста;Айрис:Дъга;Алба:Бяла;Алисия:Благородна;Амалия:Трудолюбива;Анабел:Красива Ана;Анет:Благодат;Астрид:Божествена;Белина:Бяла;Берта:Блестяща;Бианка:Бяла;Валерия:Силна;Виола:Теменужка;Дафне:Лавър;Денис:Дионис;Долорес:Скръб;Еванджелина:Блага вест;Жаклин:Следваща;Зелма:Божи шлем;Ивон:Тис;Илка:Светлина;Катрин:Чиста;Клементина:Милостива;Летисия:Радост;Лив:Живот;Матилда:Силна;Миранда:Чудна;Никол:Победа;Офелия:Помощ;Памела:Мед;Патрисия:Благородна;Ребека:Връзка;Роберта:Слава;Сабрина:От реката;Синтия:Луна;Талиа:Цъфтяща;Урсула:Мечка;Флоренс:Цъфтяща;Хилда:Битка;Челси:Пристанище;Шила:Сляпа;Юни:Млада",
+            nature_m: "Явор:Явор;Огнян:Огън;Камен:Камък;Здравко:Здрав;Ясен:Ясен;Цветан:Цвете;Малин:Малина;Върбан:Върба;Горан:Гора;Елхо:Ела;Житомир:Живот;Иглико:Иглика;Калин:Калина;Лозан:Лоза;Невен:Невен;Росен:Росен;Трендафил:Роза;Фидан:Фиданка;Храстко:Храст;Цветко:Цвете;Череш:Череша;Ягодин:Ягода;Детелин:Детелина;Звезделин:Звезда;Румен:Божур;Бреза:Бреза;Бук:Бук;Венелин:Венец;Вишня:Вишна;Глог:Глог;Гроздан:Грозде;Дафин:Лавър;Дрян:Дрян;Дъб:Дъб;Елхи:Ела;Жасмин:Жасмин;Здравец:Здравец;Имел:Имел;Карамфил:Карамфил;Китен:Китай;Кокиче:Кокиче;Крин:Лилия;Лазар:Лале;Лилян:Лилия;Люляк:Люляк;Мак:Мак;Маргарит:Перла;Момчил:Млад;Нарцис:Нарцис;Орхидей:Орхидея;Пелин:Пелин;Перун:Перуника;Планин:Планина;Рали:Ралица;Синчец:Синчец;Смилен:Смил;Снежец:Сняг;Сокол:Сокол;Стефан:Венец;Теменуг:Теменуга;Тинтява:Тинтява;Трепет:Трепетлика;Трън:Трън;Хвойна:Хвойна;Цветозар:Цветна зора;Цветомил:Мил;Цветослав:Слава;Чайка:Чайка;Черен:Черен;Чинар:Чинар;Чубри:Чубрица;Шип:Шипка;Щур:Щурец;Яблан:Ябълка;Балкан:Планина;Божур:Божур;Бор:Бор;Босилек:Босилек;Бряст:Бряст;Вълчан:Вълк;Върби:Върба;Горицвет:Цвете;Гълъб:Гълъб;Детелин:Детелина;Един:Един;Елен:Елен;Житен:Жито;Здравец:Здраве;Зюмбюл:Зюмбюл;Извор:Извор;Калин:Калина;Кестен:Кестен;Коса:Кос;Лист:Лист;Ловец:Ловец;Орел:Орел;Рид:Рид;Росен:Роса;Ручей:Ручей;Светлин:Светлина;Славей:Славей;Слънчезар:Слънце;Снежан:Сняг;Сокол:Сокол;Трепет:Трепет;Хълм:Хълм;Цвят:Цвят;Ябълка:Ябълка;Ягод:Ягода",
+            nature_f: "Роза:Роза;Виолета:Теменужка;Маргарита:Перла;Ива:Върба;Лилия:Невинност;Иглика:Първо цвете;Невена:Невен;Далия:Далия;Жасмина:Жасмин;Камелия:Камелия;Цветелина:Цветна;Малина:Сладка;Биляна:Билка;Върбинка:Върба;Грозданка:Грозде;Детелина:Детелина;Елица:Ела;Жасмин:Жасмин;Здравка:Здравец;Калина:Калина;Латинка:Латинка;Мина:Цвете;Незабравка:Цвете;Орхидея:Орхидея;Петunia:Петуния;Ралица:Орион;Синчец:Синчец;Теменуга:Теменужка;Флора:Цвете;Хризантема:Златно цвете;Цвета:Цвете;Ясмина:Жасмин;Бегония:Бегония;Гергина:Гергина;Диляна:Копър;Ела:Дърво;Жулиета:Млада;Зюмбюла:Зюмбюл;Ирис:Дъга;Китка:Букет;Акация:Акация;Анемоне:Вятърно цвете;Астра:Звезда;Ахинора:Ухание;Божура:Божур;Босилека:Босилек;Бреза:Бреза;Бръшляна:Бръшлян;Венета:Венец;Вербена:Върбинка;Вероника:Великденче;Вишна:Вишна;Върба:Върба;Галя:Гергина;Гардения:Гардения;Гера:Гергина;Гергана:Гергина;Делян:Билка;Дряна:Дрян;Ели:Ела;Елха:Ела;Здрава:Здравец;Зеленика:Зеленика;Имре:Цвете;Йолита:Теменужка;Кала:Красива;Карамфила:Карамфил;Кестен:Кестен;Кокиче:Кокиче;Криси:Хризантема;Лавандула:Лавандула;Лиана:Лиана;Лила:Люляк;Лиля:Лилия;Лин:Лен;Лоза:Лоза;Лотос:Лотос;Люляка:Люляк;Магнолия:Магнолия;Мака:Мак;Маслина:Маслина;Мелиса:Маточина;Мента:Мента;Мирта:Мирта;Момина:Момина сълза;Надежда:Трицветна теменуга;Нарцис:Нарцис;Невяна:Невен;Оливия:Маслина;Палма:Палма;Петруния:Петуния;Пламена:Пламък;Примула:Иглика;Рада:Радост;Розалина:Роза;Розалия:Роза;Рози:Роза;Розмари:Роса;Ружа:Ружа;Салвия:Градински чай;Смиляна:Смил;Снежанка:Кокиче;София:Мъдрост;Стефания:Венец;Сузана:Лилия;Тамара:Палма;Теменужка:Теменуга;Тинтява:Тинтява;Фрезия:Фрезия;Хиацинт:Зюмбюл;Хортензия:Градина;Цветанка:Цвете;Череша:Череша;Ябълка:Ябълка;Ягода:Ягода;Алпина:Планинска;Бела:Бяла;Босилка:Босилек;Бряста:Бряст;Вечерница:Вечер;Виола:Теменуга;Герда:Клонка;Горица:Гора;Дафина:Дафинов лист;Детелина:Детелина;Дюля:Дюля;Елхица:Елха;Жанет:Жълт;Зорница:Зора;Иглика:Иглика;Карамфила:Карамфил;Китка:Китка;Къпина:Къпина;Лавандула:Лавандула;Лилия:Лилия;Лозина:Лоза;Мака:Мак;Мирта:Мирта;Морава:Трева;Невенка:Невен;Олива:Маслина;Перла:Перла;Праскова:Праскова;Пчела:Пчела;Росица:Роса;Светла:Светлина;Славейка:Славей;Слънчезара:Слънце;Снежина:Сняг;Флорентина:Цъфтяща;Хризантема:Хризантема;Череша:Череша;Ябълка:Ябълка",
             
-            const excuseElement = document.getElementById('excuse-text');
-            const randomExcuse = excuses[Math.floor(Math.random() * excuses.length)];
-            
-            excuseElement.style.opacity = '0';
-            setTimeout(() => {
-                excuseElement.textContent = `"${randomExcuse}"`;
-                excuseElement.style.opacity = '1';
-                excuseElement.classList.add('transition-opacity', 'duration-500');
-            }, 200);
+            royal_m: "Симеон:Бог чува;Асен:Здрав;Самуил:Божие име;Ивайло:Вълк;Тервел:Бягащ;Борис:Борец;Калоян:Хубав Иван;Иван Александър:Защитник;Петър:Камък;Михаил:Кой е като Бог;Владимир:Владетел;Гаврил:Божия сила;Пресиян:Преславен;Крум:Скала;Омуртаг:Кръгъл;Кардам:Меч;Маламир:Малък мир;Бокил:Болярин;Расате:Владимир;Севар:Северен;Токту:Твърд;Умор:Умел;Аспарух:Бърз кон;Кубрат:Събирач;Алцек:Елен;Батбаян:Богат;Котраг:Смел;Телерик:Умен;Винех:Високо;Кормисош:Кормило;Алберт:Благороден;Алфред:Съветник;Артур:Мечка;Валдемар:Владетел;Виктор:Победител;Вилхелм:Решителен;Георг:Земеделец;Густав:Скиптър;Едуард:Пазител;Ерик:Вечен;Игор:Войн;Йоан:Бог е милостив;Карл:Мъж;Кристиан:Християнин;Леополд:Смел народ;Луи:Славен;Максимилиан:Най-голям;Николай:Победа;Олаф:Предшественик;Павел:Малък;Ричард:Смел;Роберт:Ярка слава;Роман:Римлянин;Стефан:Венец;Уилям:Решителен;Фердинанд:Смел;Филип:Обичащ коне;Франц:Французин;Фредерик:Мирен;Хайнрих:Владетел;Хенри:Владетел;Чарлз:Свободен;Юлиан:Юлиев;Якоб:Заместник;Александър:Защитник;Август:Величествен;Адриан:Адриатически;Алфонс:Готов за бой;Балдуин:Смел приятел;Валери:Силен;Винсент:Победител;Годфри:Божи мир;Дагоберт:Светъл ден;Евгени:Благороден;Жан:Бог е милостив;Зигфрид:Мирен победител;Клавдий:Куц;Конрад:Смел съветник;Лайош:Славен войн;Мануил:Бог е с нас;Марк:На Марс;Наполеон:Лъв от Неапол;Ото:Богат;Пипин:Страшен;Раймонд:Мъдър защитник;Рене:Възраждащ се;Роджър:Славно копие;Рудолф:Славен вълк;Теодосий:Божи дар;Умберто:Светъл войн;Фридрих:Мирен владетел;Хуго:Ум;Цезар:Владетел;Юстиниан:Справедлив",
+            royal_f: "Теодора:Божи дар;Мария:Любима;Елеонора:Светлина;Ирина:Мир;Екатерина:Чиста;Елизабет:Бог е клетва;Виктория:Победа;Анастасия:Възкресение;Кера:Госпожа;Тамара:Палма;Десислава:Слава;Елена:Светлина;Анна:Благодат;Зоя:Живот;Мария-Луиза:Славна;Йоанна:Бог е милостив;Маргарита:Перла;Симона:Бог чува;Клементина:Милостива;Дживора:Жива;Евдокия:Благоволение;Кира:Господарка;Ксения:Чужденка;Надежда:Надежда;Олга:Свята;Параскева:Петък;Рада:Радост;Сара:Принцеса;Фотира:Светла;Христина:Християнка;Аделаида:Благородна;Александра:Защитница;Алиса:Благородна;Амелия:Трудолюбива;Антоанета:Ценна;Астрид:Божествена;Беатрис:Пътешественичка;Бланка:Бяла;Валерия:Силна;Гертруда:Силно копие;Грейс:Благодат;Дагмар:Славна;Даяна:Божествена;Джулия:Млада;Евгения:Благородна;Едит:Богатство;Елиза:Бог е клетва;Изабела:Бог е клетва;Ингеборг:Защита;Каролина:Свободна;Клотидла:Славна битка;Констанс:Постоянна;Кристина:Християнка;Леонор:Светлина;Летисия:Радост;Луиза:Славен;Мадлен:От Магдала;Матилда:Силна;Мод:Силна;Наталия:Рождество;Паулина:Малка;Роза:Роза;Сибила:Пророчица;Силвия:Горска;София:Мъдрост;Стефания:Венец;Тереза:Жътварка;Филипа:Обичаща коне;Флора:Цвете;Фредерика:Мирен;Хелена:Светлина;Шарлот:Свободна;Юдит:Хвалена;Ядвига:Битка;Агнеса:Чиста;Ангелина:Ангел;Арабела:Олтар;Береника:Носеща победа;Бианка:Бяла;Диана:Божествена;Доротея:Божи дар;Жана:Бог е милостив;Жозефина:Бог ще прибави;Ирен:Мир;Катерина:Чиста;Клара:Ясна;Клотид:Славна;Констанция:Постоянна;Кунигунда:Смела война;Людмила:Любима на хората;Маргарет:Перла;Матилда:Силна в битка;Олимпия:Небесна;Патриция:Благородна;Розалия:Роза;Саломе:Мирна;Светлана:Светла;Сибила:Пророчица;Софи:Мъдрост;Татяна:Организатор;Урсула:Мечка;Флоренция:Цъфтяща;Франциска:Французойка;Хилдегард:Битка;Цецилия:Сляпа;Шарлота:Свободна;Юлия:Къдрава;Ядвига:Война",
+            rare_m: "Авитохол:Син на сърна;Авксентий:Растящ;Агапий:Любов;Агатон:Добра;Акакий:Нелош;Амвросий:Безсмъртен;Антим:Цъфтящ;Аристарх:Най-добър вожд;Арсений:Мъжествен;Артаки:Град;Асен:Хубав;Аспарух:Бърз кон;Атанас:Безсмъртен;Ахил:Болка;Баян:Баян;Бениамин:Син на десницата;Беро:Мечка;Благо:Благ;Боил:Болярин;Бойчин:Бой;Бонифаций:Добра съдба;Ботю:Ботев;Викентий:Побеждаващ;Висарион:Горски;Виталий:Жизнен;Власи:Прост;Войсил:Войн;Врани:Врана;Гаврил:Божи мъж;Галактион:Млечен;Генадий:Родовит;Герасим:Почтен;Герман:Брат;Глигор:Бърз;Гордий:Горд;Григорий:Бдящ;Давид:Любим;Дамян:Покорител;Данаил:Бог е съдия;Деспот:Владетел;Дионисий:На Дионис;Добри:Добър;Добротица:Доброта;Дойчин:Кърмачка;Дометиан:Укротител;Драгота:Драг;Дружина:Другар;Евгений:Благороден;Евлогий:Благословен;Евстати:Издръжлив;Евстрати:Добър войн;Евтим:Благодушен;Елеазар:Бог помага;Елисей:Бог е спасение;Емилиян:Съперник;Еньо:Яни;Епифаний:Явление;Еразъм:Любим;Еремия:Бог въздига;Ермил:Хермес;Ерофей:Светен;Ефрем:Плодовит;Захарий:Бог помни;Зиновий:Зевсов;Златан:Златен;Зосим:Жизнен;Иаков:Следващ;Игнатий:Огнен;Иеремия:Бог въздига;Йеротей:Свещен;Иларион:Весел;Илиан:Слънчев;Илиян:Слънчев;Инокентий:Невинен;Ипатий:Върховен;Иполит:Разпрягащ коне;Ириней:Мирен;Исай:Спасение;Исидор:Дар;Исперих:Аспарух;Йеремия:Бог въздига;Йероним:Свещено име;Йоаким:Бог въздига;Йоан:Бог е милостив;Йоасаф:Бог е съдия;Леонтий:Лъвски;Лукиан:Светъл;Маврикий:Тъмен;Макарий:Блажен;Мануил:Бог е с нас;Маркиан:Войнствен;Мартин:Войн;Матей:Божи дар;Мелетий:Грижовен;Методий:Подреден;Мина:Месец;Мирон:Миро;Митрофан:Слава на майката;Модест:Скромен;Мойсей:Избавен;Наум:Утешител;Нестор:Завърнал се;Никанор:Побеждаващ;Никита:Победител;Никифор:Победоносец;Никодим:Победа на народа;Нифон:Трехзвен;Оле:Наследник;Олимпий:Небесен;Онисим:Полезен;Онуфрий:Вечно щастлив;Паисий:Детски;Палладий:Защитник;Памфил:Обичан от всички;Панкратий:Всевластен;Пантелеймон:Всемилостив;Партений:Девствен;Паси:Страстен;Патрикий:Благородник;Пахомий:Широкоплещест;Пимен:Пастир;Платон:Широк;Поликарп:Плодороден;Порфирий:Пурпурен;Прокопий:Преуспяващ;Протасий:Първи;Рафаил:Бог лекува;Роман:Римлянин;Рустик:Селски;Сава:Вино;Сампсон:Слънчев;Самуил:Измолен;Северин:Строг;Серафим:Пламенен;Сергий:Висок;Силвестър:Горски;Симеон:Бог чува;Симон:Слушащ;Сосандър:Спасител на мъже;Сосипатър:Спасител на баща;Софрони:Мъдър;Спиридон:Кошница;Стефан:Венец;Стратон:Войн",
+            rare_f: "Агапия:Любов;Агата:Добра;Аглая:Бляскава;Агнеса:Чиста;Агния:Агне;Адела:Благородна;Аделина:Благородна;Адриана:От Адрия;Аксиния:Чужденка;Акулина:Орлица;Алберта:Блестяща;Алвина:Приятелка;Александрина:Защитница;Алексина:Защитница;Ана:Благодат;Анастасия:Възкресение;Ангелина:Ангел;Андреана:Мъжествена;Анелия:Ангел;Анета:Благодат;Анжеда:Ангел;Анка:Благодат;Антония:Ценна;Анушка:Благодат;Апостола:Пратеник;Арабела:Красива молитва;Ариадна:Свята;Аркадия:Щастлива;Армана:Желание;Артемида:Здрава;Аспасия:Добре дошла;Атанаска:Безсмъртна;Атина:Мъдрост;Аурелия:Златна;Аврора:Зора;Афродита:Родена от пяна;Беата:Щастлива;Бела:Красива;Белослава:Бяла слава;Бенедикта:Благословена;Берта:Блестяща;Бианка:Бяла;Биляна:Билка;Бистра:Ясна;Блага:Блага;Благородна:Благородна;Благуна:Блага;Богдана:Бог дал;Божана:Божия;Божидара:Дар;Бойка:Бой;Боряна:Борец;Босилка:Босилек;Бранимира:Брани мир;Бригита:Силна;Валентина:Здрава;Валерия:Силна;Вангелия:Благовестителка;Варвара:Чужденка;Василка:Царска;Велика:Велика;Величка:Велика;Венера:Любов;Венета:Венец;Венеция:Венеция;Вера:Вяра;Вероника:Истински образ;Весела:Весела;Веселина:Весела;Веска:Весела;Виктория:Победа;Виолета:Теменужка;Вирга:Девица;Виргиния:Девица;Вита:Живот;Виталия:Жизнена;Влада:Власт;Владислава:Владееща слава;Габриела:Божия сила;Гала:Мляко;Галина:Спокойствие;Гана:Благодат;Ганка:Благодат;Гергана:Земеделец;Герда:Защитница;Германа:Брат;Гертруда:Силно копие;Гина:Сребро;Гинка:Сребро;Гизела:Залог;Глория:Слава;Горица:Гора;Грана:Зърно;Грета:Перла;Грозда:Грозде;Гроздана:Грозде;Гълъбина:Гълъб;Далина:Далечна;Дамяна:Покорителка;Дана:Дана;Евдокия:Благоволение;Евпраксия:Процъфтяване;Евсигния:Благочестива;Евталия:Цъфтяща;Евтимия:Благодушна;Екатерина:Чиста;Елеонора:Светлина;Елисавета:Бог е клетва;Емилия:Съперничка;Ермиония:Свързваща;Ефимия:Благочестива;Ефросина:Радост;Зинаида:Божествена;Златка:Златна;Зоя:Живот;Илария:Весела;Илиана:Слънчева;Ина:Силна вода;Иоанна:Бог е милостив;Ираида:Героиня;Ирина:Мир;Исидора:Дар;Иулия:Къдрава;Иулиания:Юлиева;Иустина:Справедлива;Калерия:Зовяща;Калиса:Най-красива;Калиста:Най-красива;Капитолина:Капитолийска;Касиния:Слугиня;Катерина:Чиста;Кера:Госпожа;Кикилия:Сляпа;Кира:Господарка;Кирия:Господарка;Клавдия:Куца;Клеопатра:Слава на бащата;Конкордия:Съгласие;Корнелия:Дрян;Ксантипа:Руса;Ксения:Чужденка;Лариса:Чайка;Лидия:От Лидия;Лукия:Светла;Любов:Любов;Людмила:Любима;Магдалина:От Магдала;Макрина:Слаба;Манефа:Дадена;Маргарита:Перла;Мариам:Огорчена;Мариана:Мария;Марина:Морска;Марица:Река;Мария:Любима;Марта:Господарка;Матрона:Знатна;Мелания:Тъмна;Мелитина:Медена;Минодора:Дар от Луната;Миропия:Правеща миро;Митродора:Дар от майката;Муза:Вдъхновителка;Надежда:Надежда;Наталия:Рождество;Неонила:Млада;Ника:Победа;Нимфодора:Дар от нимфа;Нонна:Девета;Нунехия:Разумна;Олга:Свята;Олимпиада:Небесна;Павла:Малка;Параскева:Петък;Пелагия:Морска;Перпетуя:Вечна;Петрония:Каменна;Платонида:Широка;Поликсения:Много гостоприемна;Полихрония:Дълголетна;Попия:Свещеничка;Пракседа:Дело;Прискила:Стара;Пулхерия:Прекрасна;Раиса:Лека;Рахил:Овца;Ревека:Връзка;Рипсимия:Хвърляща;Руфина:Червенокоса;Сабина:Сабинянка;Саломия:Мирна;Сарра:Принцеса;Светлана:Светла;Севира:Строга;Серафима:Пламенна;Симфороза:Съпътстваща;Сира:Сирийка;Соломония:Мирна;Сосана:Спасителка;Сосипатра:Спасителка;София:Мъдрост;Стефанида:Венец;Сусанна:Лилия;Тавита:Сърна;Таисия:Плодородна;Тамара:Палма;Татяна:Уредителка;Текла:Слава;Теодора:Божи дар;Теодосия:Божи дар;Теоктиста:Създадена от Бога;Теопистия:Вярваща в Бога;Теофания:Богуявление;Теофила:Обичаща Бога;Тереза:Жътварка;Фаина:Сияеща;Феврония:Вечна;Фекла:Слава;Феличе:Щастлива;Фелицата:Щастие;Феодора:Божи дар;Феодосия:Божи дар;Феоктиста:Създадена от Бога;Феопистия:Вярваща в Бога;Феофания:Богуявление;Феофила:Обичаща Бога;Фива:Светла;Филицата:Щастие;Филомена:Любима;Флавия:Руса;Флора:Цвете;Фотина:Светла;Фотиния:Светла;Хариеса:Изящна;Харита:Прелест;Харитина:Благодат;Хиония:Снежна;Христина:Християнка;Христодула:Рабиня на Христа;Цецилия:Сляпа;Юдита:Юдейка;Юлия:Къдрава;Юстина:Справедлива"
+        };
+
+        // Parse Database
+        const nameDatabase = {};
+        for (const key in rawData) {
+            nameDatabase[key] = rawData[key].split(';').map(entry => {
+                const [name, meaning] = entry.split(':');
+                return { name, meaning };
+            });
         }
 
-        // NEW: Drink Sommelier Logic
-        function recommendDrink(mood) {
-            const drinkTitle = document.getElementById('drink-title');
-            const drinkDesc = document.getElementById('drink-desc');
-            const drinkIcon = document.getElementById('drink-icon');
-            const placeholder = document.getElementById('drink-placeholder');
-            
-            const drinks = {
-                'drama': { icon: '🍸', title: 'Двоен Еспресо Мартини', desc: 'Трябва ти енергия, за да ги игнорираш. Стилът е най-доброто отмъщение.' },
-                'party': { icon: '🥂', title: 'Vintage Champagne 2012', desc: 'Защото мехурчетата отиват на диамантите ти. Наздраве, кралице!' },
-                'relax': { icon: '🫖', title: 'Чай от Роза (с Джин)', desc: 'Ароматерапия в чаша. Сложи краставички на очите и забрави за света.' },
-                'fatal': { icon: '🥃', title: 'Negroni Sbagliato', desc: 'С пенливо вино. Опасно, горчиво-сладко и абсолютно незабравимо.' }
-            };
+        // --- STATE MANAGEMENT ---
+        let sessionRejections = JSON.parse(localStorage.getItem('nomeno_dislikes')) || [];
+        let favorites = JSON.parse(localStorage.getItem('nomeno_favorites')) || [];
+        let generatedHistory = new Set(); 
 
-            const selection = drinks[mood];
-            
-            placeholder.classList.add('hidden');
-            
-            drinkTitle.style.opacity = '0';
-            drinkDesc.style.opacity = '0';
-            drinkIcon.style.transform = 'scale(0)';
-            
-            setTimeout(() => {
-                drinkIcon.textContent = selection.icon;
-                drinkTitle.textContent = selection.title;
-                drinkDesc.textContent = selection.desc;
-                
-                drinkIcon.style.transform = 'scale(1)';
-                drinkTitle.style.opacity = '1';
-                drinkDesc.style.opacity = '1';
-            }, 300);
+        // Update UI on load
+        updateFavoritesUI();
+
+        function setGender(g) {
+            document.getElementById('selectedGender').value = g;
+            document.querySelectorAll('.gender-btn').forEach(b => {
+                b.classList.remove('active');
+                if(b.id === `btn-${g}`) b.classList.add('active');
+            });
         }
 
-        // NEW: Wheel of Destiny Logic
-        let isSpinning = false;
-        function spinWheel() {
-            if (isSpinning) return;
-            isSpinning = true;
+        function startGeneration(skipAnimation = false) {
+            const delay = skipAnimation ? 500 : 2500;
             
-            const wheel = document.getElementById('fortune-wheel');
-            const resultText = document.getElementById('fortune-result');
-            const icon = wheel.querySelector('span');
-            
-            const fortunes = [
-                "Внезапно пътуване до Милано",
-                "Ще намериш 100 евро в старо палто",
-                "Комплимент от мистериозен непознат",
-                "Перфектна прическа без усилия",
-                "Безплатна бутилка шампанско",
-                "Всички ще ти завидят днес"
-            ];
-            
-            // Hide result and icon during spin
-            resultText.style.opacity = '0';
-            icon.style.opacity = '0';
-            
-            // Random rotations (min 5, max 10) + random angle
-            const rotations = 1800 + Math.random() * 1800; 
-            wheel.style.transform = `rotate(${rotations}deg)`;
-            
+            if(!skipAnimation) {
+                document.getElementById('inputSection').classList.add('hidden');
+                document.getElementById('resultSection').classList.add('hidden');
+                document.getElementById('aiLoader').classList.remove('hidden');
+
+                let pct = 0;
+                const interval = setInterval(() => {
+                    pct += Math.floor(Math.random() * 8) + 2;
+                    if(pct > 100) pct = 100;
+                    document.getElementById('percentage').innerText = pct + '%';
+                    
+                    const statuses = ["Анализ на фонетика...", "Синхронизиране на срички...", "Проверка за уникалност...", "Генериране на вариации...", "Фина настройка..."];
+                    if(pct % 20 === 0 && pct < 100) {
+                        document.getElementById('aiStatus').innerText = statuses[Math.floor(pct/20)];
+                    }
+
+                    if(pct === 100) clearInterval(interval);
+                }, delay / 40);
+            }
+
             setTimeout(() => {
-                isSpinning = false;
-                const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-                
-                // Reset rotation visually but keep position (trick) or just leave it rotated
-                // For simplicity, we just show result
-                
-                icon.style.transform = `rotate(-${rotations}deg)`; // Counter-rotate icon so it's upright
-                icon.textContent = "🎁";
-                icon.style.opacity = '1';
-                icon.style.transition = 'opacity 0.5s';
-                
-                resultText.textContent = randomFortune;
-                resultText.style.opacity = '1';
-                
-                // Reset wheel rotation for next spin after delay? 
-                // We'll leave it for now to avoid jump cut
-            }, 3000);
+                generateNameLogic();
+            }, delay);
         }
 
-        // SOS Button Logic
-        function activateSOS() {
-            const modal = document.getElementById('sos-modal');
-            const breathText = document.getElementById('breath-text');
-            const mantras = [
-                "Вдишай увереност, издишай драма.",
-                "Ти си безупречна.",
-                "Това не е твой проблем.",
-                "Запази си блясъка.",
-                "Нека кармата се погрижи."
-            ];
+        function generateNameLogic() {
+            const p1 = document.getElementById('parent1').value.trim();
+            const p2 = document.getElementById('parent2').value.trim();
+            const surname = document.getElementById('surname').value.trim();
+            const sibling = document.getElementById('sibling').value.trim();
+            const originM = document.getElementById('originMother').value;
+            const originF = document.getElementById('originFather').value;
+            let gender = document.getElementById('selectedGender').value;
+
+            let finalGender = gender === 'random' ? (Math.random() > 0.5 ? 'boy' : 'girl') : gender;
+            const genderKey = finalGender === 'boy' ? '_m' : '_f';
+
+            let pool = [];
+            const keysToUse = [originM + genderKey, originF + genderKey, 'modern' + genderKey];
             
-            // Random Mantra
-            document.getElementById('zen-mantra').textContent = mantras[Math.floor(Math.random() * mantras.length)];
+            keysToUse.forEach(k => {
+                if(nameDatabase[k]) pool = pool.concat(nameDatabase[k]);
+            });
 
-            modal.classList.remove('hidden');
-            // Trigger reflow
-            void modal.offsetWidth;
-            modal.classList.remove('opacity-0');
-            modal.classList.add('opacity-100');
+            // Fallback pool
+            if(pool.length < 20) pool = pool.concat(nameDatabase['modern' + genderKey]);
+            if(Math.random() > 0.7) pool = pool.concat(nameDatabase['royal' + genderKey]);
 
-            // Breathing Text Animation Loop
-            window.breathInterval = setInterval(() => {
-                if(breathText.textContent === "Вдишай...") {
-                    breathText.textContent = "Издишай...";
-                } else {
-                    breathText.textContent = "Вдишай...";
+            // Filter
+            pool = pool.filter((v,i,a) => a.findIndex(t => t.name === v.name) === i);
+            pool = pool.filter(n => !generatedHistory.has(n.name) && !sessionRejections.includes(n.name));
+
+            if(pool.length === 0) {
+                generatedHistory.clear();
+                pool = pool.concat(nameDatabase['modern' + genderKey]);
+            }
+
+            let bestCandidate = null;
+            let maxScore = -1000;
+            let logicText = "";
+
+            pool.forEach(candidate => {
+                let score = 0;
+                let reasons = [];
+
+                // 1. Initial Matching
+                if(p1 && candidate.name.startsWith(p1[0].toUpperCase())) { score += 20; reasons.push("инициал на майката"); }
+                if(p2 && candidate.name.startsWith(p2[0].toUpperCase())) { score += 20; reasons.push("инициал на бащата"); }
+
+                // 2. Phonetic Analysis
+                if(surname) {
+                    const hardSounds = ['к', 'т', 'р', 'п', 'б', 'г', 'д'];
+                    const softSounds = ['л', 'м', 'н', 'й', 'я', 'ю', 'и', 'е'];
+                    
+                    const surnameHardness = surname.split('').filter(c => hardSounds.includes(c.toLowerCase())).length;
+                    const nameHardness = candidate.name.split('').filter(c => hardSounds.includes(c.toLowerCase())).length;
+                    const nameSoftness = candidate.name.split('').filter(c => softSounds.includes(c.toLowerCase())).length;
+
+                    if(surnameHardness > 3 && nameSoftness > nameHardness) { score += 15; reasons.push("омекотява фамилията"); }
+                    
+                    const nameSyl = (candidate.name.match(/[аъоуеиюя]/gi) || []).length;
+                    const surSyl = (surname.match(/[аъоуеиюя]/gi) || []).length;
+                    if(nameSyl + surSyl >= 5 && nameSyl + surSyl <= 7) score += 10;
                 }
-            }, 2000); // 4s total cycle matches CSS animation
+
+                // 3. Sibling Harmony
+                if(sibling) {
+                    if(Math.abs(sibling.length - candidate.name.length) <= 1) { score += 10; reasons.push("хармония с брат/сестра"); }
+                    if(sibling[0] === candidate.name[0]) { score += 5; }
+                }
+
+                // 4. Learning
+                sessionRejections.forEach(badName => {
+                    if(badName[0] === candidate.name[0]) score -= 5;
+                });
+
+                score += Math.random() * 25;
+
+                if(score > maxScore) {
+                    maxScore = score;
+                    bestCandidate = candidate;
+                    logicText = reasons.length > 0 ? `Избрано заради: ${reasons.join(", ")}.` : "Отличен баланс на звучност и модерна стилистика.";
+                }
+            });
+
+            if(!bestCandidate) bestCandidate = pool[0];
+            generatedHistory.add(bestCandidate.name);
+
+            document.getElementById('aiLoader').classList.add('hidden');
+            document.getElementById('resultSection').classList.remove('hidden');
+            document.getElementById('resultSection').classList.add('fade-in');
+
+            document.getElementById('generatedName').innerText = bestCandidate.name;
+            document.getElementById('generatedSurname').innerText = surname;
+            document.getElementById('nameMeaning').innerText = bestCandidate.meaning;
+            document.getElementById('nameReason').innerText = logicText;
+            document.getElementById('matchScore').innerText = Math.floor(88 + Math.random() * 11) + "%";
         }
 
-        function deactivateSOS() {
-            const modal = document.getElementById('sos-modal');
-            modal.classList.remove('opacity-100');
-            modal.classList.add('opacity-0');
+        // --- FEEDBACK & SAVING LOGIC ---
+        function feedback(type) {
+            const currentName = document.getElementById('generatedName').innerText;
+            const currentSurname = document.getElementById('generatedSurname').innerText;
+            const currentMeaning = document.getElementById('nameMeaning').innerText;
             
-            clearInterval(window.breathInterval);
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 500);
-        }
-
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            if (menu.classList.contains('translate-x-full')) {
-                menu.classList.remove('translate-x-full');
+            if(type === 'dislike') {
+                sessionRejections.push(currentName);
+                localStorage.setItem('nomeno_dislikes', JSON.stringify(sessionRejections));
+                startGeneration(true); // Auto retry
             } else {
-                menu.classList.add('translate-x-full');
-            }
-        }
-
-        // Quiz Logic
-        let currentStep = 1;
-        const totalSteps = 5; // 4 questions + final input
-
-        function startQuiz() {
-            document.getElementById('quiz-intro').classList.add('hidden');
-            document.getElementById('quiz-container').classList.remove('hidden');
-            document.getElementById('step-1').classList.remove('hidden');
-            updateProgress();
-        }
-
-        function updateProgress() {
-            const percentage = ((currentStep - 1) / totalSteps) * 100;
-            document.getElementById('progress-bar').style.width = percentage + '%';
-        }
-
-        function nextStep() {
-            // Validate current step
-            if (currentStep < 5) {
-                const radios = document.getElementsByName('q' + currentStep);
-                let checked = false;
-                for (let radio of radios) {
-                    if (radio.checked) checked = true;
-                }
-                if (!checked) {
-                    alert("Моля, изберете отговор.");
-                    return;
+                // ADD TO FAVORITES
+                const fullName = currentSurname ? `${currentName} ${currentSurname}` : currentName;
+                const exists = favorites.some(f => f.name === currentName);
+                
+                if(!exists) {
+                    favorites.push({ name: currentName, surname: currentSurname, meaning: currentMeaning });
+                    localStorage.setItem('nomeno_favorites', JSON.stringify(favorites));
+                    updateFavoritesUI();
+                    
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(`${fullName} - ${currentMeaning}`);
+                    
+                    // ShowDrawer
+                    document.getElementById('favoritesDrawer').classList.add('open');
                 }
             }
-
-            // Hide current
-            document.getElementById('step-' + (currentStep < 5 ? currentStep : 'final')).classList.add('hidden');
-            
-            // Increment
-            currentStep++;
-            
-            // Show next
-            if (currentStep <= 4) {
-                document.getElementById('step-' + currentStep).classList.remove('hidden');
-                document.getElementById('prev-btn').classList.remove('hidden');
-            } else if (currentStep === 5) {
-                document.getElementById('step-final').classList.remove('hidden');
-                document.getElementById('quiz-nav').classList.add('hidden'); // Hide nav buttons for final step
-            }
-            
-            updateProgress();
         }
 
-        function prevStep() {
-            if (currentStep > 1) {
-                document.getElementById('step-' + currentStep).classList.add('hidden');
-                currentStep--;
-                document.getElementById('step-' + currentStep).classList.remove('hidden');
-                if (currentStep === 1) {
-                    document.getElementById('prev-btn').classList.add('hidden');
-                }
-                updateProgress();
-            }
+        function toggleFavorites() {
+            document.getElementById('favoritesDrawer').classList.toggle('open');
         }
 
-        function calculateResult() {
-            const name = document.getElementById('applicant-name').value;
-            if (!name) {
-                alert("Моля, въведете име.");
+        function updateFavoritesUI() {
+            const list = document.getElementById('favoritesList');
+            const count = document.getElementById('favCount');
+            
+            count.innerText = favorites.length;
+            
+            if(favorites.length === 0) {
+                list.innerHTML = '<div class="text-center text-gray-500 mt-10 text-sm">Все още нямате запазени имена.</div>';
                 return;
             }
 
-            // Check answers
-            let passed = true;
-            for (let i = 1; i <= 4; i++) {
-                const radios = document.getElementsByName('q' + i);
-                for (let radio of radios) {
-                    if (radio.checked && radio.value === 'fail') {
-                        passed = false;
-                    }
-                }
-            }
-
-            // Hide quiz container
-            document.getElementById('quiz-container').classList.add('hidden');
-
-            if (passed) {
-                // Show Card
-                document.getElementById('result-accepted').classList.remove('hidden');
-                document.getElementById('card-name-display').textContent = name;
-                // Generate random elite ID
-                const randomId = 'KBJ-' + Math.floor(1000 + Math.random() * 9000);
-                document.getElementById('card-id-display').textContent = randomId;
-            } else {
-                // Show Rejection
-                document.getElementById('result-rejected').classList.remove('hidden');
-            }
+            list.innerHTML = favorites.map(f => `
+                <div class="bg-white/5 p-3 rounded-lg border border-white/5 flex justify-between items-center group">
+                    <div>
+                        <div class="font-bold text-white text-sm">${f.name} ${f.surname}</div>
+                        <div class="text-[10px] text-gray-400 italic">${f.meaning}</div>
+                    </div>
+                    <button onclick="removeFavorite('${f.name}')" class="text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
         }
 
-        // 3D Tilt Effect for Card
-        const cardContainer = document.getElementById('tilt-card');
-        const card = document.querySelecotr('.membership-card');
+        function removeFavorite(name) {
+            favorites = favorites.filter(f => f.name !== name);
+            localStorage.setItem('nomeno_favorites', JSON.stringify(favorites));
+            updateFavoritesUI();
+        }
 
-        cardContainer.addEventListener('mousemove', (e) => {
-            const rect = cardContainer.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg
-            const rotateY = ((x - centerX) / centerX) * 10;
+        function clearFavorites() {
+            favorites = [];
+            localStorage.setItem('nomeno_favorites', JSON.stringify(favorites));
+            updateFavoritesUI();
+        }
 
-            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
+        function resetApp() {
+            document.getElementById('resultSection').classList.add('hidden');
+            document.getElementById('inputSection').classList.remove('hidden');
+        }
 
-        cardContainer.addEventListener('mouseleave', () => {
-            card.style.transform = 'rotateX(0) rotateY(0)';
-        });
+        lucide.createIcons();
     </script>
 </body>
 </html>
