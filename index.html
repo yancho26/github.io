@@ -3,395 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nomeno XI - Singularity</title>
+    <title>Nomeno XII - Cosmic Origin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=Cinzel:wght@400;600;800&display=swap');
 
         :root {
-            --bg-deep: #030014;
-            --glass: rgba(20, 20, 40, 0.6);
-            --border: rgba(255, 255, 255, 0.08);
-            --primary: #6366f1;
-            --accent: #ec4899;
+            --bg-cosmic: #050508;
+            --glass-surface: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary-glow: rgba(124, 58, 237, 0.5);
+            --accent-glow: rgba(56, 189, 248, 0.5);
         }
 
         body {
-            font-family: 'Space Grotesk', sans-serif;
-            background-color: var(--bg-deep);
-            color: #e2e8f0;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-cosmic);
+            color: #f1f5f9;
             overflow-x: hidden;
+            perspective: 1000px;
         }
 
-        .serif { font-family: 'Cormorant Garamond', serif; }
+        .cinzel { font-family: 'Cinzel', serif; }
 
-        /* Living Background */
-        .singularity-bg {
+        /* --- COSMIC BACKGROUND --- */
+        #universe {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #0f0c29, #302b63, #24243e);
-            background-size: 400% 400%;
-            animation: nebula 15s ease infinite;
+            background: radial-gradient(circle at 50% 100%, #1e1b4b, #000);
+            overflow: hidden;
         }
-        @keyframes nebula { 0% {background-position: 0% 50%} 50% {background-position: 100% 50%} 100% {background-position: 0% 50%} }
+        .star {
+            position: absolute; background: white; border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            opacity: var(--opacity);
+        }
+        @keyframes twinkle { 0%, 100% { opacity: var(--opacity); transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
 
-        .aurora {
-            position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 50%),
-                        radial-gradient(circle, rgba(236,72,153,0.1) 0%, transparent 60%);
-            animation: rotate 60s linear infinite;
-        }
-        @keyframes rotate { from {transform: rotate(0deg)} to {transform: rotate(360deg)} }
-
-        /* The Card */
-        .holo-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 80px rgba(99, 102, 241, 0.1);
-            transition: transform 0.1s ease, box-shadow 0.3s ease;
-        }
-
-        /* Inputs 2.0 */
-        .input-xi {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            transition: all 0.3s ease;
-        }
-        .input-xi:focus {
-            background: rgba(0, 0, 0, 0.4);
-            border-color: var(--primary);
-            box-shadow: 0 0 0 1px var(--primary);
-            outline: none;
+        /* --- 3D GLASS CARD --- */
+        .holo-container {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
         }
         
-        select.input-xi option { background: #0f172a; color: white; }
+        .holo-card {
+            background: var(--glass-surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                0 20px 50px -10px rgba(0, 0, 0, 0.8),
+                0 0 100px -20px var(--primary-glow);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+        }
 
-        /* Custom Checkbox */
-        .toggle-checkbox:checked { right: 0; border-color: var(--primary); }
-        .toggle-checkbox:checked + .toggle-label { background-color: var(--primary); }
+        /* Shine Effect */
+        .holo-card::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-25deg);
+            transition: 0.5s;
+            pointer-events: none;
+        }
+        .holo-card:hover::before { left: 150%; transition: 1s; }
 
-        /* Gender Selectors */
+        /* --- UI ELEMENTS --- */
+        .input-cosmic {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .input-cosmic:focus {
+            background: rgba(20, 20, 30, 0.5);
+            border-color: #8b5cf6;
+            box-shadow: 0 0 30px -5px rgba(139, 92, 246, 0.3);
+            outline: none;
+        }
+        .input-cosmic::placeholder { color: rgba(255, 255, 255, 0.2); }
+        select.input-cosmic option { background: #0f172a; }
+
+        /* Toggle */
+        .toggle-checkbox:checked { right: 0; border-color: #8b5cf6; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #8b5cf6; box-shadow: 0 0 15px #8b5cf6; }
+
+        /* Gender Btn */
         .gender-btn {
             background: rgba(255,255,255,0.02);
             border: 1px solid rgba(255,255,255,0.05);
             transition: all 0.3s;
         }
-        .gender-btn:hover { background: rgba(255,255,255,0.05); }
+        .gender-btn:hover { background: rgba(255,255,255,0.05); transform: translateY(-2px); }
         .gender-btn.active {
-            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(236,72,153,0.2));
-            border-color: rgba(255,255,255,0.3);
-            box-shadow: 0 0 30px rgba(99,102,241,0.2);
+            background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(59,130,246,0.1));
+            border-color: #8b5cf6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
         }
 
-        /* Animations */
-        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; transform: translateY(20px); }
-        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-
-        .pulse-slow { animation: pulse 4s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        /* --- ANIMATIONS --- */
+        .fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(40px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
         /* DNA Bars */
-        .dna-track { background: rgba(255,255,255,0.05); height: 4px; border-radius: 2px; overflow: hidden; }
-        .dna-fill { height: 100%; border-radius: 2px; transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1); }
+        .dna-track { background: rgba(255,255,255,0.05); height: 6px; border-radius: 3px; overflow: hidden; }
+        .dna-fill { height: 100%; border-radius: 3px; transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
         /* Drawer */
         #favoritesDrawer { transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         #favoritesDrawer.open { transform: translateX(0); }
+
+        /* Custom Scroll */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-4">
+<body class="min-h-screen flex flex-col items-center p-4 md:p-8" onmousemove="handleParallax(event)">
 
-    <div class="singularity-bg">
-        <div class="aurora"></div>
-    </div>
+    <div id="universe"></div>
 
-    <!-- Header -->
-    <nav class="w-full max-w-6xl flex justify-between items-center mb-10 fade-in py-4" style="animation-delay: 0s;">
+    <!-- Nav -->
+    <nav class="w-full max-w-6xl flex justify-between items-center mb-10 fade-in-up" style="animation-delay: 0s;">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                <i data-lucide="infinity" class="w-6 h-6 text-white"></i>
+            <div class="relative w-12 h-12 flex items-center justify-center">
+                <div class="absolute inset-0 bg-violet-600 blur-xl opacity-50 rounded-full animate-pulse"></div>
+                <div class="relative w-full h-full bg-gradient-to-br from-violet-500 to-indigo-600 rounded-xl flex items-center justify-center border border-white/20">
+                    <i data-lucide="atom" class="w-6 h-6 text-white"></i>
+                </div>
             </div>
-            <div class="hidden sm:block">
-                <h1 class="text-2xl font-bold text-white tracking-tight">NOMENO <span class="text-indigo-400 font-light">XI</span></h1>
-                <p class="text-[10px] text-indigo-200/60 uppercase tracking-[0.3em]">Singularity Edition</p>
+            <div>
+                <h1 class="text-2xl font-bold text-white tracking-tight cinzel">NOMENO <span class="text-violet-400">XII</span></h1>
+                <p class="text-[10px] text-gray-400 uppercase tracking-[0.4em] font-medium">Cosmic Origin</p>
             </div>
         </div>
         
-        <button onclick="toggleFavorites()" class="group relative px-6 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition flex items-center gap-3 overflow-hidden backdrop-blur-md">
-            <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></span>
-            <span class="text-xs font-bold text-gray-300 uppercase tracking-widest">Любими</span>
-            <div class="relative">
-                <i data-lucide="heart" class="w-4 h-4 text-pink-500 group-hover:scale-110 transition"></i>
-                <span id="favCount" class="absolute -top-2 -right-2 w-4 h-4 bg-indigo-500 rounded-full text-[9px] flex items-center justify-center font-bold text-white scale-0 transition-transform duration-300">0</span>
-            </div>
+        <button onclick="toggleFavorites()" class="relative px-6 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition flex items-center gap-3 overflow-hidden backdrop-blur-md group">
+            <span class="text-xs font-bold text-gray-300 uppercase tracking-widest group-hover:text-white transition">Любими</span>
+            <span id="favCount" class="bg-violet-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg shadow-violet-500/50 transition-transform transform scale-0">0</span>
         </button>
     </nav>
 
-    <!-- Main Interface -->
-    <div class="holo-card w-full max-w-5xl rounded-[2rem] overflow-hidden fade-in relative z-10" style="animation-delay: 0.1s;">
-        
-        <!-- Input Mode -->
-        <div id="inputSection" class="p-6 md:p-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <!-- Main Container with 3D Tilt -->
+    <div class="holo-container w-full max-w-5xl fade-in-up" style="animation-delay: 0.1s;" id="holoContainer">
+        <div class="holo-card relative z-10">
             
-            <!-- Left Col: Identity -->
-            <div class="lg:col-span-7 space-y-8">
-                <div>
-                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 serif tracking-tight">Създай бъдеще.</h2>
-                    <p class="text-gray-400 text-sm leading-relaxed max-w-md">
-                        Използвайки F.L.O.W. алгоритъм за фонетична оптимизация и семантичен резонанс.
-                    </p>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="bg-white/5 p-6 rounded-2xl border border-white/5 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <label class="text-xs font-bold text-indigo-300 uppercase tracking-widest">Фамилия</label>
-                            <span class="text-[10px] text-gray-500 uppercase">Ритмичен Анализ</span>
-                        </div>
-                        <input type="text" id="surname" placeholder="Въведете фамилия..." class="input-xi w-full px-5 py-4 rounded-xl text-lg font-medium tracking-wide">
+            <!-- INPUT MODE -->
+            <div id="inputSection" class="p-8 md:p-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Left: Identity Core -->
+                <div class="lg:col-span-7 space-y-10">
+                    <div>
+                        <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 cinzel">Архитект на съдбата</h2>
+                        <p class="text-gray-400 text-sm leading-relaxed max-w-md font-light">
+                            Версия 12.0 използва квантов анализ на фонетиката за създаване на перфектния звуков резонанс.
+                        </p>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest pl-1">Братче/Сестриче</label>
-                            <input type="text" id="sibling" placeholder="Име..." class="input-xi w-full px-4 py-3 rounded-xl text-sm">
+                    <div class="space-y-6">
+                        <!-- Surname -->
+                        <div class="bg-gradient-to-br from-white/[0.03] to-transparent p-6 rounded-2xl border border-white/5 space-y-4 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 blur-[50px] rounded-full pointer-events-none group-hover:bg-violet-500/20 transition duration-700"></div>
+                            
+                            <div class="flex justify-between items-center relative z-10">
+                                <label class="text-xs font-bold text-violet-300 uppercase tracking-widest flex items-center gap-2">
+                                    <i data-lucide="fingerprint" class="w-4 h-4"></i> Фамилия
+                                </label>
+                                <span class="text-[9px] text-gray-500 uppercase border border-white/10 px-2 py-1 rounded">Rhythm Lock</span>
+                            </div>
+                            <input type="text" id="surname" placeholder="Въведете фамилия..." class="input-cosmic w-full px-5 py-4 rounded-xl text-lg font-medium tracking-wide relative z-10">
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest pl-1">Конфигурация</label>
-                            <div class="flex items-center justify-between bg-white/5 px-4 py-3 rounded-xl border border-white/10 h-[46px]">
-                                <span class="text-xs text-gray-300">Двойно име</span>
-                                <div class="relative inline-block w-8 align-middle select-none">
-                                    <input type="checkbox" id="doubleNameToggle" class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-gray-400 border-2 appearance-none cursor-pointer transition-all duration-300"/>
-                                    <label for="doubleNameToggle" class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-800 cursor-pointer"></label>
+
+                        <!-- Secondary Inputs -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest pl-1">Брат/Сестра (Семантика)</label>
+                                <input type="text" id="sibling" placeholder="Име..." class="input-cosmic w-full px-4 py-3 rounded-xl text-sm">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest pl-1">Конфигурация</label>
+                                <div class="flex items-center justify-between bg-white/5 px-4 py-3 rounded-xl border border-white/10 h-[48px]">
+                                    <span class="text-xs text-gray-300">Двойно име</span>
+                                    <div class="relative inline-block w-8 align-middle select-none">
+                                        <input type="checkbox" id="doubleNameToggle" class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-gray-500 border-2 appearance-none cursor-pointer transition-all duration-300"/>
+                                        <label for="doubleNameToggle" class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-800 cursor-pointer"></label>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest pl-1">Енергия / Пол</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <button onclick="setGender('boy')" id="btn-boy" class="gender-btn rounded-xl py-4 flex flex-col items-center justify-center gap-1 group">
+                                    <i data-lucide="zap" class="w-4 h-4 text-blue-400 group-hover:text-white transition"></i>
+                                    <span class="text-[10px] font-bold text-gray-400 group-hover:text-white uppercase tracking-wider">Момче</span>
+                                </button>
+                                <button onclick="setGender('girl')" id="btn-girl" class="gender-btn rounded-xl py-4 flex flex-col items-center justify-center gap-1 group">
+                                    <i data-lucide="moon" class="w-4 h-4 text-pink-400 group-hover:text-white transition"></i>
+                                    <span class="text-[10px] font-bold text-gray-400 group-hover:text-white uppercase tracking-wider">Момиче</span>
+                                </button>
+                                <button onclick="setGender('random')" id="btn-random" class="gender-btn active rounded-xl py-4 flex flex-col items-center justify-center gap-1 group">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-violet-400 group-hover:text-white transition"></i>
+                                    <span class="text-[10px] font-bold text-gray-400 group-hover:text-white uppercase tracking-wider">AI</span>
+                                </button>
+                            </div>
+                            <input type="hidden" id="selectedGender" value="random">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Lineage Matrix -->
+                <div class="lg:col-span-5 flex flex-col justify-between space-y-8 lg:border-l lg:border-white/5 lg:pl-12 relative">
+                    <div class="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-violet-500/20 to-transparent hidden lg:block"></div>
+                    
+                    <div class="space-y-8">
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-widest border-b border-white/5 pb-4">
+                            <i data-lucide="git-merge" class="w-4 h-4 text-violet-500"></i>
+                            Родова Памет
+                        </h3>
+                        
+                        <!-- Mother Node -->
+                        <div class="space-y-3 relative pl-4 border-l-2 border-pink-500/30">
+                            <span class="text-[10px] text-pink-400 font-bold uppercase tracking-widest absolute -top-3 left-4">Майчина Линия</span>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="text" id="parent1" placeholder="Майка" class="input-cosmic w-full px-4 py-2 rounded-lg text-sm">
+                                <select id="originMother" class="input-cosmic w-full px-2 py-2 rounded-lg text-xs cursor-pointer">
+                                    <option value="all">★ Всички</option>
+                                    <option value="modern">Модерни</option>
+                                    <option value="christian">Християнски</option>
+                                    <option value="slavic">Славянски</option>
+                                    <option value="muslim">Мюсюлмански</option>
+                                    <option value="nature">Природни</option>
+                                    <option value="royal">Царски</option>
+                                    <option value="rare">Антични</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="grandMaM" placeholder="Баба" class="input-cosmic px-3 py-2 rounded text-xs opacity-70 focus:opacity-100">
+                                <input type="text" id="grandPaM" placeholder="Дядо" class="input-cosmic px-3 py-2 rounded text-xs opacity-70 focus:opacity-100">
+                            </div>
+                        </div>
+
+                        <!-- Father Node -->
+                        <div class="space-y-3 relative pl-4 border-l-2 border-blue-500/30">
+                            <span class="text-[10px] text-blue-400 font-bold uppercase tracking-widest absolute -top-3 left-4">Бащина Линия</span>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="text" id="parent2" placeholder="Баща" class="input-cosmic w-full px-4 py-2 rounded-lg text-sm">
+                                <select id="originFather" class="input-cosmic w-full px-2 py-2 rounded-lg text-xs cursor-pointer">
+                                    <option value="all">★ Всички</option>
+                                    <option value="modern">Модерни</option>
+                                    <option value="christian">Християнски</option>
+                                    <option value="slavic">Славянски</option>
+                                    <option value="muslim">Мюсюлмански</option>
+                                    <option value="nature">Природни</option>
+                                    <option value="royal">Царски</option>
+                                    <option value="rare">Антични</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="grandMaD" placeholder="Баба" class="input-cosmic px-3 py-2 rounded text-xs opacity-70 focus:opacity-100">
+                                <input type="text" id="grandPaD" placeholder="Дядо" class="input-cosmic px-3 py-2 rounded text-xs opacity-70 focus:opacity-100">
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest pl-1">Пол</label>
-                        <div class="grid grid-cols-3 gap-3">
-                            <button onclick="setGender('boy')" id="btn-boy" class="gender-btn rounded-xl py-3 flex items-center justify-center gap-2 group">
-                                <i data-lucide="zap" class="w-4 h-4 text-blue-400 group-hover:text-white transition"></i>
-                                <span class="text-xs font-bold text-gray-400 group-hover:text-white">Момче</span>
-                            </button>
-                            <button onclick="setGender('girl')" id="btn-girl" class="gender-btn rounded-xl py-3 flex items-center justify-center gap-2 group">
-                                <i data-lucide="moon" class="w-4 h-4 text-pink-400 group-hover:text-white transition"></i>
-                                <span class="text-xs font-bold text-gray-400 group-hover:text-white">Момиче</span>
-                            </button>
-                            <button onclick="setGender('random')" id="btn-random" class="gender-btn active rounded-xl py-3 flex items-center justify-center gap-2 group">
-                                <i data-lucide="stars" class="w-4 h-4 text-indigo-400 group-hover:text-white transition"></i>
-                                <span class="text-xs font-bold text-gray-400 group-hover:text-white">AI</span>
-                            </button>
-                        </div>
-                        <input type="hidden" id="selectedGender" value="random">
-                    </div>
+                    <button onclick="startGeneration()" class="group w-full py-5 rounded-2xl bg-white text-black font-bold text-sm tracking-[0.25em] uppercase hover:shadow-[0_0_60px_-10px_rgba(255,255,255,0.4)] transition-all duration-500 transform hover:scale-[1.02] flex items-center justify-center gap-3 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-violet-200 via-white to-blue-200 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <span class="relative z-10 flex items-center gap-2">
+                            Активирай <i data-lucide="cpu" class="w-4 h-4"></i>
+                        </span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Right Col: Origins -->
-            <div class="lg:col-span-5 flex flex-col justify-between space-y-8 lg:border-l lg:border-white/5 lg:pl-12">
-                <div class="space-y-6">
-                    <h3 class="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-widest">
-                        <i data-lucide="git-branch" class="w-4 h-4 text-indigo-500"></i>
-                        Произход и Традиции
-                    </h3>
+            <!-- PROCESSING MODE -->
+            <div id="aiLoader" class="hidden p-12 text-center h-[600px] flex flex-col items-center justify-center relative">
+                <div class="w-64 h-64 relative mb-8">
+                    <div class="absolute inset-0 rounded-full border border-violet-500/20 animate-[spin_10s_linear_infinite]"></div>
+                    <div class="absolute inset-4 rounded-full border border-blue-500/30 animate-[spin_8s_linear_infinite_reverse]"></div>
+                    <div class="absolute inset-8 rounded-full border border-pink-500/40 animate-[spin_5s_linear_infinite]"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-5xl font-mono text-white font-bold tracking-tighter" id="percentage">0%</span>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-2xl font-bold text-white cinzel tracking-wider" id="aiStatus">ANALYZING PHONETICS</h3>
+                    <p class="text-xs text-gray-500 font-mono uppercase tracking-widest">Optimizing syllabic resonance...</p>
+                </div>
+            </div>
+
+            <!-- RESULT MODE -->
+            <div id="resultSection" class="hidden relative h-full fade-in-up">
+                <div class="p-8 md:p-12 h-full flex flex-col justify-between">
                     
-                    <!-- Mother -->
-                    <div class="space-y-3 relative group">
-                        <div class="absolute -left-3 top-0 bottom-0 w-1 bg-gradient-to-b from-pink-500 to-transparent opacity-20 rounded-full"></div>
-                        <input type="text" id="parent1" placeholder="Име на Майката" class="input-xi w-full px-4 py-2 rounded-lg text-sm bg-transparent border-t-0 border-r-0 border-l-0 border-b border-white/20 focus:border-pink-500">
-                        <select id="originMother" class="input-xi w-full px-4 py-3 rounded-lg text-xs cursor-pointer">
-                            <option value="all">★ Смесен / Всички</option>
-                            <option value="modern">Модерни (Европа/САЩ)</option>
-                            <option value="christian">Традиционни (Християнски)</option>
-                            <option value="slavic">Български (Славянски)</option>
-                            <option value="muslim">Ориенталски (Мюсюлмански)</option>
-                            <option value="nature">Природни (Цветя/Дървета)</option>
-                            <option value="royal">Царски / Аристократични</option>
-                            <option value="rare">Антични / Редки</option>
-                        </select>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="grandMaM" placeholder="Баба" class="input-xi px-3 py-2 rounded text-xs opacity-60 focus:opacity-100">
-                            <input type="text" id="grandPaM" placeholder="Дядо" class="input-xi px-3 py-2 rounded text-xs opacity-60 focus:opacity-100">
+                    <!-- Header -->
+                    <div class="flex justify-between items-start mb-8">
+                        <button onclick="resetApp()" class="group flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-white uppercase tracking-widest transition">
+                            <div class="p-2 rounded-full bg-white/5 group-hover:bg-white/10"><i data-lucide="arrow-left" class="w-4 h-4"></i></div>
+                            Нов
+                        </button>
+                        <div class="text-right">
+                            <div class="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Космическа Хармония</div>
+                            <div class="text-2xl font-bold text-green-400 font-mono drop-shadow-[0_0_10px_rgba(74,222,128,0.5)]" id="matchScore">99.9%</div>
                         </div>
                     </div>
 
-                    <!-- Father -->
-                    <div class="space-y-3 relative group">
-                        <div class="absolute -left-3 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-transparent opacity-20 rounded-full"></div>
-                        <input type="text" id="parent2" placeholder="Име на Бащата" class="input-xi w-full px-4 py-2 rounded-lg text-sm bg-transparent border-t-0 border-r-0 border-l-0 border-b border-white/20 focus:border-blue-500">
-                        <select id="originFather" class="input-xi w-full px-4 py-3 rounded-lg text-xs cursor-pointer">
-                            <option value="all">★ Смесен / Всички</option>
-                            <option value="modern">Модерни (Европа/САЩ)</option>
-                            <option value="christian">Традиционни (Християнски)</option>
-                            <option value="slavic">Български (Славянски)</option>
-                            <option value="muslim">Ориенталски (Мюсюлмански)</option>
-                            <option value="nature">Природни (Цветя/Дървета)</option>
-                            <option value="royal">Царски / Аристократични</option>
-                            <option value="rare">Антични / Редки</option>
-                        </select>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="grandMaD" placeholder="Баба" class="input-xi px-3 py-2 rounded text-xs opacity-60 focus:opacity-100">
-                            <input type="text" id="grandPaD" placeholder="Дядо" class="input-xi px-3 py-2 rounded text-xs opacity-60 focus:opacity-100">
+                    <!-- The Name -->
+                    <div class="text-center mb-10 relative">
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-32 bg-violet-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+                        
+                        <h2 id="generatedName" class="relative text-6xl md:text-8xl font-bold text-white mb-3 cinzel tracking-tight leading-none drop-shadow-2xl">
+                            Име
+                        </h2>
+                        <p id="generatedSurname" class="text-xl md:text-3xl text-gray-400 font-light uppercase tracking-[0.5em] ml-2 font-mono opacity-80"></p>
+                        
+                        <button onclick="speakName()" class="absolute right-0 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition group">
+                            <i data-lucide="volume-2" class="w-6 h-6 group-hover:scale-110 transition"></i>
+                        </button>
+                    </div>
+
+                    <!-- Analysis Dashboard -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <!-- Meaning -->
+                        <div class="bg-white/[0.02] p-6 rounded-2xl border border-white/5 relative group hover:border-violet-500/30 transition duration-500">
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-violet-500 to-blue-500 opacity-0 group-hover:opacity-20 transition duration-500 blur rounded-2xl"></div>
+                            <div class="relative">
+                                <div class="flex items-center gap-2 mb-3 text-violet-400 text-[10px] font-bold uppercase tracking-widest">
+                                    <i data-lucide="book-open" class="w-3 h-3"></i> Значение
+                                </div>
+                                <p id="nameMeaning" class="text-xl text-white/90 serif italic">...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Logic -->
+                        <div class="bg-white/[0.02] p-6 rounded-2xl border border-white/5 relative group hover:border-pink-500/30 transition duration-500">
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-purple-500 opacity-0 group-hover:opacity-20 transition duration-500 blur rounded-2xl"></div>
+                            <div class="relative">
+                                <div class="flex items-center gap-2 mb-3 text-pink-400 text-[10px] font-bold uppercase tracking-widest">
+                                    <i data-lucide="cpu" class="w-3 h-3"></i> Алгоритмичен Избор
+                                </div>
+                                <p id="nameReason" class="text-sm text-gray-400 leading-relaxed font-light">...</p>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Advanced Stats -->
+                    <div class="bg-black/40 p-6 rounded-2xl mb-8 border border-white/5 grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div>
+                            <div class="flex justify-between text-[9px] text-gray-400 mb-2 uppercase tracking-widest font-bold">
+                                <span>Мекота</span>
+                                <span id="valSoft" class="text-white">0%</span>
+                            </div>
+                            <div class="dna-track"><div id="barSoft" class="dna-fill bg-gradient-to-r from-pink-500 to-rose-400" style="width: 0%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[9px] text-gray-400 mb-2 uppercase tracking-widest font-bold">
+                                <span>Уникалност</span>
+                                <span id="valUnique" class="text-white">0%</span>
+                            </div>
+                            <div class="dna-track"><div id="barUnique" class="dna-fill bg-gradient-to-r from-violet-500 to-indigo-400" style="width: 0%"></div></div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold">Съдба (Число)</span>
+                            <div class="flex items-center gap-3">
+                                <span id="numerologyNum" class="text-2xl font-bold text-white font-mono">7</span>
+                                <span id="numerologyText" class="text-[9px] bg-white/10 px-2 py-1 rounded text-violet-200 uppercase tracking-wide">Analyst</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto w-full">
+                        <button onclick="feedback('dislike')" class="col-span-1 py-4 rounded-xl border border-white/10 hover:border-red-500/50 hover:bg-red-500/10 text-gray-500 hover:text-red-400 transition flex flex-col items-center justify-center gap-1 group">
+                            <i data-lucide="x" class="w-5 h-5 group-hover:scale-125 transition"></i>
+                            <span class="text-[9px] uppercase tracking-widest font-bold group-hover:opacity-100 opacity-60">Скрий</span>
+                        </button>
+                        
+                        <button onclick="startGeneration(true)" class="col-span-1 py-4 rounded-xl bg-white/5 hover:bg-white/15 text-white transition flex flex-col items-center justify-center gap-1 group border border-white/5">
+                            <i data-lucide="shuffle" class="w-5 h-5 group-hover:rotate-180 transition duration-700 text-violet-400"></i>
+                            <span class="text-[9px] uppercase tracking-widest font-bold">Следващо</span>
+                        </button>
+
+                        <button onclick="feedback('like')" class="col-span-1 py-4 rounded-xl bg-white text-black hover:bg-gray-200 transition flex flex-col items-center justify-center gap-1 shadow-[0_0_30px_rgba(255,255,255,0.2)] group">
+                            <i data-lucide="heart" class="w-5 h-5 group-hover:fill-red-500 group-hover:text-red-500 transition-colors"></i>
+                            <span class="text-[9px] uppercase tracking-widest font-bold">Запази</span>
+                        </button>
+                    </div>
+
                 </div>
-
-                <button onclick="startGeneration()" class="w-full py-5 rounded-2xl bg-white text-black font-bold text-sm tracking-[0.2em] uppercase hover:shadow-[0_0_50px_rgba(255,255,255,0.3)] transition-all duration-500 transform hover:scale-[1.02] flex items-center justify-center gap-3 group relative overflow-hidden">
-                    <span class="absolute inset-0 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
-                    <span>Инициализирай</span> <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-                </button>
             </div>
+
         </div>
-
-        <!-- Processing Interface -->
-        <div id="aiLoader" class="hidden p-12 text-center h-[600px] flex flex-col items-center justify-center relative">
-            <div class="w-full max-w-md space-y-8">
-                <div class="flex justify-between items-end mb-2">
-                    <span class="text-xs font-mono text-indigo-400 animate-pulse">PROCESSING_DATA_STREAMS</span>
-                    <span class="text-4xl font-mono text-white font-bold" id="percentage">0%</span>
-                </div>
-                <div class="h-1 w-full bg-gray-800 rounded-full overflow-hidden">
-                    <div id="progressBar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 w-0 transition-all duration-100"></div>
-                </div>
-                <div class="grid grid-cols-3 gap-4 text-left">
-                    <div class="p-3 border border-white/5 rounded bg-white/[0.02]">
-                        <div class="text-[9px] text-gray-500 uppercase mb-1">Фонетика</div>
-                        <div class="h-1 w-8 bg-green-500 rounded-full"></div>
-                    </div>
-                    <div class="p-3 border border-white/5 rounded bg-white/[0.02]">
-                        <div class="text-[9px] text-gray-500 uppercase mb-1">Ритмика</div>
-                        <div class="h-1 w-8 bg-green-500 rounded-full"></div>
-                    </div>
-                    <div class="p-3 border border-white/5 rounded bg-white/[0.02]">
-                        <div class="text-[9px] text-gray-500 uppercase mb-1">Семантика</div>
-                        <div class="h-1 w-8 bg-indigo-500 animate-pulse rounded-full"></div>
-                    </div>
-                </div>
-                <p class="text-xs text-gray-500 font-mono mt-8" id="aiStatus">Зареждане на модули...</p>
-            </div>
-        </div>
-
-        <!-- Result Interface -->
-        <div id="resultSection" class="hidden relative h-full fade-in">
-            <div class="p-8 md:p-12 flex flex-col h-full justify-between">
-                
-                <!-- Result Header -->
-                <div class="flex justify-between items-start mb-8">
-                    <button onclick="resetApp()" class="text-gray-500 hover:text-white transition flex items-center gap-2 text-xs uppercase tracking-widest font-bold">
-                        <i data-lucide="chevron-left" class="w-4 h-4"></i> Нов Анализ
-                    </button>
-                    <div class="text-right">
-                        <div class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Коефициент на хармония</div>
-                        <div class="text-xl font-bold text-green-400 font-mono" id="matchScore">99.8%</div>
-                    </div>
-                </div>
-
-                <!-- The Name -->
-                <div class="text-center mb-12 relative group">
-                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/20 via-purple-500/10 to-pink-500/20 blur-[100px] opacity-50 group-hover:opacity-70 transition duration-1000"></div>
-                    <h2 id="generatedName" class="relative text-6xl md:text-8xl font-bold text-white mb-2 serif tracking-tighter leading-none">
-                        Име
-                    </h2>
-                    <p id="generatedSurname" class="text-xl md:text-3xl text-gray-400 font-light uppercase tracking-[0.5em] ml-2"></p>
-                    
-                    <button onclick="speakName()" class="absolute -right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition opacity-0 group-hover:opacity-100">
-                        <i data-lucide="volume-2" class="w-5 h-5"></i>
-                    </button>
-                </div>
-
-                <!-- Analysis Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                    <div class="bg-white/[0.02] p-6 rounded-2xl border border-white/5 hover:border-indigo-500/30 transition">
-                        <div class="flex items-center gap-2 mb-4 text-indigo-400 text-xs font-bold uppercase tracking-widest">
-                            <i data-lucide="sparkles" class="w-3 h-3"></i> Значение & Произход
-                        </div>
-                        <p id="nameMeaning" class="text-lg text-gray-200 serif italic">...</p>
-                    </div>
-                    
-                    <div class="bg-white/[0.02] p-6 rounded-2xl border border-white/5 hover:border-pink-500/30 transition">
-                        <div class="flex items-center gap-2 mb-4 text-pink-400 text-xs font-bold uppercase tracking-widest">
-                            <i data-lucide="network" class="w-3 h-3"></i> Логика на избора
-                        </div>
-                        <p id="nameReason" class="text-sm text-gray-400 leading-relaxed">...</p>
-                    </div>
-                </div>
-
-                <!-- DNA & Stats -->
-                <div class="bg-black/20 p-6 rounded-2xl mb-10 grid grid-cols-1 md:grid-cols-3 gap-8 border border-white/5">
-                    <!-- Softness -->
-                    <div>
-                        <div class="flex justify-between text-[10px] text-gray-400 mb-2 uppercase tracking-wider">
-                            <span>Мекота</span>
-                            <span id="valSoft" class="text-white font-bold">0%</span>
-                        </div>
-                        <div class="dna-track"><div id="barSoft" class="dna-fill bg-gradient-to-r from-pink-500 to-rose-400" style="width: 0%"></div></div>
-                    </div>
-                    <!-- Uniqueness -->
-                    <div>
-                        <div class="flex justify-between text-[10px] text-gray-400 mb-2 uppercase tracking-wider">
-                            <span>Уникалност</span>
-                            <span id="valUnique" class="text-white font-bold">0%</span>
-                        </div>
-                        <div class="dna-track"><div id="barUnique" class="dna-fill bg-gradient-to-r from-indigo-500 to-violet-400" style="width: 0%"></div></div>
-                    </div>
-                    <!-- Numerology -->
-                    <div class="flex items-center justify-between">
-                        <span class="text-[10px] text-gray-400 uppercase tracking-wider">Нумерология</span>
-                        <div class="flex items-center gap-3">
-                            <span id="numerologyNum" class="text-2xl font-bold text-white font-mono">7</span>
-                            <span id="numerologyText" class="text-[10px] bg-white/10 px-2 py-1 rounded text-indigo-200 uppercase tracking-wide">Мистик</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Controls -->
-                <div class="grid grid-cols-3 gap-4 max-w-xl mx-auto w-full">
-                    <button onclick="feedback('dislike')" class="col-span-1 py-4 rounded-xl border border-white/10 hover:bg-red-500/10 hover:border-red-500/30 text-gray-400 hover:text-red-400 transition flex flex-col items-center justify-center gap-1">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                        <span class="text-[9px] uppercase tracking-widest font-bold">Скрий</span>
-                    </button>
-                    
-                    <button onclick="startGeneration(true)" class="col-span-1 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white transition flex flex-col items-center justify-center gap-1 group">
-                        <i data-lucide="refresh-cw" class="w-5 h-5 group-hover:rotate-180 transition duration-500 text-indigo-400"></i>
-                        <span class="text-[9px] uppercase tracking-widest font-bold">Ново</span>
-                    </button>
-
-                    <button onclick="feedback('like')" class="col-span-1 py-4 rounded-xl bg-white text-black hover:bg-gray-200 transition flex flex-col items-center justify-center gap-1 shadow-lg shadow-white/10">
-                        <i data-lucide="heart" class="w-5 h-5 fill-black"></i>
-                        <span class="text-[9px] uppercase tracking-widest font-bold">Запази</span>
-                    </button>
-                </div>
-
-            </div>
-        </div>
-
     </div>
 
     <!-- Favorites Drawer -->
     <div id="favoritesDrawer" class="fixed top-0 right-0 h-full w-full sm:w-[450px] bg-[#020205]/95 backdrop-blur-3xl border-l border-white/10 z-50 shadow-2xl flex flex-col">
-        <div class="p-8 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
-            <h3 class="font-serif text-3xl text-white italic">Колекция</h3>
-            <button onclick="toggleFavorites()" class="text-gray-500 hover:text-white transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+        <div class="p-8 border-b border-white/5 flex justify-between items-center">
+            <h3 class="font-bold text-2xl text-white cinzel tracking-wide">Колекция</h3>
+            <button onclick="toggleFavorites()" class="text-gray-500 hover:text-white transition p-2 hover:bg-white/5 rounded-full"><i data-lucide="x" class="w-6 h-6"></i></button>
         </div>
-        <div id="favoritesList" class="flex-1 overflow-y-auto p-6 space-y-4">
-            <!-- Items -->
-        </div>
+        <div id="favoritesList" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
         <div class="p-6 border-t border-white/5 bg-black/40 space-y-3">
-            <button onclick="exportFavorites()" class="w-full py-4 rounded-xl bg-white/5 hover:bg-white/10 text-indigo-300 text-xs font-bold uppercase tracking-widest transition flex items-center justify-center gap-2">
-                <i data-lucide="copy" class="w-4 h-4"></i> Копирай Списъка
+            <button onclick="exportFavorites()" class="w-full py-4 rounded-xl bg-violet-600/20 border border-violet-500/30 hover:bg-violet-600/30 text-violet-200 text-xs font-bold uppercase tracking-widest transition flex items-center justify-center gap-2">
+                <i data-lucide="copy" class="w-4 h-4"></i> Копирай
             </button>
             <button onclick="clearFavorites()" class="w-full py-3 text-red-400/50 hover:text-red-400 text-[10px] uppercase tracking-widest transition">Изтрий всичко</button>
         </div>
     </div>
 
     <script>
-        // --- NOMENO XI: SINGULARITY DATABASE ---
+        // --- DATA SINGULARITY (12.0) ---
         const rawData = {
+            // Compressed String Format: "Name:Meaning"
             christian_m: "Александър:Защитник на мъжете;Георги:Земеделец;Димитър:Посветен на земята;Никола:Победа на народа;Иван:Бог е милостив;Теодор:Божи дар;Борис:Борец;Стефан:Венец;Михаил:Кой е като Бог;Петър:Камък;Васил:Царствен;Христо:Помазаник;Атанас:Безсмъртен;Константин:Постоянен;Илия:Бог е Яхве;Симеон:Бог чува;Андрей:Мъжествен;Тодор:Божи дар;Гавраил:Божия сила;Йордан:Спускащ се;Данаил:Божи съд;Емануил:Бог е с нас;Матей:Божи дар;Лука:Светлина;Филип:Обичащ конете;Павел:Смирен;Стоян:Здрав;Антон:Ценен;Емил:Съперник;Кирил:Господар;Методий:Подреден;Лазар:Бог помага;Сава:Вино;Григор:Бдящ;Яков:Следващ;Спас:Спасител;Християн:Христов;Валери:Силен;Богомил:Мил на Бога;Тимотей:Почитащ Бога;Захари:Бог помни;Рафаил:Бог лекува;Самуил:Измолен от Бога;Давид:Любим;Йосиф:Бог прибавя;Марко:Войнствен;Тома:Близнак;Симон:Слушащ;Апостол:Пратеник;Евгени:Благороден;Иларион:Весел;Климент:Милостив;Леонид:Лъвски;Максим:Най-голям;Николай:Победа на народа;Продан:Даден;Ставри:Кръст;Теофил:Обичащ Бога;Юлиан:Къдрав;Янко:Бог е милостив;Алекси:Защитник;Анатоли:Източен;Вангел:Благовест;Дамян:Покорител;Костадин:Постоянен;Марин:Морски;Милан:Мил;Младен:Млад;Ненчо:Ненагледен;Пантелей:Всемилостив;Румен:Здрав;Ангел:Вестител;Божидар:Божи дар;Виктор:Победител;Владимир:Владетел на света;Деян:Деен;Евтим:Благодушен;Желязко:Здрав като желязо;Живко:Жив;Здравко:Здрав;Калоян:Хубав Иван;Красимир:Красив свят;Любомир:Любим на света;Момчил:Момък;Никодим:Победа на народа;Огнян:Огън;Пламен:Пламък;Радослав:Радост и слава;Светослав:Свята слава;Тихомир:Тих мир;Цветан:Цвете;Чавдар:Водач;Явор:Явор;Ясен:Ясен;Давид:Любим;Аарон:Просветлен;Авел:Дихание;Авраам:Баща на множества;Адам:Човек;Азария:Помощ от Бога;Ананий:Бог е милостив;Ванадий:Син на Бога;Вениамин:Син на десницата;Витяз:Войн;Влас:Власт;Гавриил:Божи човек;Гедеон:Косач;Григорий:Бдящ;Данаил:Бог е съдия;Езекиил:Бог ще укрепи;Елисей:Бог е спасение;Емануил:С нас е Бог;Ефрем:Плодовит;Захария:Бог си спомня;Илия:Яхве е Бог;Йоан:Бог е милостив;Йов:Преследван;Йона:Гълъб;Йосиф:Бог ще прибави;Исаак:Смях;Исая:Спасение от Господа;Калиник:Добър победител;Касиан:Празен;Киприан:От Кипър;Кирил:Господар;Климент:Милостив;Константин:Постоянен;Козма:Украсен;Лазар:Бог помага;Левкий:Бял;Леонид:Лъв;Лука:Светъл;Макарий:Блажен;Максим:Най-голям;Малахия:Божи пратеник;Матей:Божи дар;Мелетий:Грижлив;Методий:Подреден;Мина:Месечина;Михаил:Кой е като Бог;Мойсей:Избавен от водата;Наум:Утешител;Нестор:Завърнал се у дома;Никанор:Който вижда победата;Никита:Победител;Никифор:Победоносец;Никодим:Победа на народа;Нифонт:Трезвен;Павел:Малък;Паисий:Детски;Памфил:Обичан от всички;Панкратий:Всевластен;Пантелеймон:Всемилостив;Парамон:Твърд;Партений:Девствен;Паси:Страдащ;Патрикий:Бащин;Пахомий:Широкоплещест;Петър:Камък;Пимен:Пастир;Платон:Широк;Поликарп:Многоплоден;Порфирий:Пурпурен;Прокопий:Преуспяващ;Протасий:Първи;Рафаил:Изцеление Божие;Роман:Римлянин;Сава:Вино;Самуил:Бог чу;Северин:Строг;Серафим:Пламенен;Сергий:Висок;Сила:Сила;Силуан:Горски;Силвестър:Горски;Симеон:Слушане;Симон:Слушащ;Софроний:Целомъдрен;Спиридон:Кошница;Стефан:Венец;Стратон:Воюващ;Талале:Цъфтящ;Тарасий:Вълнуващ;Терентий:Търкащ;Тимотей:Почитащ Бога;Тит:Почтен;Тихон:Съдба;Трифон:Разкошен;Трофим:Хранител;Урбан:Градски;Фаддей:Хвала;Филарет:Любител на добродетелта;Филимон:Любящ;Филип:Любител на конете;Филотей:Любител на Бога;Флавиан:Русокос;Флегонт:Горящ;Флор:Цвете;Фока:Тюлен;Фома:Близнак;Фотий:Светъл;Фоти:Светлина;Фрол:Цвете;Харалампий:Сияещ от радост;Харитон:Благодатен;Христофор:Христоносец;Ювеналий:Младежки;Юлиан:Юлиев;Юлий:Юлиев;Юстин:Справедлив;Яков:Пета",
             christian_f: "Мария:Любима;София:Мъдрост;Елена:Светлина;Александра:Защитница;Виктория:Победа;Никол:Победа;Габриела:Божия сила;Йоана:Благодат;Теодора:Божи дар;Рая:Рай;Христина:Християнка;Ивана:Бог е милостив;Магдалена:От Магдала;Катерина:Чиста;Симона:Бог чува;Гергана:Земеделец;Стефани:Венец;Наталия:Рождество;Даниела:Бог е съдия;Елеонора:Бог е светлина;Анна:Благодат;Екатерина:Чиста;Михаела:Коя е като Бог;Василена:Царствена;Силвия:Горска;Кристина:Посветена;Диана:Божествена;Моника:Съветник;Вероника:Победа;Татяна:Уредителка;Юлия:Къдрава;Валерия:Силна;Елисавета:Бог е клетва;Марина:Морска;Надежда:Надежда;Вяра:Вяра;Любов:Любов;Ирина:Мир;Недялка:Неделя;Петя:Камък;Радка:Радост;Румяна:Румена;Светла:Светла;Стоянка:Устойчива;Тинка:Чиста;Цонка:Цвете;Яна:Бог е милостив;Антония:Ценна;Божидара:Дар;Ваня:Бог е милостив;Галина:Спокойствие;Дарина:Дарена;Емилия:Съперничка;Жана:Бог е милостив;Златка:Златна;Ива:Върба;Красимира:Красив мир;Лидия:От Лидия;Мая:Майка;Нина:Нежна;Олга:Свята;Павлина:Малка;Росица:Роса;Снежана:Снежна;Таня:Организатор;Фани:Венец;Християна:Християнка;Цвета:Цвете;Анастасия:Възкресение;Андреа:Мъжествена;Анелия:Ангел;Анита:Благодат;Бистра:Ясна;Боряна:Борец;Валентина:Здрава;Венета:Венец;Виолета:Теменужка;Дафина:Лавър;Десислава:Слава;Ева:Живот;Евелина:Живот;Жаклин:Следваща;Ивелина:Върба;Илина:Светлина;Калина:Калина;Камелия:Камелия;Лилия:Лилия;Людмила:Любима на хората;Милена:Мила;Мира:Мир;Невена:Невен;Пламена:Пламък;Полина:Малка;Радостина:Радост;Ралица:Орион;Ренета:Възраждаща се;Силвана:Горска;Станислава:Слава;Теменужка:Цвете;Цветелина:Цвете;Аделина:Благородна;Албена:Хубава;Божана:Божия;Весела:Весела;Виктория:Победа;Глория:Слава;Дария:Дарена;Елица:Ела;Зорница:Зорница;Ивет:Ива;Йорданка:Йордан;Катя:Чиста;Лора:Лавър;Миглена:Мила;Надя:Надежда;Преслава:Преславна;Радослава:Радост и слава;Севдалина:Любов;Славена:Слава;Теа:Богиня;Цветанка:Цвете;Августина:Величествена;Агапия:Любов;Аглика:Иглика;Агнеса:Чиста;Аделина:Благородна;Албена:Хубава;Александрина:Защитница;Алексина:Защитница;Ана:Благодат;Анастасия:Възкресение;Ангелина:Ангел;Андреана:Мъжествена;Анелия:Ангел;Анета:Благодат;Ани:Благодат;Анка:Благодат;Анна:Благодат;Антоанета:Ценна;Антония:Ценна;Анушка:Благодат;Ася:Възкресение;Атанаска:Безсмъртна;Биляна:Билка;Бистра:Ясна;Блага:Блага;Благовеста:Блага вест;Благуна:Блага;Богдана:Бог дал;Божана:Божия;Божидара:Божи дар;Бойка:Бой;Боряна:Борец;Босилка:Босилек;Валентина:Здрава;Валерия:Силна;Валя:Здрава;Вангелия:Благовестителка;Ваня:Иван;Василка:Царска;Велика:Велика;Величка:Велика;Венета:Венец;Вера:Вяра;Вергиния:Девица;Вероника:Истински образ;Весела:Весела;Веселина:Весела;Веска:Весела;Виктория:Победа;Виолета:Теменужка;Вяра:Вяра;Габи:Божия сила;Габриела:Божия сила;Гала:Мляко;Галина:Спокойствие;Галя:Спокойствие;Гана:Благодат;Ганка:Благодат;Гергана:Земеделец;Гина:Сребро;Гинка:Сребро;Глория:Слава;Горица:Гора;Грозда:Грозде;Грозданка:Грозде;Гълъбина:Гълъб;Даниела:Бог е съдия;Дарина:Дар;Дария:Дар;Дафина:Лавър;Деница:Зорница;Деси:Десислава;Десислава:Слава;Детelina:Детелина;Диана:Божествена;Диляна:Сърце;Дима:Деметра;Димитрина:Деметра;Дина:Съдена;Добра:Добра;Добринка:Добра;Доля:Дял;Дона:Андон;Донка:Андон;Дора:Дар;Доротея:Божи дар;Ева:Живот;Евгения:Благородна;Евдокия:Благоволение;Евелина:Живот;Екатерина:Чиста;Елена:Светлина;Елеонора:Светлина;Ели:Ели;Елин:Елин;Елина:Елина;Елисавета:Бог е клетва;Елица:Ела;Елка:Ела;Емилия:Съперничка;Жана:Бог е милостив;Жанет:Бог е милостив;Жасмина:Жасмин;Желязка:Желязо;Жени:Благородна;Живка:Жива;Жулиета:Млада;Захарина:Бог си спомня;Здравка:Здрава;Злата:Злато;Златина:Злато;Златка:Злато;Зорка:Зора;Зорница:Зора;Зоя:Живот;Ива:Върба;Ивайла:Вълк;Ивана:Бог е милостив;Иванка:Бог е милостив;Ивелина:Върба;Ивет:Ива;Ивона:Ива;Иглика:Иглика;Изабела:Бог е клетва;Илина:Илия;Илияна:Илия;Илка:Илия;Илона:Елена;Ина:Ина;Ирена:Мир;Ирина:Мир;Искра:Искра;Йоана:Бог е милостив;Йовка:Йов;Йолита:Йолита;Йорданка:Йордан;Калина:Калина;Камелия:Камелия;Катерина:Чиста;Катя:Чиста;Кета:Катя;Кина:Катя;Кирилкa:Господарка;Клара:Ясна;Корнелия:Дрян;Красимира:Красива;Кристина:Християнка;Кристияна:Християнка;Лада:Лада;Лазарина:Лазар;Латинка:Латинка;Лидия:Лидия;Лилия:Лилия;Лиляна:Лилия;Лора:Лавър;Люба:Любов;Любима:Любима;Любка:Любов;Любов:Любов;Людмила:Любима на хората;Магда:Магдалена;Магдалена:Магдалена;Малина:Малина;Маргарита:Перла;Мариана:Мария;Мариела:Мария;Мариета:Мария;Марийка:Мария;Марина:Морска;Мария:Любима;Марияна:Мария;Марта:Господарка;Мартина:Войн;Мая:Майка;Миглена:Магдалена;Мила:Мила;Милена:Мила;Милкa:Мила;Мими:Мария;Минка:Мария;Мира:Мир;Мирела:Мира;Мирослава:Мир и слава;Михаела:Коя е като Бог;Моника:Съветник;Надежда:Надежда;Надя:Надежда;Наталия:Рождество;Невена:Невен;Неда:Неделя;Недка:Неделя;Недялка:Неделя;Нели:Елена;Ника:Победа;Николета:Победа на народа;Николина:Победа на народа;Нина:Нина;Нора:Елеонора;Олга:Свята;Оля:Олга;Павлина:Малка;Пепа:Петрана;Петрана:Камък;Петя:Камък;Пламена:Пламък;Полина:Малка;Поля:Полина;Рада:Радост;Радка:Радост;Радослава:Радост и слава;Радостина:Радост;Райна:Райна;Ралица:Орион;Ренета:Възраждаща се;Роза:Роза;Росица:Роса;Ружа:Ружа;Румяна:Румена;Савина:Сабина;Светла:Светла;Светлана:Светла;Севда:Любов;Севдалина:Любов;Силвия:Горска;Силвана:Горска;Симона:Бог чува;Сия:Анастасия;Славка:Слава;Снежана:Снежна;Снежина:Снежна;Соня:София;София:Мъдрост;Станка:Стан;Стефака:Венец;Стефания:Венец;Стефка:Венец;Стоянка:Стои;Сълза:Сълза;Таня:Татяна;Татяна:Уредителка;Теменуга:Теменуга;Теменужка:Теменуга;Теодора:Божи дар;Тереза:Тереза;Тинка:Катерина;Тодора:Божи дар;Тотка:Тодора;Фани:Стефания;Фанка:Стефания;Фидана:Фиданка;Христина:Християнка;Християна:Християнка;Цвета:Цвете;Цветана:Цвете;Цветанка:Цвете;Цветелина:Цвете;Цецка:Цвете;Юлия:Къдрава;Юлияна:Къдрава;Ягода:Ягода;Яна:Бог е милостив;Янка:Бог е милостив;Агапия:Любов;Агата:Добра;Агнеса:Чиста;Аделина:Благородна;Аза:Силна;Акилина:Орлица;Аксиния:Чужденка;Акулина:Орлица;Александра:Защитница;Александрина:Защитница;Алексина:Защитница;Алена:Алена;Алеся:Защитница;Алина:Благородна;Алиса:Истина;Алла:Друга;Алфея:Промяна;Амалия:Трудолюбива;Анастасия:Възкресение;Анатолия:Източна;Ангелина:Вестителка;Андреана:Мъжествена;Андромеда:Владетелка на мъже;Анелия:Светлина;Анета:Благодат;Анжелика:Ангелска;Ани:Благодат;Анисия:Изпълнение;Анита:Благодат;Анка:Благодат;Анна:Благодат;Антонина:Встъпваща в бой;Антония:Встъпваща в бой;Анфиса:Цъфтяща;Аполинария:Слънчева;Ариадна:Силно пееща;Арина:Мир;Аркадия:Пастирка;Арсения:Мъжествена;Артемида:Здрава;Ася:Възкресение;Атанасия:Безсмъртна;Аурелия:Златна;Афродита:Родена от пяната;Ахинора:Ухание на теменуги;Беатрис:Носеща щастие;Бела:Красива;Берта:Великолепна;Бианка:Бяла;Бистра:Ясна;Блага:Блага;Благородна:Благородна;Благуна:Блага;Богдана:Бог дал;Божана:Божия;Божидара:Божи дар;Бойка:Бойка;Бона:Добър;Борислава:Бореща се за слава;Боряна:Бореща се;Босилка:Босилек;Бранимира:Брани мир;Бригита:Силна;Валентина:Здрава;Валерия:Силна;Ванга:Благовестителка;Вангелия:Благовестителка;Варвара:Чужденка;Василена:Царствена;Василия:Царствена;Василка:Царствена;Велика:Велика;Величка:Велика;Венера:Любов;Венета:Венец;Венеция:Венеция;Венцислава:Венец на славата;Вера:Вяра;Вергиния:Девица;Вероника:Истински образ;Весела:Весела;Веселина:Весела;Веселка:Весела;Веска:Весела;Виктория:Победа;Виолета:Теменужка;Виргиния:Девица;Владислава:Владееща слава;Влада:Владееща;Габриела:Божия крепост;Галина:Тишина;Галя:Тишина;Гана:Благодат;Ганка:Благодат;Геновева:Бял дух;Гергана:Земеделка;Герда:Защитница;Герма:Родна;Германа:Родна;Гертруда:Силно копие;Гина:Сребърна;Гинка:Сребърна;Гита:Песен;Глафира:Изящна;Гликерия:Сладка;Глория:Слава;Горица:Горица;Грета:Перла;Грозда:Грозде;Гроздана:Грозде;Гълъбина:Гълъб;Далина:Далечна;Дамяна:Покорителка;Дана:Съди;Даниела:Бог е моят съдия;Дарина:Дар;Дария:Победителка;Дафина:Лавър;Дафна:Лавър;Дебора:Пчела;Деляна:Дяла;Деметра:Майка земя;Деница:Зорница;Десислава:Намираща слава;Деси:Намираща;Детелина:Детелина;Джана:Бог е милостив;Джемма:Скъпоценен камък;Джулия:Юлиева;Джулиана:Юлиева;Диана:Божествена;Диляна:Сърце;Димана:Деметра;Димитрина:Деметра;Димка:Деметра;Дина:Съдба;Добра:Добра;Добринка:Добра;Добромира:Добър мир;Доля:Дял;Домна:Господарка;Дона:Господарка;Донка:Господарка;Дора:Дар;Доротея:Божи дар;Ева:Живот;Евгения:Благородна;Евдокия:Благоволение;Евелина:Лешник;Евлампия:Благосветла;Евпраксия:Благоденствие;Евридика:Справедливост;Евсигния:Благочестива;Евстатия:Стойка;Евтимия:Благодушна;Екатерина:Чиста;Елеонора:Бог е моята светлина;Ели:Бог е моята светлина;Елиза:Бог е моята клетва;Елизабет:Бог е моята клетва;Елисавета:Бог е моята клетва;Елица:Ела;Елка:Ела;Елмира:Мир;Емелина:Съперничка;Емилия:Съперничка;Еми:Съперничка;Емма:Цяла;Ермиония:Свързваща;Естер:Звезда;Ефимия:Благочестива;Ефросина:Радост;Жана:Бог е милостив;Жанет:Бог е милостив;Жасмина:Жасмин;Желязка:Желязна;Жени:Благородна;Живка:Жива;Жулиета:Юлиева;Запряна:Спряна;Захарина:Памет Божия;Звезда:Звезда;Звезделина:Звездна;Здравка:Здрава;Зина:Зевсова;Зинаида:Зевсова;Злата:Златна;Златина:Златна;Златка:Златна;Зоя:Живот;Ива:Върба;Ивайла:Вълк;Ивана:Бог е милостив;Иванка:Бог е милостив;Ивелина:Лешник;Ивет:Тисово дърво;Ивона:Тисово дърво;Иглика:Иглика;Изабела:Красавица;Изидора:Дар на Изида;Илиана:Слънчева;Илина:Слънчева;Илка:Слънчева;Илона:Слънчева;Ина:Силна вода;Инга:Зимна;Инес:Чиста;Инна:Силна вода;Иоанна:Бог е милостив;Ираида:Героиня;Ирена:Мир;Ирина:Мир;Ирис:Дъга;Ирма:Германка;Искра:Искра;Йоана:Бог е милостив;Йовка:Бог е милостив;Йолита:Виолетова;Йорданка:Спускаща се;Йосифа:Бог ще прибави;Калина:Калина;Калиопа:Прекрасногласна;Калия:Хубава;Камелия:Камелия;Капка:Капка;Карина:Мила;Каролина:Королева;Катерина:Чиста;Катя:Чиста;Керана:Господарка;Кера:Господарка;Кина:Господарка;Кира:Господарка;Кирила:Господарка;Кичка:Кичка;Клара:Ясна;Клавдия:Куца;Клементина:Милостива;Клеопатра:Слава на бащата;Койна:Смирена;Констанца:Постоянна;Констанция:Постоянна;Косара:Коса;Костадинка:Постоянна;Красимира:Красива;Кристина:Християнка;Кристияна:Християнка;Ксения:Чужденка;Куна:Смела;Лада:Мила;Лазарина:Бог помага;Лала:Лале;Лариса:Чайка;Латинка:Латинка;Лаура:Лавър;Леда:Лебед;Лена:Светлина;Леонида:Лъвица;Леонтина:Лъвска;Лидия:Лидийка;Лиза:Бог е моята клетва;Лилия:Лилия;Лиляна:Лилия;Лина:Нежна;Линда:Змия;Лоза:Лоза;Лозана:Лоза;Лора:Лавър;Луиза:Славен войн;Луиза:Светлина;Люба:Любов;Любима:Любима;Любка:Любов;Любов:Любов;Людмила:Любима на хората;Люси:Светлина;Магда:От Магдала;Магдалена:От Магдала;Магдалина:От Магдала;Малина:Малина;Маргарита:Перла;Мариана:Мария и Ана;Мариела:Мария;Мариета:Мария;Марийка:Мария;Марина:Морска;Мария:Любима;Марияна:Мария;Марта:Господарка;Мартина:Войнствена;Маруся:Мария;Мая:Майка;Меглена:От Магдала;Мелания:Черен;Мелинда:Медена;Мелиса:Пчела;Миглена:От Магдала;Мила:Мила;Милана:Мила;Милена:Мила;Милкa:Мила;Милка:Мила;Мими:Мария;Минка:Мария;Мира:Мир;Мирела:Възхитителна;Мирослава:Славен мир;Михаела:Коя е като Бог;Моника:Самa;Надежда:Надежда;Надя:Надежда;Нана:Милост;Наталия:Рождена;Наташа:Рождена;Невена:Невен;Неда:Неделя;Недка:Неделя;Недялка:Неделя;Нели:Светлина;Ника:Победа;Николета:Победа на народа;Николина:Победа на народа;Нина:Милост;Нона:Девета;Нора:Почит;Олга:Свята;Оливия:Маслина;Олимпиада:Небесна;Оля:Свята;Павла:Малка;Павлина:Малка;Панка:Всесвета;Параскева:Петък;Патриция:Благородна;Паулина:Малка;Пелагия:Морска;Пенка:Камък;Пепа:Камък;Перла:Перла;Петка:Петък;Петрана:Камък;Петя:Камък;Пламена:Пламък;Полина:Малка;Поля:Малка;Правда:Истина;Преслава:Преславна;Пролетина:Пролет;Рада:Радост;Радка:Радост;Радослава:Радостна слава;Радост:Радост;Радостина:Радост;Раина:Рай;Райна:Рай;Ралица:Орион;Рая:Рай;Ребека:Връзка;Ренета:Възраждаща се;Рита:Перла;Роза:Роза;Розалина:Роза;Розалия:Роза;Росица:Роса;Ружа:Ружа;Румяна:Румена;Русанка:Руса;Сабина:Сабинянка;Савина:Сабинянка;Сандра:Защитница;Светла:Светла;Светлана:Светла;Свобода:Свобода;Севда:Любов;Севдалина:Любов;Северина:Строга;Села:Скала;Селма:Мир;Силва:Гора;Силвана:Горска;Силвия:Горска;Симона:Слушаща;Сирма:Сърма;Сия:Сияйна;Слава:Слава;Славка:Слава;Славена:Слава;Снежана:Снежна;Снежа:Снежна;Снежина:Снежна;Соня:Мъдрост;София:Мъдрост;Станимира:Стани мир;Станислава:Стани славна;Станка:Стан;Стела:Звезда;Стефака:Венец;Стефана:Венец;Стефания:Венец;Стефи:Венец;Стефка:Венец;Стилиана:Стълб;Стоянка:Стои;Султана:Султанка;Сузана:Лилия;Сълза:Сълза;Тамара:Палма;Таня:Уредителка;Татяна:Уредителка;Теменуга:Теменуга;Теменужка:Теменуга;Теодора:Божи дар;Теофана:Богуявление;Тереза:Ловец;Тинка:Чиста;Тодора:Божи дар;Тона:Антония;Тонка:Антония;Тотка:Тодора;Уляна:Юлиева;Урсула:Мечка;Фани:Венец;Фанка:Венец;Фатима:Отбита;Феврония:Лъчезарна;Фелиция:Щастие;Фиданка:Фиданка;Филипа:Любителка на конете;Филка:Любителка на конете;Флора:Цвете;Франка:Свободна;Хана:Благодат;Хелена:Светлина;Хенриета:Владетелка на дома;Хермина:Войн;Хилда:Битка;Христина:Християнка;Християна:Християнка;Цвета:Цвете;Цветана:Цвете;Цветанка:Цвете;Цветелина:Цвете;Цветомира:Цвете на мира;Цецка:Цвете;Яворка:Явор;Ягода:Ягода;Яна:Бог е милостив;Янита:Бог е милостив;Янка:Бог е милостив;Ясмина:Жасмин",
             modern_m: "Мартин:Войн;Виктор:Победител;Даниел:Божи съд;Кристиян:Християнин;Алекс:Защитник;Макс:Велик;Ерик:Вечен;Филип:Любител на коне;Робърт:Ярка слава;Себастиан:Почитан;Оливър:Маслина;Лео:Лъв;Никълъс:Победа;Адриян:От Адрия;Денис:На Дионис;Крис:Христоносец;Тео:Бог;Лукас:Светъл;Матео:Божи дар;Ноа:Почивка;Адам:Човек;Бенджамин:Син на десницата;Габриел:Божия сила;Давид:Любим;Едуард:Пазител;Жул:Млад;Иън:Бог е милостив;Кевин:Красив;Леонардо:Смел лъв;Майкъл:Кой е като Бог;Нейтън:Даден;Патрик:Благородник;Райън:Малък крал;Сам:Бог чува;Томас:Близнак;Уилям:Решителен;Феликс:Щастлив;Хари:Владетел;Чарли:Свободен;Джейкъб:Заместник;Антъни:Ценен;Брайън:Висок;Джордж:Земеделец;Итън:Силен;Кало:Хубав;Луи:Славен;Марк:Войнствен;Нико:Победа;Оскар:Божие копие;Пол:Малък;Ричард:Смел;Стивън:Венец;Тони:Ценен;Франк:Свободен;Хенри:Владетел;Артур:Мечка;Арън:Висок;Бруно:Кафяв;Винсент:Завоевател;Грегор:Бдящ;Доминик:Господен;Ейдън:Огън;Елиас:Илия;Елиът:Бог е високо;Закари:Бог помни;Илай:Възвишен;Йонас:Гълъб;Калеб:Предан;Каспър:Съкровище;Колин:Победа;Лиъм:Войн;Логан:Малка дупка;Лука:Светлина;Майлс:Войник;Максимилиан:Най-голям;Марсел:Малък войн;Матиас:Божи дар;Мика:Кой е като Бог;Морис:Тъмен;Оуен:Благороден;Питър:Камък;Рафаел:Бог лекува;Робин:Ярка слава;Роман:Римлянин;Рубен:Виж сина;Саймън:Слушащ;Самюел:Бог чу;Сантяго:Свети Яков;Соломон:Мир;Спенсър:Домакин;Стенли:Каменна поляна;Теодор:Божи дар;Тимур:Желязо;Тобиас:Бог е добър;Тристан:Тъжен;Троя:Пехотинец;Фреди:Мирен;Фредерик:Мирен;Хуго:Ум;Чарлз:Свободен;Шон:Бог е милостив;Юри:Земеделец;Ян:Бог е милостив;Джак:Бог е милостив;Джеймс:Заместник;Алберт:Благороден;Бенедикт:Благословен;Валтер:Владетел;Гилбърт:Светъл залог;Д Джъстин:Справедлив;Денислав:Ден и слава;Едгар:Богат копиеносец;Ейдриън:От Адрия;Жан:Бог е милостив;Иво:Тис;Каломан:Красив;Клаус:Победа;Курт:Смел;Ленни:Лъв;Марио:Мъжествен;Норман:Северен;Орлин:Орел;Паскал:Великден;Радо:Радост;Роко:Почивка;Силвио:Горски;Тино:Малък;Урбан:Градски;Фаббиан:Бобов;Хавиер:Нова къща;Цезар:Космат;Абел:Дихание;Август:Величествен;Аксел:Баща на мира;Алан:Красив;Алдо:Стар;Алесандро:Защитник;Алесио:Защитник;Алонсо:Готов за бой;Алфред:Мъдър съветник;Амадео:Обичащ Бога;Амброуз:Безсмъртен;Анджело:Ангел;Армандо:Войн;Арнолд:Силен като орел;Арон:Просветлен;Базил:Царствен;Балтазар:Да пази царя;Барнаби:Син на утехата;Барт:Син на Толомей;Бенедето:Благословен;Бернар:Смел като мечка;Бертрам:Светъл гарван;Блейк:Тъмен;Боби:Слава;Брайс:Пъстър;Брандън:Хълм;Брендан:Принц;Брус:От гората;Вал:Силен;Ван:От;Вернер:Защитник;Вито:Живот;Владислав:Владеещ слава;Гавин:Бял ястреб;Гаспар:Съкровище;Гастон:Гост;Герхард:Смело копие;Глен:Долина;Гордън:Голям хълм;Грант:Голям;Гуидо:Водач;Густав:Скиптър;Даниеле:Бог е съдия;Дарио:Притежаващ добро;Дарън:Малък велик;Дейвид:Любим;Деймън:Укротител;Дейн:Даничанин;Декстър:Десен;Дерек:Владетел на хората;Джакомо:Заместник;Джаред:Спускащ се;Джаспър:Съкровище;Джералд:Владетел с копие;Джереми:Бог въздига;Джеф:Божи мир;Джино:Добре роден;Джоел:Яхве е Бог;Джонатан:Яхве даде;Джордан:Спускащ се;Джошуа:Яхве е спасение;Джулиан:Юлиев;Джулиус:Юлиев;Диего:Учение;Дилан:Син на морето;Димитри:Посветен на Деметра;Дино:Малък;Доналд:Световен владетел;Дориан:Дорийски;Дъглас:Тъмна река;Дъстин:Камък на Тор;Еван:Бог е милостив;Едуин:Богат приятел;Ейдън:Огън;Еймъс:Товар;Ели:Възвишен;Елмо:Благороден защитник;Емануел:Бог е с нас;Емил:Съперник;Енцо:Владетел на дома;Еразъм:Любим;Ернест:Сериозен;Еруин:Приятел на глигана;Ефраим:Плодовит;Захария:Бог си спомня;Зигмунд:Защитник на победата;Игнацио:Огнен;Игор:Войн на Инг;Илайджа:Яхве е Бог;Имануел:Бог е с нас;Инго:Инг;Исак:Смях;Йенс:Бог е милостив;Йохан:Бог е милостив;Кай:Пазител на ключовете;Карло:Мъж;Карлос:Мъж;Касиус:Празен;Квентин:Пети;Кейси:Бдъщ;Келвин:Тясна река;Кен:Красив;Кенет:Красив;Керъл:Мъж;Кийт:Гора;Килиан:Църква;Кларънс:Ясен;Клод:Куц;Клей:Глина;Клиф:Скала;Клайв:Скала;Конрад:Смел съветник;Корнелиус:Рог;Кристиан:Християнин;Кристофър:Христоносец;Ксвиер:Нова къща;Куентин:Пети;Къртис:Учтив;Ларс:Лавър;Ласло:Славен владетел;Лейф:Наследник;Ленърд:Лъвска сила;Леонард:Лъвска сила;Леополд:Смел народ;Линус:Лен;Лойд:Сив;Лорънс:Лавър;Луиджи:Славен войн;Луис:Славен войн;Лукас:Светъл;Лучано:Светъл;Люк:Светъл;Магнус:Велик;Малкълм:Ученик на свети Колумба;Мануел:Бог е с нас;Марк:На Марс;Маркус:На Марс;Марлон:Малък сокол;Марсел:Малък войн;Марчело:Малък войн;Масимо:Най-голям;Матю:Божи дар;Маурицио:Тъмен;Мелвин:Главен приятел;Мерлин:Морска крепост;Микеле:Кой е като Бог;Мико:Кой е като Бог;Майлс:Войник;Милтън:Мелничен град;Мичъл:Кой е като Бог;Морган:Морски кръг;Морис:Тъмен;Мъри:Морски;Натаниел:Божи дар;Нейл:Облак;Нелсън:Син на Нейл;Невил:Нов град;Нем:Ням;Ники:Победа;Николай:Победа на народа;Нилс:Победа на народа;Ноел:Коледа;Норберт:Светъл север;Нортън:Северен град;Оливие:Маслина;Омар:Дълголетен;Орландо:Слава на земята;Оскар:Божие копие;Освалд:Божия сила;Ото:Богат;Пабло:Малък;Паоло:Малък;Паскал:Великден;Патрик:Благородник;Перси:През долината;Пиер:Камък;Пиетро:Камък;Пласидо:Спокоен;Престън:Свещенически град;Раймонд:Мъдър защитник;Ралф:Вълк съветник;Рамиро:Велик съдия;Раул:Вълк съветник;Рафаеле:Бог изцелява;Рекс:Цар;Рене:Възраждащ се;Ренато:Възраждащ се;Рикардо:Смел владетел;Рик:Смел владетел;Роберто:Светла слава;Роджър:Славно копие;Родни:Остров на славата;Родолфо:Славен вълк;Родриго:Славен владетел;Рой:Цар;Роланд:Слава на земята;Ролф:Вълк;Ромео:Римлянин;Роналд:Мъдър владетел;Рос:Нос;Руди:Славен вълк;Рудолф:Славен вълк;Рупърт:Светла слава;Ръсел:Червен;Салваторе:Спасител;Самсон:Слънце;Самуел:Бог чу;Себастиян:Почитан;Сеймур:Свети Мавър;Серджо:Слуга;Сет:Поставен;Сидни:Широк остров;Силвестър:Горски;Силвио:Горски;Симоне:Слушащ;Сирил:Господар;Скот:Шотландец;Спенсър:Домакин;Стен:Камък;Стив:Венец;Стюарт:Домакин;Тадеуш:Сърце;Тед:Божи дар;Терънс:Търкащ;Тим:Почитащ Бога;Тимъти:Почитащ Бога;Тито:Тит;Тоби:Бог е добър;Том:Близнак;Томи:Близнак;Тони:Безценен;Торино:Бик;Тристан:Тъжен;Трой:Пехотинец;Тъкър:Тъкач;Тъли:Мирен;Уил:Решителен;Уилбър:Светло желание;Уилям:Решителен защитник;Уинстън:Приятелски камък;Уолтър:Владетел на армията;Уорън:Пазач;Уесли:Западна поляна;Уейн:Колар;Федерико:Мирен владетел;Фелипе:Любител на конете;Фердинанд:Смел пътник;Фернандо:Смел пътник;Фил:Любител на конете;Фин:Бял;Флавио:Русокос;Флориан:Цъфтящ;Форест:Гора;Франклин:Свободен земевладелец;Франсоа:Французин;Франческо:Французин;Фредерик:Мирен владетел;Фридрих:Мирен владетел;Хавиер:Нова къща;Ханс:Бог е милостив;Харалд:Вожд на армията;Харви:Боен;Харолд:Вожд на армията;Хауърд:Смел сърце;Хектор:Държащ;Хелмут:Смел защитник;Хенри:Владетел на дома;Хърбърт:Светла армия;Хю:Ум;Чад:Битка;Чарлс:Свободен мъж;Честър:Крепост;Шелдън:Долина с колиби;Шерлок:Светлокос;Шон:Бог е милостив;Щефан:Венец;Юджийн:Благороден;Юлиус:Юлиев;Юрген:Земеделец;Юрий:Земеделец;Якоб:Заместник;Ян:Бог е милостив;Яспер:Съкровище",
@@ -442,9 +469,8 @@
                     pct += Math.floor(Math.random() * 10) + 2;
                     if(pct > 100) pct = 100;
                     document.getElementById('percentage').innerText = pct + '%';
-                    document.getElementById('progressBar').style.width = pct + '%';
                     
-                    const statuses = ["Зареждане на невронната мрежа...", "F.L.O.W. Анализ...", "Проверка на семантика...", "Финална селекция..."];
+                    const statuses = ["Зареждане на COSMIC CORE...", "F.L.O.W. Анализ...", "Проверка на семантика...", "Финална селекция..."];
                     if(pct % 25 === 0 && pct < 100) {
                         document.getElementById('aiStatus').innerText = statuses[Math.floor(pct/25)];
                     }
@@ -477,7 +503,7 @@
             let finalGender = gender === 'random' ? (Math.random() > 0.5 ? 'boy' : 'girl') : gender;
             const genderKey = finalGender === 'boy' ? '_m' : '_f';
 
-            // Pool Construction
+            // Pool Construction - Multi-Origin Logic
             let pool = [];
             let keysToUse = [];
 
@@ -490,12 +516,12 @@
             
             keysToUse.forEach(k => { if(nameDatabase[k]) pool = pool.concat(nameDatabase[k]); });
 
-            // Variety Injection
-            if(Math.random() > 0.8) pool = pool.concat(nameDatabase['modern' + genderKey]);
+            // Cosmic Expansion
+            if(Math.random() > 0.7) pool = pool.concat(nameDatabase['modern' + genderKey]);
 
             if(pool.length < 20) pool = pool.concat(nameDatabase['modern' + genderKey]);
             
-            // Filter History & Last
+            // Filter
             pool = pool.filter((v,i,a) => a.findIndex(t => t.name === v.name) === i);
             pool = pool.filter(n => !generatedHistory.has(n.name));
 
@@ -511,7 +537,7 @@
                 pool = pool.concat(nameDatabase['modern' + genderKey]);
             }
 
-            // --- NOMENO SINGULARITY SCORING ---
+            // --- NOMENO XII: COSMIC SCORING ---
             let bestCandidate = null;
             let maxScore = -1000;
             let logicText = "";
@@ -530,54 +556,55 @@
                 const grandparents = [grandMaM, grandPaM, grandMaD, grandPaD].filter(Boolean);
                 grandparents.forEach(gp => {
                     if (candidate.name.startsWith(gp[0].toUpperCase())) {
-                        score += 30;
+                        score += 35; // Increased weight for heritage
                         const r = `наследство от ${gp}`;
                         if (!reasons.includes(r)) reasons.push(r);
                     }
                 });
 
-                // 3. F.L.O.W. Algorithm
+                // 3. F.L.O.W. v2 Algorithm
                 if(surname) {
                     const nameEnd = candidate.name.slice(-1).toLowerCase();
                     const surStart = surname.charAt(0).toLowerCase();
                     
                     // Clash Check
-                    if(nameEnd === surStart) score -= 15;
+                    if(nameEnd === surStart) score -= 20;
 
-                    // Hardness Check
-                    const voiced = ['б','в','г','д','ж','з','л','м','н','р','й'];
+                    // Voicing Harmony
+                    const voiced = ['б','в','г','д','ж','з','л','м','н','р','й', 'а', 'о', 'у', 'е', 'и'];
                     const unvoiced = ['п','ф','к','т','ш','с','х','ц','ч'];
                     
+                    // Avoid abrupt stops (Vocied -> Unvoiced transition)
                     if (voiced.includes(nameEnd) && unvoiced.includes(surStart)) {
-                        score -= 5; // Slight friction
+                        score -= 5;
                     }
                     
-                    // Rhythm Check
+                    // Syllabic Balance (Golden Ratio)
                     const countSyl = (str) => (str.match(/[аъоуеиюя]/gi) || []).length;
                     const nSyl = countSyl(candidate.name);
                     const sSyl = countSyl(surname);
                     
                     if (Math.abs(nSyl - sSyl) === 1 || nSyl + sSyl === 5) {
-                        score += 10;
+                        score += 15;
                         if (!reasons.includes("перфектен ритъм")) reasons.push("перфектен ритъм");
                     }
                 }
 
-                // 4. Semantic Resonance (Sibling)
+                // 4. Semantic Resonance
                 if(sibling) {
                     if(Math.abs(sibling.length - candidate.name.length) <= 1) { score += 5; }
                     if(sibling[0] === candidate.name[0]) { score += 5; }
                     
-                    // Simple Semantic check
-                    const flowerNames = "Цвета,Роза,Лилия,Виолета,Маргарита,Явор,Ясен,Ела";
-                    if (flowerNames.includes(sibling) && flowerNames.includes(candidate.name)) {
-                        score += 20;
-                        reasons.push("тематична връзка с брат/сестра");
+                    // Semantic tagging (simplified)
+                    const natureSet = new Set(nameDatabase['nature' + genderKey].map(n => n.name));
+                    if (natureSet.has(sibling) && natureSet.has(candidate.name)) {
+                        score += 25;
+                        reasons.push("тематична връзка (природа)");
                     }
                 }
 
-                // 5. Random Discovery
-                score += Math.random() * 35;
+                // 5. Cosmic Discovery Factor
+                score += Math.random() * 45; // High variance for discovery
 
                 if(score > maxScore) {
                     maxScore = score;
@@ -608,13 +635,13 @@
             document.getElementById('aiLoader').classList.add('hidden');
             document.getElementById('aiLoader').classList.remove('flex');
             document.getElementById('resultSection').classList.remove('hidden');
-            document.getElementById('resultSection').classList.add('fade-in');
+            document.getElementById('resultSection').classList.add('fade-in-up');
 
             document.getElementById('generatedName').innerText = finalName;
             document.getElementById('generatedSurname').innerText = surname;
             document.getElementById('nameMeaning').innerText = finalMeaning;
             document.getElementById('nameReason').innerText = logicText;
-            document.getElementById('matchScore').innerText = Math.floor(94 + Math.random() * 5) + "%";
+            document.getElementById('matchScore').innerText = (95 + Math.random() * 4.9).toFixed(1) + "%";
 
             updateDNA(finalName);
             calculateNumerology(finalName);
@@ -625,7 +652,6 @@
             const name = document.getElementById('generatedName').innerText;
             const surname = document.getElementById('generatedSurname').innerText;
             const text = `${name} ${surname}`;
-            
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'bg-BG';
             utterance.rate = 0.9;
@@ -635,7 +661,6 @@
         function updateDNA(name) {
             let val = 0;
             for(let i=0; i<name.length; i++) val += name.charCodeAt(i);
-            
             const soft = (val % 40) + 60; 
             const unique = ((val * 3) % 50) + 40; 
             
@@ -685,13 +710,13 @@
             count.style.transform = favorites.length > 0 ? 'scale(1)' : 'scale(0)';
             
             if(favorites.length === 0) {
-                list.innerHTML = '<div class="text-center text-gray-500 mt-20 text-sm">Все още нямате запазени имена.</div>';
+                list.innerHTML = '<div class="text-center text-gray-500 mt-20 text-sm">Колекцията е празна.<br>Запазете любимите си имена тук.</div>';
                 return;
             }
 
             list.innerHTML = favorites.map(f => `
                 <div class="bg-white/5 p-4 rounded-xl border border-white/5 flex justify-between items-center group hover:bg-white/10 transition relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition"></div>
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-violet-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition"></div>
                     <div>
                         <div class="font-bold text-white text-base">${f.name} ${f.surname}</div>
                         <div class="text-[10px] text-gray-400 italic mt-1">${f.meaning}</div>
@@ -727,6 +752,27 @@
         function resetApp() {
             document.getElementById('resultSection').classList.add('hidden');
             document.getElementById('inputSection').classList.remove('hidden');
+        }
+
+        function handleParallax(e) {
+            const container = document.getElementById('holoContainer');
+            const x = (window.innerWidth - e.pageX * 2) / 100;
+            const y = (window.innerHeight - e.pageY * 2) / 100;
+            container.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg)`;
+        }
+
+        // Init Stars
+        const universe = document.getElementById('universe');
+        for(let i=0; i<100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 2 + 'px';
+            star.style.height = star.style.width;
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            star.style.setProperty('--opacity', Math.random());
+            universe.appendChild(star);
         }
 
         lucide.createIcons();
