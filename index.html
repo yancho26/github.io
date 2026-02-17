@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nomeno AI 5.1 - Ultra Generator</title>
+    <title>Nomeno AI 6.0 - Architect Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -73,6 +73,15 @@
             box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
         }
 
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #a78bfa;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #a78bfa;
+        }
+
         .gender-btn {
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -95,6 +104,10 @@
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* DNA Bars */
+        .dna-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.1); overflow: hidden; }
+        .dna-fill { height: 100%; border-radius: 3px; transition: width 1s ease-out; }
+
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
@@ -114,7 +127,7 @@
     <div class="absolute top-0 left-0 w-full p-4 flex justify-between items-center z-50">
         <div class="flex items-center gap-2">
             <i data-lucide="brain-circuit" class="w-6 h-6 text-purple-400"></i>
-            <span class="font-bold tracking-widest text-white/80">NOMENO AI 5.1</span>
+            <span class="font-bold tracking-widest text-white/80">NOMENO 6.0</span>
         </div>
         <button onclick="toggleFavorites()" class="relative group">
             <div class="bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition border border-white/10">
@@ -134,26 +147,31 @@
             <!-- Items injected here -->
             <div class="text-center text-gray-500 mt-10 text-sm">Все още нямате запазени имена.</div>
         </div>
-        <div class="p-4 border-t border-white/10">
-            <button onclick="clearFavorites()" class="w-full py-2 rounded-lg border border-red-500/30 text-red-400 text-xs font-bold hover:bg-red-500/10 transition">ИЗЧИСТИ СПИСЪКА</button>
+        <div class="p-4 border-t border-white/10 space-y-3">
+            <button onclick="exportFavorites()" class="w-full py-2 rounded-lg border border-purple-500/30 text-purple-300 text-xs font-bold hover:bg-purple-500/10 transition flex items-center justify-center gap-2">
+                <i data-lucide="download" class="w-3 h-3"></i> КОПИРАЙ СПИСЪКА
+            </button>
+            <button onclick="clearFavorites()" class="w-full py-2 rounded-lg border border-red-500/30 text-red-400 text-xs font-bold hover:bg-red-500/10 transition">ИЗЧИСТИ ВСИЧКИ</button>
         </div>
     </div>
 
     <!-- Main Interface -->
-    <div class="glass-card w-full max-w-3xl rounded-3xl overflow-hidden fade-in relative z-10 my-12">
+    <div class="glass-card w-full max-w-4xl rounded-3xl overflow-hidden fade-in relative z-10 my-12">
         
         <!-- Input Section -->
-        <div id="inputSection" class="p-8 space-y-6">
-            <div class="text-center mb-8">
-                <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">Генератор на <span class="gradient-text">Имена</span></h1>
-                <p class="text-gray-400 text-sm">Подобрен AI алгоритъм с разнообразна база</p>
+        <div id="inputSection" class="p-8 space-y-8">
+            <div class="text-center mb-6">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">Архитект на <span class="gradient-text">Имена</span></h1>
+                <p class="text-gray-400 text-sm">С алгоритъм за вокален поток и анализ на съвместимост</p>
             </div>
             
+            <!-- Parents & Origins -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Parent 1 -->
-                <div class="space-y-2">
-                    <label class="text-xs font-bold text-purple-300 uppercase tracking-wider ml-1">Майка</label>
-                    <input type="text" id="parent1" placeholder="Име..." class="w-full pl-4 pr-4 py-3 rounded-xl border focus:outline-none transition-all">
+                <div class="space-y-2 p-4 rounded-2xl bg-white/5 border border-white/5">
+                    <div class="flex items-center gap-2 mb-2 text-purple-300 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="user" class="w-3 h-3"></i> Линия на Майката
+                    </div>
+                    <input type="text" id="parent1" placeholder="Име на майката" class="w-full px-4 py-2 rounded-lg border focus:outline-none transition-all text-sm mb-2">
                     <select id="originMother" class="w-full text-xs p-2 rounded bg-transparent text-gray-400 border border-white/5 hover:border-purple-400/50 transition cursor-pointer">
                         <option value="christian">Християнски / Традиционни</option>
                         <option value="slavic">Славянски / Старобългарски</option>
@@ -165,10 +183,11 @@
                     </select>
                 </div>
 
-                <!-- Parent 2 -->
-                <div class="space-y-2">
-                    <label class="text-xs font-bold text-blue-300 uppercase tracking-wider ml-1">Баща</label>
-                    <input type="text" id="parent2" placeholder="Име..." class="w-full pl-4 pr-4 py-3 rounded-xl border focus:outline-none transition-all">
+                <div class="space-y-2 p-4 rounded-2xl bg-white/5 border border-white/5">
+                    <div class="flex items-center gap-2 mb-2 text-blue-300 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="user" class="w-3 h-3"></i> Линия на Бащата
+                    </div>
+                    <input type="text" id="parent2" placeholder="Име на бащата" class="w-full px-4 py-2 rounded-lg border focus:outline-none transition-all text-sm mb-2">
                     <select id="originFather" class="w-full text-xs p-2 rounded bg-transparent text-gray-400 border border-white/5 hover:border-blue-400/50 transition cursor-pointer">
                          <option value="christian">Християнски / Традиционни</option>
                         <option value="slavic">Славянски / Старобългарски</option>
@@ -181,11 +200,11 @@
                 </div>
             </div>
 
-            <!-- Surname & Context -->
-            <div class="bg-white/5 p-6 rounded-2xl border border-white/5 relative">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+            <!-- Surname & Advanced Settings -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                <div class="space-y-4">
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Фамилия (За ритъм)</label>
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Фамилия (Критично за ритъма)</label>
                         <input type="text" id="surname" placeholder="напр. Иванов" class="w-full px-4 py-3 rounded-xl border focus:outline-none transition-all">
                     </div>
                     <div class="space-y-2">
@@ -193,35 +212,44 @@
                         <input type="text" id="sibling" placeholder="Име..." class="w-full px-4 py-3 rounded-xl border focus:outline-none transition-all">
                     </div>
                 </div>
-            </div>
 
-            <!-- Gender -->
-            <div class="space-y-2">
-                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Пол на бебето</label>
-                <div class="grid grid-cols-3 gap-3">
-                    <button onclick="setGender('boy')" id="btn-boy" class="gender-btn py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
-                        <i data-lucide="smile" class="w-5 h-5 text-blue-400 group-hover:scale-110 transition"></i>
-                        <span class="text-[10px] font-bold text-gray-300">МОМЧЕ</span>
-                    </button>
-                    <button onclick="setGender('girl')" id="btn-girl" class="gender-btn py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
-                        <i data-lucide="heart" class="w-5 h-5 text-pink-400 group-hover:scale-110 transition"></i>
-                        <span class="text-[10px] font-bold text-gray-300">МОМИЧЕ</span>
-                    </button>
-                    <button onclick="setGender('random')" id="btn-random" class="gender-btn active py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
-                        <i data-lucide="sparkles" class="w-5 h-5 text-purple-400 group-hover:scale-110 transition"></i>
-                        <span class="text-[10px] font-bold text-gray-300">ИЗНЕНАДАЙ МЕ</span>
-                    </button>
+                <div class="space-y-4 pt-6 md:pt-0">
+                    <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/5">
+                        <span class="text-sm text-gray-300 font-medium ml-2">Двойно име (напр. Анна-Мария)</span>
+                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" name="toggle" id="doubleNameToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-600"/>
+                            <label for="doubleNameToggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-700 cursor-pointer"></label>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Пол</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button onclick="setGender('boy')" id="btn-boy" class="gender-btn py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
+                                <i data-lucide="smile" class="w-4 h-4 text-blue-400"></i>
+                                <span class="text-[10px] font-bold text-gray-300">МОМЧЕ</span>
+                            </button>
+                            <button onclick="setGender('girl')" id="btn-girl" class="gender-btn py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
+                                <i data-lucide="heart" class="w-4 h-4 text-pink-400"></i>
+                                <span class="text-[10px] font-bold text-gray-300">МОМИЧЕ</span>
+                            </button>
+                            <button onclick="setGender('random')" id="btn-random" class="gender-btn active py-3 rounded-xl flex flex-col items-center justify-center gap-1 group transition-all">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
+                                <span class="text-[10px] font-bold text-gray-300">ВСИЧКИ</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="selectedGender" value="random">
+                    </div>
                 </div>
-                <input type="hidden" id="selectedGender" value="random">
             </div>
 
-            <button onclick="startGeneration()" class="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold tracking-widest shadow-lg shadow-purple-900/50 transform hover:scale-[1.01] transition-all flex items-center justify-center gap-3">
-                <i data-lucide="cpu" class="w-5 h-5"></i> СТАРТИРАЙ АНАЛИЗ
+            <button onclick="startGeneration()" class="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold tracking-widest shadow-lg shadow-purple-900/50 transform hover:scale-[1.01] transition-all flex items-center justify-center gap-3 mt-4">
+                <i data-lucide="cpu" class="w-5 h-5"></i> ГЕНЕРИРАЙ ИМЕ
             </button>
         </div>
 
         <!-- AI Loader -->
-        <div id="aiLoader" class="hidden p-12 text-center h-[500px] flex flex-col items-center justify-center">
+        <div id="aiLoader" class="hidden p-12 text-center h-[600px] flex flex-col items-center justify-center">
             <div class="relative w-32 h-32 mb-8">
                 <div class="absolute inset-0 border-t-4 border-purple-500 rounded-full animate-spin"></div>
                 <div class="absolute inset-2 border-r-4 border-pink-500 rounded-full animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
@@ -230,13 +258,13 @@
                 </div>
             </div>
             <h3 class="text-xl font-bold text-white mb-2" id="aiStatus">Инициализиране...</h3>
-            <p class="text-gray-500 text-sm">Търсене в разширена база данни</p>
+            <p class="text-gray-500 text-sm">Проверка на фонетичен поток и съвместимост</p>
         </div>
 
         <!-- Result Screen -->
         <div id="resultSection" class="hidden relative h-full">
-            <div class="p-12 text-center">
-                <div class="flex justify-between items-start w-full mb-8">
+            <div class="p-8 md:p-12 text-center">
+                <div class="flex justify-between items-start w-full mb-6">
                     <button onclick="resetApp()" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition">
                         <i data-lucide="arrow-left" class="w-5 h-5 text-gray-300"></i>
                     </button>
@@ -246,14 +274,20 @@
                     </div>
                 </div>
 
-                <h2 id="generatedName" class="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 mb-2 serif-font tracking-tight">
-                    Име
-                </h2>
-                <p id="generatedSurname" class="text-2xl text-gray-500 font-light mb-8 uppercase tracking-widest opacity-80"></p>
+                <!-- Main Name Display -->
+                <div class="mb-10">
+                    <h2 id="generatedName" class="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 mb-2 serif-font tracking-tight leading-tight">
+                        Име
+                    </h2>
+                    <p id="generatedSurname" class="text-xl md:text-2xl text-gray-500 font-light uppercase tracking-widest opacity-80"></p>
+                </div>
 
-                <div class="bg-white/5 p-6 rounded-2xl border border-white/5 text-left mb-8 backdrop-blur-md">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
+                <!-- Attributes & DNA -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-left">
+                    
+                    <!-- Meaning & Reason -->
+                    <div class="bg-white/5 p-6 rounded-2xl border border-white/5 backdrop-blur-md flex flex-col justify-between">
+                        <div class="mb-4">
                             <div class="flex items-center gap-2 mb-2 text-purple-300 text-xs font-bold uppercase tracking-wider">
                                 <i data-lucide="book-open" class="w-3 h-3"></i> Значение
                             </div>
@@ -261,20 +295,59 @@
                         </div>
                         <div>
                             <div class="flex items-center gap-2 mb-2 text-blue-300 text-xs font-bold uppercase tracking-wider">
-                                <i data-lucide="sparkles" class="w-3 h-3"></i> Защо това име?
+                                <i data-lucide="cpu" class="w-3 h-3"></i> AI Анализ
                             </div>
-                            <p id="nameReason" class="text-gray-400 text-sm leading-relaxed">...</p>
+                            <p id="nameReason" class="text-gray-400 text-xs leading-relaxed">...</p>
+                        </div>
+                    </div>
+
+                    <!-- DNA Stats -->
+                    <div class="bg-white/5 p-6 rounded-2xl border border-white/5 backdrop-blur-md space-y-4">
+                        <div class="flex items-center gap-2 text-pink-300 text-xs font-bold uppercase tracking-wider mb-2">
+                            <i data-lucide="bar-chart-2" class="w-3 h-3"></i> ДНК на Името
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                                <span>МЕКОТА (Звучене)</span>
+                                <span id="valSoft">0%</span>
+                            </div>
+                            <div class="dna-bar"><div id="barSoft" class="dna-fill bg-pink-500" style="width: 0%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                                <span>УНИКАЛНОСТ</span>
+                                <span id="valUnique">0%</span>
+                            </div>
+                            <div class="dna-bar"><div id="barUnique" class="dna-fill bg-purple-500" style="width: 0%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                                <span>ТРАДИЦИЯ</span>
+                                <span id="valTrad">0%</span>
+                            </div>
+                            <div class="dna-bar"><div id="barTrad" class="dna-fill bg-blue-500" style="width: 0%"></div></div>
+                        </div>
+
+                        <!-- Numerology -->
+                        <div class="pt-2 border-t border-white/10 mt-2 flex items-center justify-between">
+                            <span class="text-[10px] text-gray-400 uppercase">Число на името</span>
+                            <div class="flex items-center gap-2">
+                                <span id="numerologyNum" class="font-bold text-white text-lg font-mono">7</span>
+                                <span id="numerologyText" class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300">Мистик</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col md:flex-row justify-center gap-3 mb-8">
+                <!-- Action Buttons -->
+                <div class="flex flex-col md:flex-row justify-center gap-3">
                     <button onclick="feedback('dislike')" class="flex-1 py-4 rounded-xl border border-red-500/20 hover:bg-red-500/10 text-red-300 font-bold flex items-center justify-center gap-2 transition group text-sm">
-                        <i data-lucide="x" class="w-4 h-4 group-hover:scale-110 transition"></i> Не (Блокирай)
+                        <i data-lucide="x" class="w-4 h-4 group-hover:scale-110 transition"></i> Блокирай
                     </button>
                     
                     <button onclick="startGeneration(true)" class="flex-[1.5] py-4 rounded-xl border border-white/20 hover:bg-white/10 text-white font-bold flex items-center justify-center gap-2 transition group text-sm">
-                        <i data-lucide="shuffle" class="w-4 h-4 group-hover:rotate-180 transition duration-500"></i> Пропусни / Ново
+                        <i data-lucide="shuffle" class="w-4 h-4 group-hover:rotate-180 transition duration-500"></i> Следващо (Пропусни)
                     </button>
 
                     <button onclick="feedback('like')" class="flex-[2] py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2 transition group text-sm">
@@ -314,12 +387,11 @@
             });
         }
 
-        // --- STATE MANAGEMENT ---
+        // --- STATE & UTILS ---
         let sessionRejections = JSON.parse(localStorage.getItem('nomeno_dislikes')) || [];
         let favorites = JSON.parse(localStorage.getItem('nomeno_favorites')) || [];
         let generatedHistory = new Set(); 
 
-        // Update UI on load
         updateFavoritesUI();
 
         function setGender(g) {
@@ -330,6 +402,7 @@
             });
         }
 
+        // --- GENERATION ENGINE ---
         function startGeneration(skipAnimation = false) {
             const delay = skipAnimation ? 500 : 2500;
             
@@ -344,7 +417,7 @@
                     if(pct > 100) pct = 100;
                     document.getElementById('percentage').innerText = pct + '%';
                     
-                    const statuses = ["Анализ на фонетика...", "Синхронизиране на срички...", "Проверка за уникалност...", "Генериране на вариации...", "Фина настройка..."];
+                    const statuses = ["Анализ на фонетика...", "Проверка за поток...", "Генериране на двойно име...", "Фина настройка...", "Нумерология..."];
                     if(pct % 20 === 0 && pct < 100) {
                         document.getElementById('aiStatus').innerText = statuses[Math.floor(pct/20)];
                     }
@@ -366,22 +439,20 @@
             const originM = document.getElementById('originMother').value;
             const originF = document.getElementById('originFather').value;
             let gender = document.getElementById('selectedGender').value;
+            const isDoubleName = document.getElementById('doubleNameToggle').checked;
 
             let finalGender = gender === 'random' ? (Math.random() > 0.5 ? 'boy' : 'girl') : gender;
             const genderKey = finalGender === 'boy' ? '_m' : '_f';
 
+            // Pool Construction
             let pool = [];
             const keysToUse = [originM + genderKey, originF + genderKey, 'modern' + genderKey];
-            
-            keysToUse.forEach(k => {
-                if(nameDatabase[k]) pool = pool.concat(nameDatabase[k]);
-            });
+            keysToUse.forEach(k => { if(nameDatabase[k]) pool = pool.concat(nameDatabase[k]); });
 
-            // Fallback pool
+            // Fallback
             if(pool.length < 20) pool = pool.concat(nameDatabase['modern' + genderKey]);
-            if(Math.random() > 0.7) pool = pool.concat(nameDatabase['royal' + genderKey]);
-
-            // Filter
+            
+            // Unique Filter
             pool = pool.filter((v,i,a) => a.findIndex(t => t.name === v.name) === i);
             pool = pool.filter(n => !generatedHistory.has(n.name) && !sessionRejections.includes(n.name));
 
@@ -390,6 +461,7 @@
                 pool = pool.concat(nameDatabase['modern' + genderKey]);
             }
 
+            // --- ADVANCED SCORING ---
             let bestCandidate = null;
             let maxScore = -1000;
             let logicText = "";
@@ -398,75 +470,145 @@
                 let score = 0;
                 let reasons = [];
 
-                // 1. Initial Matching (Reduced Weight)
-                // Was 20, now 5 to reduce reliance on it
+                // 1. Initial Matching (Reduced)
                 if(p1 && candidate.name.startsWith(p1[0].toUpperCase())) { score += 5; reasons.push("инициал на майката"); }
                 if(p2 && candidate.name.startsWith(p2[0].toUpperCase())) { score += 5; reasons.push("инициал на бащата"); }
 
-                // 2. Phonetic Analysis
+                // 2. Phonetic Flow with Surname
                 if(surname) {
-                    const hardSounds = ['к', 'т', 'р', 'п', 'б', 'г', 'д'];
-                    const softSounds = ['л', 'м', 'н', 'й', 'я', 'ю', 'и', 'е'];
+                    const lastCharName = candidate.name.slice(-1).toLowerCase();
+                    const firstCharSur = surname.charAt(0).toLowerCase();
                     
-                    const surnameHardness = surname.split('').filter(c => hardSounds.includes(c.toLowerCase())).length;
-                    const nameHardness = candidate.name.split('').filter(c => hardSounds.includes(c.toLowerCase())).length;
-                    const nameSoftness = candidate.name.split('').filter(c => softSounds.includes(c.toLowerCase())).length;
+                    // Clash Avoidance (e.g. Ivan Nikolov)
+                    if(lastCharName === firstCharSur) {
+                        score -= 15; 
+                    }
 
-                    if(surnameHardness > 3 && nameSoftness > nameHardness) { score += 15; reasons.push("омекотява фамилията"); }
+                    // Vowel Harmony (Simple check: prefer same "class" of vowels if surname is strongly front/back)
+                    // Simplified: just check length balance
+                    const nameLen = candidate.name.length;
+                    const surLen = surname.length;
                     
-                    const nameSyl = (candidate.name.match(/[аъоуеиюя]/gi) || []).length;
-                    const surSyl = (surname.match(/[аъоуеиюя]/gi) || []).length;
-                    if(nameSyl + surSyl >= 5 && nameSyl + surSyl <= 7) score += 10;
+                    if((nameLen < 5 && surLen > 8) || (nameLen > 7 && surLen < 6)) {
+                        score += 10;
+                        reasons.push("ритмичен баланс");
+                    }
                 }
 
                 // 3. Sibling Harmony
                 if(sibling) {
-                    if(Math.abs(sibling.length - candidate.name.length) <= 1) { score += 10; reasons.push("хармония с брат/сестра"); }
+                    if(Math.abs(sibling.length - candidate.name.length) <= 1) { score += 10; }
                     if(sibling[0] === candidate.name[0]) { score += 5; }
                 }
 
-                // 4. Learning
+                // 4. Learning Penalty
                 sessionRejections.forEach(badName => {
                     if(badName[0] === candidate.name[0]) score -= 5;
                 });
 
-                // Higher Randomness for variety
-                score += Math.random() * 30;
+                score += Math.random() * 40; // High randomness for variety
 
                 if(score > maxScore) {
                     maxScore = score;
                     bestCandidate = candidate;
-                    logicText = reasons.length > 0 ? `Избрано заради: ${reasons.join(", ")}.` : "Отличен баланс на звучност и модерна стилистика.";
+                    logicText = reasons.length > 0 ? `Оптимизирано заради: ${reasons.join(", ")}.` : "Отличен звуков баланс.";
                 }
             });
 
             if(!bestCandidate) bestCandidate = pool[0];
-            generatedHistory.add(bestCandidate.name);
+            
+            // --- DOUBLE NAME LOGIC ---
+            let finalName = bestCandidate.name;
+            let finalMeaning = bestCandidate.meaning;
 
+            if (isDoubleName) {
+                // Find a short second name
+                const shortNames = pool.filter(n => n.name.length <= 5 && n.name !== bestCandidate.name);
+                const secondName = shortNames.length > 0 ? shortNames[Math.floor(Math.random() * shortNames.length)] : {name: "Мария", meaning: "Любима"}; // Fallback
+                
+                finalName = `${bestCandidate.name}-${secondName.name}`;
+                finalMeaning = `${bestCandidate.meaning} + ${secondName.meaning}`;
+                logicText += " Създадена е хармонична двойна комбинация.";
+            }
+
+            generatedHistory.add(finalName);
+
+            // --- DISPLAY ---
             document.getElementById('aiLoader').classList.add('hidden');
             document.getElementById('resultSection').classList.remove('hidden');
             document.getElementById('resultSection').classList.add('fade-in');
 
-            document.getElementById('generatedName').innerText = bestCandidate.name;
+            document.getElementById('generatedName').innerText = finalName;
             document.getElementById('generatedSurname').innerText = surname;
-            document.getElementById('nameMeaning').innerText = bestCandidate.meaning;
+            document.getElementById('nameMeaning').innerText = finalMeaning;
             document.getElementById('nameReason').innerText = logicText;
-            document.getElementById('matchScore').innerText = Math.floor(88 + Math.random() * 11) + "%";
+            document.getElementById('matchScore').innerText = Math.floor(90 + Math.random() * 9) + "%";
+
+            // Update DNA Stats
+            updateDNA(finalName);
+            calculateNumerology(finalName);
         }
 
-        // --- FEEDBACK & SAVING LOGIC ---
+        // --- VISUALIZATIONS ---
+        function updateDNA(name) {
+            // Pseudo-random calculation based on name char codes for consistency
+            let val = 0;
+            for(let i=0; i<name.length; i++) val += name.charCodeAt(i);
+            
+            const soft = (val % 40) + 60; // 60-100
+            const unique = ((val * 3) % 50) + 40; // 40-90
+            const trad = 100 - ((val * 2) % 60); // 40-100
+
+            document.getElementById('barSoft').style.width = soft + '%';
+            document.getElementById('valSoft').innerText = soft + '%';
+            
+            document.getElementById('barUnique').style.width = unique + '%';
+            document.getElementById('valUnique').innerText = unique + '%';
+
+            document.getElementById('barTrad').style.width = trad + '%';
+            document.getElementById('valTrad').innerText = trad + '%';
+        }
+
+        function calculateNumerology(name) {
+            // Simple numerology A=1, B=2...
+            let sum = 0;
+            const cleanName = name.toUpperCase().replace(/[^А-ЯA-Z]/g, '');
+            for(let i=0; i<cleanName.length; i++) {
+                sum += (cleanName.charCodeAt(i) % 9) + 1;
+            }
+            
+            // Reduce to single digit
+            while(sum > 9) {
+                sum = String(sum).split('').reduce((a,b) => parseInt(a)+parseInt(b), 0);
+            }
+
+            const meanings = {
+                1: "Лидер, Иноватор",
+                2: "Дипломат, Партньор",
+                3: "Творец, Оптимист",
+                4: "Строител, Практик",
+                5: "Свободен дух, Пътешественик",
+                6: "Защитник, Грижовен",
+                7: "Мистик, Анализатор",
+                8: "Управител, Успешен",
+                9: "Хуманист, Мъдрец"
+            };
+
+            document.getElementById('numerologyNum').innerText = sum;
+            document.getElementById('numerologyText').innerText = meanings[sum] || "Мистерия";
+        }
+
+        // --- FEEDBACK & FAVORITES ---
         function feedback(type) {
             const currentName = document.getElementById('generatedName').innerText;
-            const currentSurname = document.getElementById('generatedSurname').innerText;
-            const currentMeaning = document.getElementById('nameMeaning').innerText;
-            
             if(type === 'dislike') {
                 sessionRejections.push(currentName);
                 localStorage.setItem('nomeno_dislikes', JSON.stringify(sessionRejections));
-                startGeneration(true); // Auto retry
+                startGeneration(true);
             } else {
                 // ADD TO FAVORITES
-                const fullName = currentSurname ? `${currentName} ${currentSurname}` : currentName;
+                const currentSurname = document.getElementById('generatedSurname').innerText;
+                const currentMeaning = document.getElementById('nameMeaning').innerText;
                 const exists = favorites.some(f => f.name === currentName);
                 
                 if(!exists) {
@@ -474,10 +616,9 @@
                     localStorage.setItem('nomeno_favorites', JSON.stringify(favorites));
                     updateFavoritesUI();
                     
-                    // Copy to clipboard
+                    const fullName = currentSurname ? `${currentName} ${currentSurname}` : currentName;
                     navigator.clipboard.writeText(`${fullName} - ${currentMeaning}`);
                     
-                    // ShowDrawer
                     document.getElementById('favoritesDrawer').classList.add('open');
                 }
             }
@@ -490,7 +631,6 @@
         function updateFavoritesUI() {
             const list = document.getElementById('favoritesList');
             const count = document.getElementById('favCount');
-            
             count.innerText = favorites.length;
             
             if(favorites.length === 0) {
@@ -509,7 +649,6 @@
                     </button>
                 </div>
             `).join('');
-            
             lucide.createIcons();
         }
 
@@ -523,6 +662,12 @@
             favorites = [];
             localStorage.setItem('nomeno_favorites', JSON.stringify(favorites));
             updateFavoritesUI();
+        }
+
+        function exportFavorites() {
+            const text = favorites.map(f => `${f.name} ${f.surname} - ${f.meaning}`).join('\n');
+            navigator.clipboard.writeText(text);
+            alert("Списъкът е копиран в клипборда!");
         }
 
         function resetApp() {
