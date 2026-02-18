@@ -666,6 +666,392 @@
     cursor: pointer; font-size: 1rem; padding: 0; line-height: 1;
   }
 
+  /* TABS */
+  .main-tabs {
+    display: flex; gap: 4px;
+    background: rgba(201,168,130,0.15);
+    border-radius: 16px; padding: 5px;
+    margin-bottom: 36px;
+  }
+  .tab-btn {
+    flex: 1; padding: 13px 16px;
+    border: none; border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--text-light);
+    background: transparent;
+    transition: all 0.25s;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--terracotta); }
+  .tab-btn.active {
+    background: white;
+    color: var(--deep-brown);
+    box-shadow: 0 2px 12px rgba(58,37,24,0.1);
+    font-weight: 600;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeUp 0.3s ease; }
+
+  @media (max-width: 600px) {
+    .tab-btn { font-size: 0.85rem; padding: 11px 8px; }
+    .main-tabs { gap: 2px; }
+  }
+
+  /* FULL NAME PREVIEW on card */
+  .fullname-preview {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.28);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  /* SCORE BREAKDOWN tooltip */
+  .score-breakdown {
+    font-size: 0.72rem;
+    color: rgba(212,168,83,0.5);
+    margin-top: 3px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  /* ===== HOW IT WORKS TAB ===== */
+  .how-section {
+    padding-bottom: 60px;
+  }
+  .how-hero {
+    background: linear-gradient(145deg, #1a0f08, #2a1508);
+    border-radius: 24px;
+    padding: 48px 40px;
+    text-align: center;
+    margin-bottom: 40px;
+    border: 1px solid rgba(212,168,83,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .how-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,168,83,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .how-hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--gold);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .how-hero p {
+    color: rgba(255,255,255,0.55);
+    font-style: italic;
+    font-size: 1.1rem;
+    max-width: 560px;
+    margin: 0 auto;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .how-card {
+    background: var(--warm-white);
+    border: 1px solid rgba(201,168,130,0.3);
+    border-radius: 20px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .how-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--card-accent, var(--terracotta));
+    border-radius: 20px 20px 0 0;
+  }
+  .how-card-icon {
+    font-size: 2rem;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .how-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--deep-brown);
+    margin-bottom: 10px;
+  }
+  .how-card p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  /* SCORE VISUAL EXPLANATION */
+  .score-visual {
+    background: var(--warm-white);
+    border: 1px solid rgba(201,168,130,0.3);
+    border-radius: 20px;
+    padding: 36px;
+    margin-bottom: 32px;
+  }
+  .score-visual h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--deep-brown);
+    margin-bottom: 8px;
+  }
+  .score-visual .lead {
+    color: var(--text-light);
+    font-style: italic;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .criteria-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .criterion {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 16px;
+    background: white;
+    border: 1px solid rgba(201,168,130,0.2);
+    border-radius: 14px;
+  }
+  .criterion-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .criterion h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--deep-brown);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+  .criterion p {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    line-height: 1.5;
+  }
+  .criterion .points {
+    font-size: 0.78rem;
+    color: var(--terracotta);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* SCORE DEMO */
+  .score-demo {
+    background: linear-gradient(135deg, #1a0f08, #2a1508);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+    border: 1px solid rgba(212,168,83,0.15);
+  }
+  .score-demo-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: white;
+    flex-shrink: 0;
+  }
+  .score-demo-name span {
+    color: rgba(255,255,255,0.35);
+    font-size: 1.2rem;
+  }
+  .score-bars {
+    flex: 1; min-width: 200px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .score-bar-row {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .score-bar-label {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.45);
+    width: 130px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .score-bar-track {
+    flex: 1; height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(to right, var(--terracotta), var(--gold));
+    transition: width 1s ease;
+  }
+  .score-bar-val {
+    font-size: 0.78rem;
+    color: var(--gold);
+    width: 24px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* PIPELINE DIAGRAM */
+  .pipeline {
+    background: var(--warm-white);
+    border: 1px solid rgba(201,168,130,0.3);
+    border-radius: 20px;
+    padding: 36px;
+    margin-bottom: 32px;
+  }
+  .pipeline h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--deep-brown);
+    margin-bottom: 8px;
+  }
+  .pipeline .lead {
+    color: var(--text-light);
+    font-style: italic;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .pipeline-steps {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .pipeline-step {
+    flex: 1; min-width: 120px;
+    text-align: center;
+    position: relative;
+  }
+  .pipeline-step:not(:last-child)::after {
+    content: '→';
+    position: absolute; right: -12px; top: 22px;
+    color: var(--light-brown);
+    font-size: 1.2rem;
+    z-index: 1;
+  }
+  .step-circle {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    margin: 0 auto 10px;
+    box-shadow: 0 4px 12px rgba(196,113,74,0.3);
+  }
+  .step-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--deep-brown);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .step-desc {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    line-height: 1.4;
+  }
+
+  /* STRATEGIES TABLE */
+  .strategies-section {
+    background: var(--warm-white);
+    border: 1px solid rgba(201,168,130,0.3);
+    border-radius: 20px;
+    padding: 36px;
+    margin-bottom: 32px;
+  }
+  .strategies-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--deep-brown);
+    margin-bottom: 8px;
+  }
+  .strategies-section .lead {
+    color: var(--text-light);
+    font-style: italic;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .strategy-rows {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .strategy-row {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 14px 18px;
+    background: white;
+    border: 1px solid rgba(201,168,130,0.2);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .strategy-row:hover {
+    border-color: var(--terracotta);
+    box-shadow: 0 2px 12px rgba(196,113,74,0.1);
+  }
+  .strategy-emoji { font-size: 1.3rem; flex-shrink: 0; }
+  .strategy-name {
+    font-weight: 600;
+    color: var(--deep-brown);
+    font-size: 1rem;
+    margin-bottom: 3px;
+  }
+  .strategy-desc { font-size: 0.88rem; color: var(--text-light); line-height: 1.5; }
+
+  /* FAQ */
+  .faq-section {
+    background: var(--warm-white);
+    border: 1px solid rgba(201,168,130,0.3);
+    border-radius: 20px;
+    padding: 36px;
+  }
+  .faq-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--deep-brown);
+    margin-bottom: 24px;
+  }
+  .faq-item {
+    border-bottom: 1px solid rgba(201,168,130,0.2);
+    overflow: hidden;
+  }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-q {
+    width: 100%; text-align: left; border: none; background: none;
+    padding: 18px 0; cursor: pointer;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--deep-brown);
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px;
+  }
+  .faq-q:hover { color: var(--terracotta); }
+  .faq-arrow { transition: transform 0.25s; flex-shrink: 0; color: var(--terracotta); }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+    padding: 0;
+  }
+  .faq-item.open .faq-a { max-height: 300px; }
+  .faq-a p {
+    padding: 0 0 18px;
+    color: var(--text-light);
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
   /* FOOTER */
   footer {
     text-align: center;
@@ -687,6 +1073,16 @@
     <p>Над 10 000 имена от цял свят, внимателно подбрани по религия и традиция</p>
     <div class="divider"><span class="divider-icon">❧</span></div>
   </header>
+
+  <!-- TABS -->
+  <div class="main-tabs">
+    <button class="tab-btn active" onclick="switchTab('generator')">✦ Генератор</button>
+    <button class="tab-btn" onclick="switchTab('browse')">📖 Всички Имена</button>
+    <button class="tab-btn" onclick="switchTab('howit')">🧠 Как Работи</button>
+  </div>
+
+  <!-- TAB: GENERATOR -->
+  <div class="tab-panel active" id="tab-generator">
 
   <!-- FORM -->
   <div class="form-card">
@@ -714,22 +1110,34 @@
       </div>
 
       <div class="form-group">
-        <label>Име на майката</label>
+        <label>Фамилия на детето ★</label>
+        <input type="text" id="family-name" placeholder="напр. Петров, Иванова, Попеску..." oninput="updateFullNamePreview()" />
+      </div>
+
+      <div class="form-group" style="align-self:end">
+        <label>Пълно Ime — предварителен преглед</label>
+        <div id="fullname-preview-box" style="padding:13px 18px; border:1.5px dashed rgba(201,168,130,0.4); border-radius:12px; font-family:'Playfair Display',serif; font-size:1.15rem; min-height:51px; display:flex; align-items:center; gap:6px;">
+          <span id="preview-name-text" style="color:var(--terracotta)">Иван</span>&nbsp;<span id="preview-family-text" style="color:var(--mid-brown)"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Ime на майката</label>
         <input type="text" id="mother-name" placeholder="напр. Мария, Елена..." />
       </div>
 
       <div class="form-group">
-        <label>Име на бащата</label>
+        <label>Ime на бащата</label>
         <input type="text" id="father-name" placeholder="напр. Иван, Георги..." />
       </div>
 
       <div class="form-group">
-        <label>Имена на бабите (по незадължително)</label>
+        <label>Имена на бабите (незадължително)</label>
         <input type="text" id="grandma-names" placeholder="напр. Елисавета, Роза..." />
       </div>
 
       <div class="form-group">
-        <label>Имена на дядовците (по незадължително)</label>
+        <label>Имена на дядовците (незадължително)</label>
         <input type="text" id="grandpa-names" placeholder="напр. Тодор, Николай..." />
       </div>
 
@@ -786,7 +1194,10 @@
     <div class="fav-names" id="fav-names"></div>
   </div>
 
-  <!-- BROWSE -->
+  </div><!-- /tab-generator -->
+
+  <!-- TAB: BROWSE -->
+  <div class="tab-panel" id="tab-browse">
   <div class="browse-section">
     <div class="section-header">
       <h2>Разгледай Всички Имена</h2>
@@ -815,9 +1226,171 @@
 
     <div class="pagination" id="pagination"></div>
   </div>
+  </div><!-- /tab-browse -->
+
+  <!-- TAB: HOW IT WORKS -->
+  <div class="tab-panel" id="tab-howit">
+  <div class="how-section">
+
+    <div class="how-hero">
+      <h2>🧠 Как Работи Алгоритъмът</h2>
+      <p>Разберете как системата анализира фамилното Ime, семейния контекст и фонетичната хармония, за да предложи перфектното бебешко Ime.</p>
+    </div>
+
+    <div class="how-grid">
+      <div class="how-card" style="--card-accent: var(--terracotta)">
+        <span class="how-card-icon">🎯</span>
+        <h3>Персонализирано Генериране</h3>
+        <p>AI моделът получава пълния семеен контекст — фамилия, имена на родители и баби/дядовци, религия и предпочитания — и генерира имена специално пригодени за вашето семейство. Не просто случайни имена от база данни.</p>
+      </div>
+      <div class="how-card" style="--card-accent: var(--gold)">
+        <span class="how-card-icon">🔤</span>
+        <h3>Фонетичен Анализ с Фамилия</h3>
+        <p>Алгоритъмът анализира как предложеното Ime звучи заедно с фамилното — проверява за сблъсък на звуци на границата, ритъм на сричките, алитерация и общата мелодичност на пълното Ime.</p>
+      </div>
+      <div class="how-card" style="--card-accent: var(--sage)">
+        <span class="how-card-icon">🚫</span>
+        <h3>Памет на Отхвърлени Имена</h3>
+        <p>Всяко Ime, което пропуснете или отхвърлите, се запомня в сесията. При следващо генериране AI-ят получава списъка с отхвърлени имена и никога не ги предлага отново — само свежи варианти.</p>
+      </div>
+      <div class="how-card" style="--card-accent: #9b7ec8">
+        <span class="how-card-icon">🔒</span>
+        <h3>Система за Заключване</h3>
+        <p>Заключете имената, които харесвате. AI-ят ги използва като референция и генерира нови имена, хармониращи с вече избраните. Постепенно стеснявате кръга до перфектния избор.</p>
+      </div>
+      <div class="how-card" style="--card-accent: #e06b8b">
+        <span class="how-card-icon">♟️</span>
+        <h3>8 Стратегии за Стил</h3>
+        <p>Сменяйте подхода без да губите заключените имена — от класически и царствени до редки, кратки или с природно значение. Всяка стратегия изпраща различни инструкции към AI-я.</p>
+      </div>
+      <div class="how-card" style="--card-accent: var(--terracotta-dark)">
+        <span class="how-card-icon">🔄</span>
+        <h3>Умно Регенериране</h3>
+        <p>Три режима: смени само едно Ime с ✕, смени всички незаключени, или пълно рестартиране. Отхвърлените имена се добавят в „черния списък" и не се повтарят.</p>
+      </div>
+    </div>
+
+    <div class="score-visual">
+      <h3>⭐ Оценката за Съвместимост (0–5 точки)</h3>
+      <p class="lead">Всяко предложено Ime получава оценка колко хармонично е с цялото семейство. Ето как се изчислява — пет независими критерия, всеки носи по 1 точка:</p>
+      <div class="criteria-list">
+        <div class="criterion">
+          <span class="criterion-icon">🔡</span>
+          <div>
+            <h4>Начална буква</h4>
+            <p>Ако предложеното Ime започва с буква, срещаща се в имената на родителите — лека семейна алитерация.</p>
+            <div class="points">+1 точка</div>
+          </div>
+        </div>
+        <div class="criterion">
+          <span class="criterion-icon">🎵</span>
+          <div>
+            <h4>Гласни звуци</h4>
+            <p>Анализираме гласните в предложеното Ime и ги сравняваме с гласните в семейните имена за звукова сходност.</p>
+            <div class="points">+1 точка</div>
+          </div>
+        </div>
+        <div class="criterion">
+          <span class="criterion-icon">📏</span>
+          <div>
+            <h4>Дължина на сричките</h4>
+            <p>Имена с близка дължина до средната на семейните имена хармонират по-естествено при произнасяне.</p>
+            <div class="points">+1 точка</div>
+          </div>
+        </div>
+        <div class="criterion">
+          <span class="criterion-icon">🔚</span>
+          <div>
+            <h4>Крайна буква</h4>
+            <p>Ако последната буква на предложеното Ime съвпада с крайна буква на семейно Ime — ритмична връзка.</p>
+            <div class="points">+1 точка</div>
+          </div>
+        </div>
+        <div class="criterion">
+          <span class="criterion-icon">🔗</span>
+          <div>
+            <h4>Граница Ime–Фамилия</h4>
+            <p>Проверяваме дали последната буква на бебешкото Ime и първата буква на фамилията се сливат гладко, без неприятен сблъсък на съгласни.</p>
+            <div class="points">+1 точка</div>
+          </div>
+        </div>
+      </div>
+      <div class="score-demo">
+        <div>
+          <div style="font-size:0.75rem; color:rgba(212,168,83,0.6); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px">Живо демо — попълнете данни в генератора</div>
+          <div class="score-demo-name" id="demo-fullname">Виктория <span>Петрова</span></div>
+          <div style="font-size:0.8rem; color:rgba(255,255,255,0.35); margin-top:6px; font-style:italic" id="demo-verdict">Гладка граница · Добра дължина · Семейна хармония</div>
+        </div>
+        <div class="score-bars">
+          <div class="score-bar-row"><span class="score-bar-label">Начална буква</span><div class="score-bar-track"><div class="score-bar-fill" style="width:80%"></div></div><span class="score-bar-val">✓</span></div>
+          <div class="score-bar-row"><span class="score-bar-label">Гласни звуци</span><div class="score-bar-track"><div class="score-bar-fill" style="width:60%"></div></div><span class="score-bar-val">✓</span></div>
+          <div class="score-bar-row"><span class="score-bar-label">Дължина</span><div class="score-bar-track"><div class="score-bar-fill" style="width:100%"></div></div><span class="score-bar-val">✓</span></div>
+          <div class="score-bar-row"><span class="score-bar-label">Крайна буква</span><div class="score-bar-track"><div class="score-bar-fill" style="width:40%"></div></div><span class="score-bar-val">—</span></div>
+          <div class="score-bar-row"><span class="score-bar-label">Граница с фамилия</span><div class="score-bar-track"><div class="score-bar-fill" style="width:100%"></div></div><span class="score-bar-val">✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pipeline">
+      <h3>⚙️ Стъпките на Генериране</h3>
+      <p class="lead">Ето как протича процесът от момента, в който натиснете „Генерирай" до появата на имената на екрана:</p>
+      <div class="pipeline-steps">
+        <div class="pipeline-step"><div class="step-circle">📋</div><div class="step-title">Събиране</div><div class="step-desc">Фамилия, семеен контекст, религия, предпочитания</div></div>
+        <div class="pipeline-step"><div class="step-circle">🧠</div><div class="step-title">AI Промпт</div><div class="step-desc">Изграждаме детайлна инструкция с всичките данни</div></div>
+        <div class="pipeline-step"><div class="step-circle">🚫</div><div class="step-title">Изключване</div><div class="step-desc">Отхвърлените имена се добавят в черния списък</div></div>
+        <div class="pipeline-step"><div class="step-circle">✨</div><div class="step-title">Генериране</div><div class="step-desc">Claude генерира 12 уникални предложения</div></div>
+        <div class="pipeline-step"><div class="step-circle">⭐</div><div class="step-title">Оценяване</div><div class="step-desc">Фонетичен анализ и score за всяко Ime</div></div>
+        <div class="pipeline-step"><div class="step-circle">🎨</div><div class="step-title">Показване</div><div class="step-desc">Карти с пълно Ime, оценка и действия</div></div>
+      </div>
+    </div>
+
+    <div class="strategies-section">
+      <h3>🎯 Осемте Стратегии</h3>
+      <p class="lead">Всяка стратегия изпраща различни инструкции към AI-я. Можете да смените стратегията и да регенерирате само незаключените карти:</p>
+      <div class="strategy-rows">
+        <div class="strategy-row"><span class="strategy-emoji">⚖️</span><div><div class="strategy-name">Балансирано</div><div class="strategy-desc">Смесва класически утвърдени имена с по-модерни варианти. Добър начален избор за повечето семейства.</div></div></div>
+        <div class="strategy-row"><span class="strategy-emoji">🏛️</span><div><div class="strategy-name">Класически</div><div class="strategy-desc">Само вековни имена с богата история — Константин, Теодора, Елисавета. Никакви модерни измислици.</div></div></div>
+        <div class="strategy-row"><span class="strategy-emoji">✨</span><div><div class="strategy-name">Модерни</div><div class="strategy-desc">Свежи имена, популярни след 2000-та. Актуални, лесно произносими на много езици.</div></div></div>
+        <div class="strategy-row"><span class="strategy-emoji">💎</span><div><div class="strategy-name">Кратки (до 5 букви)</div><div class="strategy-desc">Само имена с максимум 5 букви — Иван, Зора, Лора. Кратко и звучно.</div></div></div>
+        <div class="strategy-row"><span class="strategy-emoji">🌿</span><div><div class="strategy-name">С природно значение</div><div class="strategy-desc">Имена свързани с природата: Зора (зора), Горан (гора), Рия (река), Арян (сребро).</div></div></div>
+        <div class="strategy-row"><span class="strategy-emoji">👑</span><div><div class="strategy-name">Царствени</div><div class="strategy-desc">Благородни имена носени от монарси и аристокрация — Виктория, Леонид, Изабела, Рейнхард.</div></div></div>
+        <div class="strategy-row"><span class="strategy-emoji">🦋</span><div><div class="strategy-name">Редки и необичайни</div><div class="strategy-desc">Имена, които рядко се чуват. Уникални, запомнящи се, различни от останалите в класа.</div></div></div>
+        <div class="strategy-row"><span class="strategy-emoji">🎵</span><div><div class="strategy-name">Хармония с родителите</div><div class="strategy-desc">AI-ят анализира ритъма и звука на родителските имена и предлага бебешки имена в същата тоналност.</div></div></div>
+      </div>
+    </div>
+
+    <div class="faq-section">
+      <h3>❓ Често Задавани Въпроси</h3>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <button class="faq-q">Защо едно и също Ime може да получи различна оценка? <span class="faq-arrow">▾</span></button>
+        <div class="faq-a"><p>Оценката е относителна спрямо данните, които сте въвели. Ако промените фамилията или имената на родителите, алгоритъмът преизчислява фонетичната съвместимост и оценката се променя.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <button class="faq-q">AI-ят повтаря ли имена от предишни сесии? <span class="faq-arrow">▾</span></button>
+        <div class="faq-a"><p>Паметта за отхвърлени имена е само за текущата сесия (докато страницата е отворена). При опресняване тя се изчиства. Но в рамките на сесията — отхвърлените никога не се повтарят.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <button class="faq-q">Как работи „Смени незаключените"? <span class="faq-arrow">▾</span></button>
+        <div class="faq-a"><p>AI-ят получава списъка с вашите заключени имена и генерира само нови имена за незаключените позиции. Новите имена са съобразени да хармонират с вече заключените — така постепенно изграждате кохерентен списък.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <button class="faq-q">Какво означава „Граница Ime–Фамилия" в оценката? <span class="faq-arrow">▾</span></button>
+        <div class="faq-a"><p>Алгоритъмът проверява дали последната буква на бебешкото Ime и първата буква на фамилията образуват естествен преход. Например „Иван Петров" звучи гладко. Оценяват се сблъсъци на съгласни и двойни гласни.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <button class="faq-q">Мога ли да използвам алгоритъма без фамилия? <span class="faq-arrow">▾</span></button>
+        <div class="faq-a"><p>Да, всички полета освен пола са незадължителни. Без фамилия оценката се базира само на съвместимост с имената на родителите и баби/дядовци. Без никакви данни оценката е случайна стойност между 3 и 5.</p></div>
+      </div>
+    </div>
+
+  </div>
+  </div><!-- /tab-howit -->
+
 </div>
 
 <footer>
+  <p>✦ Над 10 000 имена от православната, католическата, мюсюлманската, еврейската и индуистката традиция ✦</p>
+</footer>
   <p>✦ Над 10 000 имена от православната, католическата, мюсюлманската, еврейската и индуистката традиция ✦</p>
 </footer>
 
@@ -1109,27 +1682,82 @@ const STRATEGIES = {
   harmony: 'Имена, които фонетично хармонират с имената на родителите — сходни звуци или ритъм.'
 };
 
-// Compute a simple name-family harmony score 0-5
-function computeScore(nameName, mother, father, grandmas, grandpas) {
-  if (!mother && !father && !grandmas && !grandpas) return Math.floor(Math.random() * 2) + 3;
-  const familyNames = [mother, father, grandmas, grandpas].filter(Boolean).join(' ').toLowerCase();
-  const nm = nameName.toLowerCase();
-  let score = 1;
-  // shared first letter
-  if (familyNames.split(/[\s,]+/).some(fn => fn[0] === nm[0])) score += 1;
-  // shared syllable sounds (rough heuristic)
-  const vowels = (s) => s.replace(/[^aeiouаеиоуяюъ]/gi,'');
-  const famVowels = vowels(familyNames);
-  const nmVowels = vowels(nm);
-  if (nmVowels.length > 0 && famVowels.includes(nmVowels[0])) score += 1;
-  // similar length to family names
-  const avgLen = familyNames.split(/[\s,]+/).reduce((a,b)=>a+b.length,0) /
-                 Math.max(1, familyNames.split(/[\s,]+/).length);
-  if (Math.abs(nm.length - avgLen) <= 2) score += 1;
-  // ends in same letter as a family name
-  const ends = familyNames.split(/[\s,]+/).map(fn => fn.slice(-1));
-  if (ends.includes(nm.slice(-1))) score += 1;
-  return Math.min(5, score);
+// ========== TAB SWITCHING ==========
+function switchTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const tabs = ['generator','browse','howit'];
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', tabs[i] === tab);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ========== FULL NAME PREVIEW ==========
+function updateFullNamePreview() {
+  const fam = document.getElementById('family-name').value.trim();
+  const famEl = document.getElementById('preview-family-text');
+  if (famEl) famEl.textContent = fam || '';
+}
+
+// ========== FAQ ==========
+function toggleFaq(item) {
+  item.classList.toggle('open');
+}
+
+// ========== UPGRADED SCORE ALGORITHM ==========
+// Returns { total, breakdown } where breakdown has 5 criteria each 0 or 1
+function computeScore(nameName, mother, father, grandmas, grandpas, familyName) {
+  const nm = nameName.toLowerCase().trim();
+  const fam = (familyName || '').toLowerCase().trim();
+
+  if (!mother && !father && !grandmas && !grandpas && !fam) {
+    return { total: Math.floor(Math.random() * 2) + 3, breakdown: null };
+  }
+
+  const familyNames = [mother, father, grandmas, grandpas]
+    .filter(Boolean).join(' ').toLowerCase();
+
+  const getVowels = s => s.replace(/[^aeiouаеиоуяюъьы]/gi, '');
+  const VOWELS_SET = new Set('aeiouаеиоуяюъьы');
+  const CONSONANTS_SET_BG = new Set('бвгджзклмнпрстфхцчшщ');
+  const CONSONANTS_SET = new Set('bcdfghjklmnpqrstvwxyz');
+
+  // Criterion 1: first letter match with any family name
+  const famWords = familyNames.split(/[\s,]+/).filter(Boolean);
+  const c1 = famWords.some(fw => fw[0] === nm[0]) ? 1 : 0;
+
+  // Criterion 2: shared vowel sounds
+  const nmVowels = getVowels(nm);
+  const famVowels = getVowels(familyNames);
+  const c2 = nmVowels.length > 0 && famVowels.includes(nmVowels[0]) ? 1 : 0;
+
+  // Criterion 3: similar length to avg family name
+  const avgLen = famWords.length > 0
+    ? famWords.reduce((a, b) => a + b.length, 0) / famWords.length
+    : nm.length;
+  const c3 = Math.abs(nm.length - avgLen) <= 2 ? 1 : 0;
+
+  // Criterion 4: ending letter matches a family name ending
+  const endings = famWords.map(fw => fw.slice(-1));
+  const c4 = endings.includes(nm.slice(-1)) ? 1 : 0;
+
+  // Criterion 5: smooth boundary with family name (no double-consonant clash)
+  let c5 = 1; // default good
+  if (fam && fam.length > 0) {
+    const lastCharOfFirst = nm.slice(-1);
+    const firstCharOfFamily = fam[0];
+    const bothVowels = VOWELS_SET.has(lastCharOfFirst) && VOWELS_SET.has(firstCharOfFamily);
+    const bothHardConsonants = (CONSONANTS_SET_BG.has(lastCharOfFirst) || CONSONANTS_SET.has(lastCharOfFirst))
+                            && (CONSONANTS_SET_BG.has(firstCharOfFamily) || CONSONANTS_SET.has(firstCharOfFamily));
+    // Hiatus (two vowels) or hard consonant clash are less smooth
+    if (bothVowels || bothHardConsonants) c5 = 0;
+  }
+
+  return {
+    total: Math.min(5, c1 + c2 + c3 + c4 + c5),
+    breakdown: { c1, c2, c3, c4, c5 }
+  };
 }
 
 function buildPrompt(count, excludeNames = []) {
@@ -1140,37 +1768,39 @@ function buildPrompt(count, excludeNames = []) {
   const grandmas = document.getElementById('grandma-names').value.trim();
   const grandpas = document.getElementById('grandpa-names').value.trim();
   const prefs = document.getElementById('preferences').value.trim();
+  const familyName = document.getElementById('family-name').value.trim();
 
   const genderText = gender === 'f' ? 'момиче' : gender === 'm' ? 'момче' : 'момиче и момче (по 50%)';
   const religionText = religion === 'all' ? 'всякакви традиции' : `${religionLabel(religion)} традиция`;
 
-  // Include locked names context so AI can harmonize
   const lockedNames = currentGeneratedNames.filter(n => n.locked).map(n => n.name);
 
   return `Ти си световнопризнат експерт по детски имена. Трябва да предложиш ${count} красиви и значими имена за ${genderText}.
 
 КОНТЕКСТ НА СЕМЕЙСТВОТО:
 - Религия/традиция: ${religionText}
+${familyName ? `- ФАМИЛИЯ НА ДЕТЕТО: "${familyName}" — МНОГО ВАЖНО: предложи имена, които ЗВУЧАТ ХАРМОНИЧНО заедно с тази фамилия. Провери как звучи пълното Ime (бебешко + фамилия). Избягвай: двойни гласни на границата, тежки сблъсъци на съгласни, прекалено дълги комбинации. Предпочитай: гладък преход между последната буква на бебешкото Ime и първата буква на "${familyName}".` : ''}
 ${mother ? `- Майка се казва: ${mother}` : ''}
 ${father ? `- Баща се казва: ${father}` : ''}
 ${grandmas ? `- Баби: ${grandmas}` : ''}
 ${grandpas ? `- Дядовци: ${grandpas}` : ''}
 ${prefs ? `- Допълнителни предпочитания: ${prefs}` : ''}
-${lockedNames.length ? `- Вече харесани имена (генерирай имена, ХАРМОНИРАЩИ с тях): ${lockedNames.join(', ')}` : ''}
+${lockedNames.length ? `- Вече харесани имена (генерирай имена ХАРМОНИРАЩИ с тях): ${lockedNames.join(', ')}` : ''}
 
 СТРАТЕГИЯ: ${STRATEGIES[currentStrategy]}
 
 ${excludeNames.length > 0 ? `ВАЖНО: НЕ предлагай НИКОЕ от следните отхвърлени имена: ${excludeNames.join(', ')}` : ''}
-${generationCount > 1 ? `Това е рунд ${generationCount} — предлагай РАЗЛИЧНИ имена от предишните рундове, не повтаряй.` : ''}
+${generationCount > 1 ? `Рунд ${generationCount} — предлагай РАЗЛИЧНИ имена от предишните рундове.` : ''}
 
-ОТГОВОРИ САМО с JSON масив от ${count} обекта. БЕЗ никакъв допълнителен текст, обяснения или markdown.
+ОТГОВОРИ САМО с JSON масив от ${count} обекта. БЕЗ никакъв допълнителен текст.
 Формат: [{"name":"Елена","gender":"f","meaning":"Светлина и слънчева топлина"},{"name":"Иван","gender":"m","meaning":"Дарен от Бога с благодат"}]
 
 Изисквания:
 - Значението: 4-7 думи, поетично и смислено
 - Имената: реални, красиво звучащи
 - Разнообразие: смесвай класически и по-необичайни
-- gender поле: "f" за момиче, "m" за момче`;
+- gender поле: "f" за момиче, "m" за момче
+${familyName ? `- Представи как ще звучи: [бебешко Ime] ${familyName} — трябва да е благозвучно!` : ''}`;
 }
 
 async function callAPI(prompt) {
@@ -1234,10 +1864,11 @@ async function generateNames() {
     const father = document.getElementById('father-name').value.trim();
     const grandmas = document.getElementById('grandma-names').value.trim();
     const grandpas = document.getElementById('grandpa-names').value.trim();
+    const familyName = document.getElementById('family-name').value.trim();
 
     currentGeneratedNames = parsed.map(n => ({
       ...n,
-      score: computeScore(n.name, mother, father, grandmas, grandpas),
+      score: computeScore(n.name, mother, father, grandmas, grandpas, familyName),
       locked: false,
       saved: favorites.includes(n.name)
     }));
@@ -1269,10 +1900,11 @@ async function regenAll() {
     const father = document.getElementById('father-name').value.trim();
     const grandmas = document.getElementById('grandma-names').value.trim();
     const grandpas = document.getElementById('grandpa-names').value.trim();
+    const familyName = document.getElementById('family-name').value.trim();
 
     const newNames = parsed.map(n => ({
       ...n,
-      score: computeScore(n.name, mother, father, grandmas, grandpas),
+      score: computeScore(n.name, mother, father, grandmas, grandpas, familyName),
       locked: false,
       saved: favorites.includes(n.name)
     }));
@@ -1307,10 +1939,11 @@ async function regenUnlocked() {
     const father = document.getElementById('father-name').value.trim();
     const grandmas = document.getElementById('grandma-names').value.trim();
     const grandpas = document.getElementById('grandpa-names').value.trim();
+    const familyName = document.getElementById('family-name').value.trim();
 
     const newNames = parsed.slice(0, needed).map(n => ({
       ...n,
-      score: computeScore(n.name, mother, father, grandmas, grandpas),
+      score: computeScore(n.name, mother, father, grandmas, grandpas, familyName),
       locked: false,
       saved: favorites.includes(n.name)
     }));
@@ -1332,19 +1965,18 @@ async function regenUnlocked() {
 function renderAINames() {
   const mother = document.getElementById('mother-name').value.trim();
   const father = document.getElementById('father-name').value.trim();
-  const hasFamily = !!(mother || father);
+  const familyName = document.getElementById('family-name').value.trim();
+  const hasContext = !!(mother || father || familyName);
 
   document.getElementById('regen-toolbar').style.display = 'flex';
   document.getElementById('ai-subtitle').textContent =
     `${currentGeneratedNames.length} имена — заключи харесаните, смени останалите`;
 
-  // Update rejected info
   const rejEl = document.getElementById('rejected-info');
   rejEl.textContent = rejectedNames.length > 0
-    ? `${rejectedNames.length} отхвърлени имена се избягват`
+    ? `${rejectedNames.length} отхвърлени се избягват`
     : '';
 
-  // Update regen-unlocked button label
   const lockedCount = currentGeneratedNames.filter(n => n.locked || n.saved).length;
   const unlockedCount = currentGeneratedNames.length - lockedCount;
   document.getElementById('btn-regen-unlocked').innerHTML =
@@ -1352,17 +1984,22 @@ function renderAINames() {
 
   const results = document.getElementById('ai-results');
   results.innerHTML = '<div class="names-grid-ai" id="names-grid-ai">' +
-    currentGeneratedNames.map((n, i) => renderNameCard(n, i, hasFamily)).join('') +
+    currentGeneratedNames.map((n, i) => renderNameCard(n, i, hasContext, familyName)).join('') +
   '</div>';
 
-  // Staggered entrance animations
   results.querySelectorAll('.name-card-ai').forEach((el, i) => {
     el.style.animationDelay = `${i * 45}ms`;
     el.classList.add('card-enter');
   });
+
+  // Update preview name text with first generated name
+  if (currentGeneratedNames.length > 0) {
+    const pn = document.getElementById('preview-name-text');
+    if (pn) pn.textContent = currentGeneratedNames[0].name;
+  }
 }
 
-function renderNameCard(n, i, hasFamily) {
+function renderNameCard(n, i, hasContext, familyName) {
   const gClass = n.gender === 'f' ? 'gender-dot-f' : 'gender-dot-m';
   const gIcon = n.gender === 'f' ? '♀' : '♂';
   const lockIcon = n.locked ? '🔒' : '🔓';
@@ -1372,15 +2009,32 @@ function renderNameCard(n, i, hasFamily) {
   const saveCls = n.saved ? 'saved-state' : '';
   const safeName = n.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
-  // Score dots
-  const scoreDots = hasFamily
-    ? `<div class="match-score">
-        <div class="match-dots">${[1,2,3,4,5].map(d =>
-          `<div class="match-dot${d <= n.score ? ' filled' : ''}"></div>`
-        ).join('')}</div>
-        <span class="match-label">Съвместимост</span>
-      </div>`
+  // Full name preview
+  const fullName = familyName ? `${n.name} ${familyName}` : n.name;
+  const fullNameHtml = familyName
+    ? `<div class="fullname-preview">${n.name} <span style="opacity:0.5">${familyName}</span></div>`
     : '';
+
+  // Score display
+  let scoreHtml = '';
+  if (hasContext) {
+    const scoreVal = typeof n.score === 'object' ? n.score.total : n.score;
+    const breakdown = typeof n.score === 'object' ? n.score.breakdown : null;
+    const labels = ['🔡', '🎵', '📏', '🔚', '🔗'];
+    const titles = ['Буква', 'Гласни', 'Дължина', 'Край', 'Граница'];
+    let breakdownTip = '';
+    if (breakdown) {
+      const vals = [breakdown.c1, breakdown.c2, breakdown.c3, breakdown.c4, breakdown.c5];
+      breakdownTip = vals.map((v, j) => `${labels[j]}${v ? '✓' : '✗'}`).join(' ');
+    }
+    scoreHtml = `<div class="match-score">
+      <div class="match-dots">${[1,2,3,4,5].map(d =>
+        `<div class="match-dot${d <= (typeof scoreVal === 'number' ? scoreVal : 3) ? ' filled' : ''}"></div>`
+      ).join('')}</div>
+      <span class="match-label">${typeof scoreVal === 'number' ? scoreVal : '?'}/5</span>
+    </div>
+    ${breakdown ? `<div class="score-breakdown">${breakdownTip}</div>` : ''}`;
+  }
 
   return `<div class="name-card-ai${lockedClass}${savedClass}" id="card-${i}">
     <div class="card-top">
@@ -1389,9 +2043,10 @@ function renderNameCard(n, i, hasFamily) {
         ${lockIcon}
       </button>
     </div>
+    ${fullNameHtml}
     <span class="name">${n.name}</span>
     <span class="meaning">${n.meaning}</span>
-    ${scoreDots}
+    ${scoreHtml}
     <div class="card-actions">
       <button class="card-btn card-btn-save ${saveCls}" onclick="saveFromAI('${safeName}', ${i})">${saveLabel}</button>
       <button class="card-btn card-btn-reject" onclick="rejectOne(${i})">✕ Пропусни</button>
@@ -1431,13 +2086,14 @@ function saveFromAI(name, idx) {
   // Re-render just that card
   const card = document.getElementById('card-' + idx);
   if (card) {
-    const hasFamily = !!(document.getElementById('mother-name').value.trim() || document.getElementById('father-name').value.trim());
-    card.outerHTML = renderNameCard(currentGeneratedNames[idx], idx, hasFamily);
+    const hasContext2 = !!(document.getElementById('mother-name').value.trim() || document.getElementById('father-name').value.trim() || document.getElementById('family-name').value.trim());
+    const famName2 = document.getElementById('family-name').value.trim();
+    card.outerHTML = renderNameCard(currentGeneratedNames[idx], idx, hasContext2, famName2);
   }
   // update regen label
   const unlockedCount = currentGeneratedNames.filter(n => !n.locked && !n.saved).length;
   document.getElementById('btn-regen-unlocked').innerHTML =
-    `<span id="spin-unlocked">⟳</span> Смені ${unlockedCount} незаключени`;
+    `<span id="spin-unlocked">⟳</span> Смени ${unlockedCount} незаключени`;
 }
 
 async function rejectOne(idx) {
@@ -1461,9 +2117,10 @@ async function rejectOne(idx) {
     const father = document.getElementById('father-name').value.trim();
     const grandmas = document.getElementById('grandma-names').value.trim();
     const grandpas = document.getElementById('grandpa-names').value.trim();
+    const familyName2 = document.getElementById('family-name').value.trim();
     const newName = {
       ...parsed[0],
-      score: computeScore(parsed[0].name, mother, father, grandmas, grandpas),
+      score: computeScore(parsed[0].name, mother, father, grandmas, grandpas, familyName2),
       locked: false,
       saved: false
     };
@@ -1501,6 +2158,15 @@ function setStrategy(el) {
 // ========== INIT ==========
 applyFilters();
 document.getElementById('count-badge').textContent = NAMES_DATA.length.toLocaleString() + ' имена';
+updateFullNamePreview();
+
+// Tab buttons - also store for correct highlighting
+(function(){
+  const tabs = ['generator','browse','howit'];
+  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    btn._tabId = tabs[i];
+  });
+})();
 </script>
 </body>
 </html>
