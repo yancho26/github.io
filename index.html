@@ -695,6 +695,148 @@
   .tab-panel { display: none; }
   .tab-panel.active { display: block; animation: fadeUp 0.3s ease; }
 
+  /* ===== API KEY BANNER ===== */
+  .api-key-banner {
+    background: linear-gradient(135deg, rgba(212,168,83,0.12), rgba(196,113,74,0.1));
+    border: 1.5px solid rgba(212,168,83,0.35);
+    border-radius: 16px;
+    padding: 18px 24px;
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    position: relative; overflow: hidden;
+  }
+  .api-key-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(212,168,83,0.03) 10px, rgba(212,168,83,0.03) 20px);
+  }
+  .api-banner-icon { font-size: 1.6rem; flex-shrink: 0; position: relative; }
+  .api-banner-text { flex: 1; min-width: 200px; position: relative; }
+  .api-banner-text strong {
+    display: block;
+    color: var(--deep-brown);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .api-banner-text p {
+    color: var(--text-light);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .api-banner-text a { color: var(--terracotta); }
+  .api-key-input-wrap {
+    display: flex; gap: 8px; align-items: center;
+    flex-shrink: 0; position: relative;
+  }
+  .api-key-input-wrap input {
+    width: 220px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    border: 1.5px solid rgba(201,168,130,0.5);
+    font-family: monospace;
+    letter-spacing: 0.5px;
+  }
+  .api-key-input-wrap input:focus {
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 3px rgba(196,113,74,0.12);
+  }
+  .btn-save-key {
+    padding: 10px 18px;
+    background: var(--terracotta);
+    color: white;
+    border: none; border-radius: 10px; cursor: pointer;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .btn-save-key:hover { background: var(--terracotta-dark); }
+  .api-key-status {
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .api-key-status.set {
+    background: rgba(138,171,138,0.2);
+    color: var(--sage-dark);
+    border: 1px solid rgba(138,171,138,0.4);
+  }
+  .api-key-status.unset {
+    background: rgba(255,180,0,0.12);
+    color: #a07000;
+    border: 1px solid rgba(255,180,0,0.3);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.6);
+    display: none; align-items: center; justify-content: center;
+    padding: 24px;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal-box {
+    background: var(--warm-white);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 480px; width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.25s ease;
+    position: relative;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--deep-brown);
+    margin-bottom: 12px;
+  }
+  .modal-box p { color: var(--text-light); line-height: 1.65; margin-bottom: 20px; font-size: 0.95rem; }
+  .modal-box p a { color: var(--terracotta); }
+  .modal-key-row { display: flex; gap: 10px; margin-bottom: 12px; }
+  .modal-key-row input {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(201,168,130,0.5);
+    font-family: monospace;
+    font-size: 0.95rem;
+    outline: none;
+  }
+  .modal-key-row input:focus { border-color: var(--terracotta); box-shadow: 0 0 0 3px rgba(196,113,74,0.12); }
+  .btn-modal-save {
+    padding: 12px 24px;
+    background: var(--terracotta);
+    color: white; border: none; border-radius: 12px;
+    cursor: pointer; font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .btn-modal-save:hover { background: var(--terracotta-dark); }
+  .modal-note {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    opacity: 0.7;
+    display: flex; align-items: flex-start; gap: 6px;
+    line-height: 1.5;
+  }
+  .btn-modal-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(0,0,0,0.06); border: none;
+    cursor: pointer; font-size: 1rem; color: var(--text-light);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .btn-modal-close:hover { background: rgba(0,0,0,0.12); }
+
   @media (max-width: 600px) {
     .tab-btn { font-size: 0.85rem; padding: 11px 8px; }
     .main-tabs { gap: 2px; }
@@ -1084,6 +1226,20 @@
   <!-- TAB: GENERATOR -->
   <div class="tab-panel active" id="tab-generator">
 
+  <!-- API KEY BANNER -->
+  <div class="api-key-banner" id="api-key-banner">
+    <span class="api-banner-icon">🔑</span>
+    <div class="api-banner-text">
+      <strong>Необходим е Anthropic API ключ за AI генератора</strong>
+      <p>Вземете безплатен ключ от <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>. Ключът се пази само в паметта на браузъра и не се изпраща никъде другаде.</p>
+    </div>
+    <div class="api-key-input-wrap">
+      <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off" />
+      <button class="btn-save-key" onclick="saveApiKey()">Запази</button>
+      <span class="api-key-status unset" id="api-key-status">Не е зададен</span>
+    </div>
+  </div>
+
   <!-- FORM -->
   <div class="form-card">
     <div class="form-grid">
@@ -1388,6 +1544,22 @@
 
 </div>
 
+<!-- API KEY MODAL -->
+<div class="modal-overlay" id="api-modal">
+  <div class="modal-box">
+    <button class="btn-modal-close" onclick="closeApiModal()">✕</button>
+    <h3>🔑 Въведете API Ключ</h3>
+    <p>За да работи AI генераторът на GitHub Pages, трябва да въведете ваш личен Anthropic API ключ. Вземете го безплатно от <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com/settings/keys</a>.</p>
+    <div class="modal-key-row">
+      <input type="password" id="modal-key-input" placeholder="sk-ant-api03-..." autocomplete="off" />
+      <button class="btn-modal-save" onclick="saveApiKeyFromModal()">Запази и продължи</button>
+    </div>
+    <div class="modal-note">
+      🔒 Ключът се съхранява само в паметта на браузъра (не в localStorage, не в бисквитки) и се изтрива при затваряне на страницата. Никога не го споделяйте публично.
+    </div>
+  </div>
+</div>
+
 <footer>
   <p>✦ Над 10 000 имена от православната, католическата, мюсюлманската, еврейската и индуистката традиция ✦</p>
 </footer>
@@ -1682,6 +1854,69 @@ const STRATEGIES = {
   harmony: 'Имена, които фонетично хармонират с имената на родителите — сходни звуци или ритъм.'
 };
 
+// ========== API KEY MANAGEMENT ==========
+let _apiKey = '';
+
+function getApiKey() { return _apiKey; }
+
+function saveApiKey() {
+  const val = document.getElementById('api-key-input').value.trim();
+  if (!val) return;
+  if (!val.startsWith('sk-ant-')) {
+    alert('Невалиден ключ. Трябва да започва с "sk-ant-"');
+    return;
+  }
+  _apiKey = val;
+  document.getElementById('api-key-input').value = '●'.repeat(12);
+  const status = document.getElementById('api-key-status');
+  status.textContent = '✓ Зададен';
+  status.className = 'api-key-status set';
+}
+
+function saveApiKeyFromModal() {
+  const val = document.getElementById('modal-key-input').value.trim();
+  if (!val) return;
+  if (!val.startsWith('sk-ant-')) {
+    alert('Невалиден ключ. Трябва да започва с "sk-ant-"');
+    return;
+  }
+  _apiKey = val;
+  document.getElementById('modal-key-input').value = '';
+  // also update banner
+  document.getElementById('api-key-input').value = '●'.repeat(12);
+  const status = document.getElementById('api-key-status');
+  status.textContent = '✓ Зададен';
+  status.className = 'api-key-status set';
+  closeApiModal();
+  // retry last action
+  if (_pendingAction) { _pendingAction(); _pendingAction = null; }
+}
+
+let _pendingAction = null;
+
+function showApiKeyModal(retryFn) {
+  _pendingAction = retryFn || null;
+  document.getElementById('api-modal').classList.add('open');
+  setTimeout(() => document.getElementById('modal-key-input').focus(), 100);
+}
+
+function closeApiModal() {
+  document.getElementById('api-modal').classList.remove('open');
+}
+
+// Close modal on overlay click
+document.addEventListener('click', e => {
+  if (e.target.id === 'api-modal') closeApiModal();
+});
+
+// Enter key in modal input
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('api-modal').classList.contains('open')) {
+    saveApiKeyFromModal();
+  }
+  if (e.key === 'Escape') closeApiModal();
+});
+
 // ========== TAB SWITCHING ==========
 function switchTab(tab) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -1804,9 +2039,19 @@ ${familyName ? `- Представи как ще звучи: [бебешко Ime
 }
 
 async function callAPI(prompt) {
+  const key = getApiKey();
+  if (!key) {
+    showApiKeyModal();
+    throw new Error('Необходим е API ключ');
+  }
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1200,
@@ -1843,6 +2088,10 @@ function setButtonsLoading(loading) {
 
 async function generateNames() {
   if (isGenerating) return;
+  if (!getApiKey()) {
+    showApiKeyModal(() => generateNames());
+    return;
+  }
   generationCount = 1;
   rejectedNames = [];
   currentGeneratedNames = [];
@@ -1884,6 +2133,7 @@ async function generateNames() {
 
 async function regenAll() {
   if (isGenerating) return;
+  if (!getApiKey()) { showApiKeyModal(() => regenAll()); return; }
   generationCount++;
   // Mark all current non-saved as rejected
   const toReject = currentGeneratedNames.filter(n => !n.saved && !n.locked).map(n => n.name);
@@ -1920,6 +2170,7 @@ async function regenAll() {
 
 async function regenUnlocked() {
   if (isGenerating) return;
+  if (!getApiKey()) { showApiKeyModal(() => regenUnlocked()); return; }
   const lockedCount = currentGeneratedNames.filter(n => n.locked || n.saved).length;
   const unlocked = currentGeneratedNames.filter(n => !n.locked && !n.saved);
   if (unlocked.length === 0) { alert('Всички имена са заключени! Отключи някое за смяна.'); return; }
