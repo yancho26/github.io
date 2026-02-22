@@ -402,7 +402,7 @@
             CELTIC_ROOTS.forEach(root => {
                 CELTIC_SUF.forEach(suf => db.push({ name: root + suf, gender: Math.random() < 0.5 ? 'm' : 'f', culture: 'celtic', meaning: 'Древна мистика, природа, сила' }));
             });
-            // 5. Азиатски (ГРЕШКАТА БЕШЕ ТУК, 'top' е заменено със 'suf')
+            // 5. Азиатски
             ASIAN_ROOTS.forEach(root => {
                 ASIAN_SUF.forEach(suf => db.push({ name: root + suf, gender: Math.random() < 0.5 ? 'm' : 'f', culture: 'asian', meaning: 'Източна мъдрост, хармония, мир' }));
             });
@@ -533,16 +533,29 @@
             currentState.formData.culture = val;
             CULTURES.forEach(opt => {
                 const lbl = document.getElementById(`cult-lbl-${opt.val}`);
-                const icon = lbl.querySelector('i');
+                if (!lbl) return;
+                const icon = lbl.querySelector('svg') || lbl.querySelector('i');
                 const span = lbl.querySelector('span');
                 if (opt.val === val) {
                     lbl.className = 'flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border-2 cursor-pointer transition-all border-indigo-500 bg-indigo-50 shadow-sm transform scale-105';
-                    icon.classList.remove('text-gray-400'); icon.classList.add('text-indigo-600');
-                    span.classList.remove('text-gray-600'); span.classList.add('text-indigo-900');
+                    if (icon) {
+                        icon.classList.remove('text-gray-400'); 
+                        icon.classList.add('text-indigo-600');
+                    }
+                    if (span) {
+                        span.classList.remove('text-gray-600'); 
+                        span.classList.add('text-indigo-900');
+                    }
                 } else {
                     lbl.className = 'flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border-2 cursor-pointer transition-all border-gray-100 bg-white hover:bg-gray-50 transform scale-100';
-                    icon.classList.add('text-gray-400'); icon.classList.remove('text-indigo-600');
-                    span.classList.add('text-gray-600'); span.classList.remove('text-indigo-900');
+                    if (icon) {
+                        icon.classList.add('text-gray-400'); 
+                        icon.classList.remove('text-indigo-600');
+                    }
+                    if (span) {
+                        span.classList.add('text-gray-600'); 
+                        span.classList.remove('text-indigo-900');
+                    }
                 }
             });
         }
