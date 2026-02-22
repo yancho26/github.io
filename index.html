@@ -1,614 +1,740 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Baby, Heart, Users, BookOpen, Sparkles, Search, ArrowRight, RefreshCw, FileText, Globe, X } from 'lucide-react';
-
-// ==========================================
-// 1. ДИНАМИЧЕН ГЕНЕРАТОР НА БАЗА ДАННИ (> 25,000 имена)
-// ==========================================
-
-// Корени за генериране на Славянски/Български имена
-const BG_ROOTS = [
-  { r: 'Рад', m: 'радост' }, { r: 'Мил', m: 'милост и доброта' }, { r: 'Бож', m: 'божественост' }, { r: 'Слав', m: 'слава' },
-  { r: 'Свет', m: 'светлина' }, { r: 'Добр', m: 'доброта' }, { r: 'Крас', m: 'красота' }, { r: 'Влад', m: 'власт и сила' },
-  { r: 'Драг', m: 'скъпоценност' }, { r: 'Злат', m: 'злато и богатство' }, { r: 'Стан', m: 'устойчивост' }, { r: 'Цвет', m: 'цветя' },
-  { r: 'Вен', m: 'венци и победа' }, { r: 'Вес', m: 'веселие' }, { r: 'Тихо', m: 'спокойствие' }, { r: 'Жив', m: 'живот' },
-  { r: 'Здрав', m: 'здраве' }, { r: 'Искр', m: 'искра' }, { r: 'Плам', m: 'пламък' }, { r: 'Рум', m: 'руменина' },
-  { r: 'Спас', m: 'спасение' }, { r: 'Стой', m: 'постоянство' }, { r: 'Благо', m: 'благост' }, { r: 'Бого', m: 'божия благодат' },
-  { r: 'Брани', m: 'защита' }, { r: 'Вели', m: 'величие' }, { r: 'Жел', m: 'желание' }, { r: 'Лъч', m: 'светлина' },
-  { r: 'Огн', m: 'огън' }, { r: 'Прав', m: 'справедливост' }, { r: 'Ясн', m: 'яснота' }, { r: 'Люб', m: 'любов' },
-  { r: 'Мир', m: 'мир и хармония' }, { r: 'Деси', m: 'надежда' }, { r: 'Боян', m: 'богатство' }, { r: 'Камен', m: 'твърдост' },
-  { r: 'Росен', m: 'роса, свежест' }, { r: 'Явор', m: 'дърво явор (сила)' }, { r: 'Елен', m: 'грация' }, { r: 'Бист', m: 'бистрота' },
-  { r: 'Сребр', m: 'сребро' }, { r: 'Трай', m: 'дълголетие' }, { r: 'Кръст', m: 'вяра' }, { r: 'Малин', m: 'сладост' }
-];
-
-const BG_SUF_M = ['омир', 'ослав', 'ан', 'ин', 'ен', 'емир', 'ко', 'чо', 'ил', 'им', 'ьо', 'ю', 'дан', 'дар', 'люб', 'зар', 'мир', 'слав', 'адин', 'иян', 'елин', 'ений', 'арий', 'имир', 'аслав', 'одар', 'олюб', 'озар', 'ислав', 'ец', 'ой', 'уш', 'енко', 'анко'];
-const BG_SUF_F = ['омира', 'ослава', 'ана', 'ина', 'ена', 'емира', 'ка', 'чка', 'ила', 'има', 'я', 'яна', 'дана', 'дара', 'люба', 'зара', 'мира', 'слава', 'ияна', 'елина', 'ения', 'ария', 'имири', 'аслава', 'одара', 'олюба', 'ета', 'уша', 'енка', 'анка'];
-
-// Корени за Западни/Международни имена
-const WEST_ROOTS_M = ['Ал', 'Ел', 'Крис', 'Лео', 'Дан', 'Сам', 'Оли', 'Бен', 'Габ', 'Ник', 'Тео', 'Макс', 'Лук', 'Мар', 'Фел', 'Ант', 'Вал', 'Ром', 'Сил', 'Флор', 'Юл', 'Авг', 'Ед', 'Рич', 'Ар', 'Джей', 'Джон', 'Роб', 'Уил', 'Рик'];
-const WEST_SUF_M = ['бърт', 'кс', 'с', 'н', 'ам', 'и', 'иан', 'ел', 'ас', 'о', 'ард', 'ър', 'ий', 'ик', 'ъс', 'ен', 'он', 'ърд', 'ман', 'валд', 'мънд', 'сън', 'тън', 'рик', 'вън'];
-
-const WEST_ROOTS_F = ['Ал', 'Ел', 'Ем', 'Ам', 'Иза', 'Оли', 'Ми', 'Ка', 'Со', 'Джу', 'Кло', 'Лили', 'Ро', 'Ма', 'Ев', 'Ари', 'Са', 'Ва', 'Ле', 'Да', 'Ни', 'Ви', 'Гло', 'Дже', 'Шар', 'Каро'];
-const WEST_SUF_F = ['а', 'ия', 'ма', 'бела', 'вия', 'нда', 'лин', 'ра', 'са', 'на', 'ета', 'ина', 'лия', 'риса', 'бел', 'ана', 'ора', 'ела', 'ника', 'си', 'сика', 'лайн', 'лет'];
-
-// Средиземноморски (Испански/Италиански/Гръцки)
-const MED_ROOTS_M = ['Мат', 'Алес', 'Леон', 'Лор', 'Габр', 'Рик', 'Том', 'Едо', 'Дие', 'Сант', 'Себ', 'Алех', 'Хуан', 'Карл', 'Пед', 'Луис', 'Игн', 'Андр', 'Кост', 'Ник', 'Ян', 'Дим', 'Спир'];
-const MED_SUF_M = ['ео', 'андро', 'ардо', 'енцо', 'иеле', 'ардо', 'азо', 'его', 'яго', 'астиан', 'ас', 'ос', 'ис', 'рос', 'йотис', 'о', 'арос'];
-
-const MED_ROOTS_F = ['Джу', 'Аур', 'Али', 'Джин', 'Еле', 'Джор', 'Мар', 'Киа', 'Лу', 'Иза', 'Кам', 'Вале', 'Кар', 'Бла', 'Тере', 'Пау', 'Еле', 'Анаст', 'Десп', 'Васил'];
-const MED_SUF_F = ['лия', 'ора', 'че', 'евра', 'онора', 'джия', 'тина', 'ра', 'чия', 'сия', 'мен', 'са', 'нка', 'за', 'ла', 'лота', 'ни', 'асия', 'ина', 'ики'];
-
-// Скандинавски
-const NORDIC_ROOTS = ['Бьорн', 'Рагнар', 'Ивар', 'Ерик', 'Олаф', 'Свен', 'Харалд', 'Тор', 'Лейф', 'Роло', 'Фрейр', 'Хенрик', 'Ларс', 'Нилс', 'Магнус', 'Густав', 'Фрея', 'Астрид', 'Сигрид', 'Ингрид', 'Герда', 'Хелга', 'Силвия', 'Идун', 'Матилде'];
-
-// Ислямски / Арабски
-const MUSLIM_ROOTS = ['Мохамед', 'Ахмед', 'Али', 'Омар', 'Юсуф', 'Ибрахим', 'Хасан', 'Хюсеин', 'Мустафа', 'Амир', 'Тарик', 'Халид', 'Заид', 'Карим', 'Джамал', 'Самир', 'Ясин', 'Фатима', 'Айше', 'Хадиджа', 'Зайнаб', 'Мариям', 'Амина', 'Лейла', 'Ясмин', 'Нура', 'Алия', 'Зара', 'Мелек', 'Дефне'];
-
-// Антични / Митологични
-const MYTH_ROOTS = ['Ахил', 'Хектор', 'Парис', 'Аполон', 'Арес', 'Хермес', 'Персей', 'Тезей', 'Язон', 'Одисей', 'Еней', 'Орфей', 'Локи', 'Один', 'Атина', 'Афродита', 'Хера', 'Артемида', 'Деметра', 'Елена', 'Касандра', 'Пенелопа', 'Калипсо', 'Кирка', 'Дафне'];
-
-const generateMassiveDB = () => {
-  let db = [];
-  
-  // 1. Генериране на Български / Славянски
-  BG_ROOTS.forEach(root => {
-    BG_SUF_M.forEach(suf => db.push({ name: root.r + suf, gender: 'm', culture: ['bg', 'any'], meaning: `Носещ ${root.m} (Славянски корен)` }));
-    BG_SUF_F.forEach(suf => db.push({ name: root.r + suf, gender: 'f', culture: ['bg', 'any'], meaning: `Носеща ${root.m} (Славянски корен)` }));
-  });
-
-  // 2. Генериране на Западни
-  WEST_ROOTS_M.forEach(root => WEST_SUF_M.forEach(suf => db.push({ name: root + suf, gender: 'm', culture: ['western', 'any'], meaning: 'Модерно западно име' })));
-  WEST_ROOTS_F.forEach(root => WEST_SUF_F.forEach(suf => db.push({ name: root + suf, gender: 'f', culture: ['western', 'any'], meaning: 'Модерно западно име' })));
-
-  // 3. Генериране на Средиземноморски
-  MED_ROOTS_M.forEach(root => MED_SUF_M.forEach(suf => db.push({ name: root + suf, gender: 'm', culture: ['mediterranean', 'any'], meaning: 'Средиземноморски / Южен произход' })));
-  MED_ROOTS_F.forEach(root => MED_SUF_F.forEach(suf => db.push({ name: root + suf, gender: 'f', culture: ['mediterranean', 'any'], meaning: 'Средиземноморски / Южен произход' })));
-
-  // 4. Добавяне на Скандинавски (статични, защото се комбинират трудно фонетично)
-  NORDIC_ROOTS.forEach((name, i) => db.push({ name, gender: i < 16 ? 'm' : 'f', culture: ['nordic', 'any'], meaning: 'Скандинавско / Северно име' }));
-
-  // 5. Добавяне на Ислямски
-  MUSLIM_ROOTS.forEach((name, i) => db.push({ name, gender: i < 17 ? 'm' : 'f', culture: ['muslim', 'any'], meaning: 'Ислямски / Арабски произход' }));
-
-  // 6. Добавяне на Митологични
-  MYTH_ROOTS.forEach((name, i) => db.push({ name, gender: i < 14 ? 'm' : 'f', culture: ['myth', 'any'], meaning: 'Древно митологично име' }));
-
-  return db;
-};
-
-// ==========================================
-// 2. УСЪВЪРШЕНСТВАНИ ПРАВИЛА ЗА ПРЕЗИМЕ
-// ==========================================
-
-const getPatronymic = (fatherName, childGender) => {
-  if (!fatherName) return '';
-  const name = fatherName.trim();
-  if (name.length < 2) return '';
-  
-  const lowerName = name.toLowerCase();
-  let base = name;
-  let suffixM = 'ов';
-  let suffixF = 'ова';
-
-  // Изключения и правила в българския език
-  if (lowerName.endsWith('ър')) {
-    base = name.slice(0, -2) + 'р'; // Петър -> Петров
-  } else if (lowerName.endsWith('чо')) {
-    base = name.slice(0, -1);       // Янчо -> Янчев, Стойчо -> Стойчев
-    suffixM = 'ев'; suffixF = 'ева';
-  } else if (lowerName.endsWith('ьо')) {
-    base = name.slice(0, -2);       // Петьо -> Петев, Кольо -> Колев
-    suffixM = 'ев'; suffixF = 'ева';
-  } else if (lowerName.endsWith('о')) {
-    base = name.slice(0, -1);       // Христо -> Христов, Величко -> Величков
-  } else if (lowerName.endsWith('е')) {
-    base = name.slice(0, -1);       // Яне -> Янев, Гоце -> Гоцев
-    suffixM = 'ев'; suffixF = 'ева';
-  } else if (lowerName.endsWith('й')) {
-    base = name.slice(0, -1);       // Благой -> Благоев, Николай -> Николаев
-    suffixM = 'ев'; suffixF = 'ева';
-  } else if (lowerName.endsWith('и')) {
-    base = name.slice(0, -1);       // Георги -> Георгиев
-    suffixM = 'иев'; suffixF = 'иева';
-  } else if (lowerName.endsWith('я')) {
-    base = name.slice(0, -1);       // Илия -> Илиев
-    suffixM = 'ев'; suffixF = 'ева';
-  } else if (lowerName.endsWith('а')) {
-    base = name.slice(0, -1);       // Никола -> Николов, Сава -> Савов
-  }
-  
-  return childGender === 'm' ? base + suffixM : base + suffixF;
-};
-
-const isVowel = (char) => /[аеиоуяюАЕИОУЯЮ]/i.test(char);
-
-// ==========================================
-// 3. ОСНОВЕН КОМПОНЕНТ
-// ==========================================
-
-export default function App() {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    gender: 'any',
-    culture: 'any', // Променено от religion на culture
-    motherName: '',
-    fatherName: '',
-    lastName: '',
-    grandparent1: '',
-    grandparent2: '',
-    grandparent3: '',
-    grandparent4: '',
-    preferredLetter: '',
-  });
-
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedNames, setGeneratedNames] = useState([]);
-  const [favorites, setFavorites] = useState([]);
-  const [showFavorites, setShowFavorites] = useState(false);
-  
-  // Генерираме базата само веднъж (вече съдържа над 25 000 комбинации!)
-  const NAMES_DB = useMemo(() => generateMassiveDB(), []);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const CULTURES = [
-    { val: 'any', label: 'Всички (Глобално)' },
-    { val: 'bg', label: 'Български / Славянски' },
-    { val: 'western', label: 'Западни (Англ, Немски...)' },
-    { val: 'mediterranean', label: 'Средиземноморски' },
-    { val: 'nordic', label: 'Скандинавски' },
-    { val: 'muslim', label: 'Ислямски / Арабски' },
-    { val: 'myth', label: 'Митологични' }
-  ];
-
-  const generateNames = () => {
-    setIsGenerating(true);
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Името на Чудото - Генератор на Бебешки Имена</title>
     
-    setTimeout(() => {
-      let results = [];
-      
-      const grandparents = [
-        formData.grandparent1.trim(),
-        formData.grandparent2.trim(),
-        formData.grandparent3.trim(),
-        formData.grandparent4.trim()
-      ].filter(Boolean);
-
-      const parents = [
-        formData.motherName.trim(),
-        formData.fatherName.trim()
-      ].filter(Boolean);
-
-      // Филтриране по пол
-      let pool = NAMES_DB;
-      if (formData.gender !== 'any') {
-        pool = pool.filter(n => n.gender === formData.gender);
-      }
-
-      // Филтриране по култура/произход
-      if (formData.culture !== 'any') {
-        pool = pool.filter(n => n.culture.includes(formData.culture));
-      }
-
-      const lastName = formData.lastName.trim();
-      const prefLetter = formData.preferredLetter.trim().charAt(0).toUpperCase();
-
-      // Оценяване
-      pool.forEach(nameObj => {
-        let score = 0;
-        let reasons = [];
-        const nameStr = nameObj.name;
-        const firstLetter = nameStr.charAt(0).toUpperCase();
-        
-        // Презиме
-        const patronymic = getPatronymic(formData.fatherName, nameObj.gender);
-        
-        // 0. Предпочитана буква (Най-висок приоритет)
-        if (prefLetter && firstLetter === prefLetter) {
-          score += 150;
-          reasons.push(`Започва с желаната от вас буква "${prefLetter}".`);
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        @keyframes progressAnim {
+            0% { width: 0%; }
+            50% { width: 60%; }
+            80% { width: 85%; }
+            100% { width: 100%; }
         }
-
-        // 1. Проверка за баби и дядовци
-        grandparents.forEach(gp => {
-          const gpFirstLetter = gp.charAt(0).toUpperCase();
-          const gpPrefix3 = gp.substring(0, 3).toLowerCase();
-          const namePrefix3 = nameStr.substring(0, 3).toLowerCase();
-          
-          if (gp.length >= 3 && gpPrefix3 === namePrefix3) {
-            score += 80;
-            if (!reasons.some(r => r.includes(gp))) reasons.push(`Фонетично продължение на ${gp}.`);
-          } else if (gpFirstLetter === firstLetter) {
-            score += 50;
-            if (!reasons.some(r => r.includes(gpFirstLetter))) reasons.push(`Започва с "${firstLetter}", кръстено на ${gp}.`);
-          }
-        });
-
-        // 2. Проверка за родители
-        parents.forEach(p => {
-          if (p.charAt(0).toUpperCase() === firstLetter) {
-            score += 20;
-            reasons.push(`Носи началната буква на родител ("${firstLetter}").`);
-          }
-        });
-
-        // 3. Фонетичен ритъм с фамилията
-        if (lastName) {
-          const firstEndsWithVowel = isVowel(nameStr.slice(-1));
-          const lastStartsWithVowel = isVowel(lastName.charAt(0));
-          
-          if (firstEndsWithVowel !== lastStartsWithVowel) {
-            score += 15;
-            reasons.push("Създава плавен преход с фамилията.");
-          } else {
-            score -= 5;
-          }
-          
-          if (lastName.length > 8 && nameStr.length <= 5) {
-            score += 10;
-            reasons.push("Краткото име балансира дългата фамилия.");
-          } else if (lastName.length <= 5 && nameStr.length > 6) {
-            score += 10;
-            reasons.push("Дългото име придава тежест на кратката фамилия.");
-          }
+        .animate-progress-bar {
+            animation: progressAnim 3.5s ease-in-out forwards;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .step-container { display: none; }
+        .step-container.active { display: block; }
+        
+        /* Скриване на скролбара за модала */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 font-sans text-gray-800 min-h-screen relative">
 
-        // 4. Произволност за разнообразие
-        score += Math.floor(Math.random() * 25);
-
-        results.push({ 
-          ...nameObj, 
-          score, 
-          reasons, 
-          fullName: `${nameStr} ${patronymic} ${lastName}`.trim().replace(/\s+/g, ' ')
-        });
-      });
-
-      results.sort((a, b) => b.score - a.score);
-      
-      const uniqueResults = [];
-      const seenNames = new Set();
-      for(let r of results) {
-          if(!seenNames.has(r.name)) {
-              seenNames.add(r.name);
-              uniqueResults.push(r);
-          }
-      }
-      
-      const topResults = uniqueResults.slice(0, 6).map(r => {
-          if(r.reasons.length === 0) {
-             r.reasons.push(`Благозвучно име от избраната категория.`);
-             if(formData.lastName) r.reasons.push(`Звучи хармонично с ${formData.lastName}.`);
-          }
-          r.reasons = [...new Set(r.reasons)].slice(0, 3);
-          return r;
-      });
-
-      setGeneratedNames(topResults);
-      setIsGenerating(false);
-      setStep(4);
-    }, 3500); // Повече време за търсене в по-големия масив
-  };
-
-  const resetForm = () => {
-    setStep(1);
-    setGeneratedNames([]);
-  };
-
-  const toggleFavorite = (nameData) => {
-    setFavorites(prev => {
-      const exists = prev.find(n => n.fullName === nameData.fullName);
-      if (exists) {
-        return prev.filter(n => n.fullName !== nameData.fullName);
-      }
-      return [...prev, nameData];
-    });
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 font-sans text-gray-800 relative">
-      <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-indigo-600">
-            <Baby className="w-8 h-8" />
-            <h1 className="text-2xl font-bold tracking-tight">Името на Чудото</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex text-sm font-medium text-gray-500 items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full">
-              <Globe className="w-4 h-4" />
-              <span>Анализирани: {NAMES_DB.length.toLocaleString('bg-BG')} имена от цял свят</span>
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-10">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2 text-indigo-600">
+                <i data-lucide="baby" class="w-8 h-8"></i>
+                <h1 class="text-2xl font-bold tracking-tight">Името на Чудото</h1>
             </div>
-            <button 
-              onClick={() => setShowFavorites(true)}
-              className="relative flex items-center gap-1 bg-pink-100 hover:bg-pink-200 text-pink-700 px-3 py-1.5 rounded-full transition-colors font-medium"
-            >
-              <Heart className="w-4 h-4" fill={favorites.length > 0 ? "currentColor" : "none"} />
-              <span className="hidden sm:inline">Любими</span>
-              {favorites.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  {favorites.length}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-4xl mx-auto px-4 py-12">
-        {step < 4 && (
-          <div className="mb-8">
-            <div className="flex justify-between text-xs font-medium text-gray-400 mb-2 px-1">
-              <span className={step >= 1 ? 'text-indigo-600' : ''}>Основи</span>
-              <span className={step >= 2 ? 'text-indigo-600' : ''}>Произход</span>
-              <span className={step >= 3 ? 'text-indigo-600' : ''}>Род и Фамилия</span>
-            </div>
-            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div className="h-full bg-indigo-600 transition-all duration-500 ease-out" style={{ width: `${(step / 3) * 100}%` }}></div>
-            </div>
-          </div>
-        )}
-
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-white">
-          <div className="p-8 sm:p-12">
-            
-            {/* Стъпка 1: Пол */}
-            {step === 1 && (
-              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="text-center mb-8">
-                  <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Baby className="w-8 h-8" />
-                  </div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">Кого очаквате?</h2>
-                  <p className="text-gray-500">Нека започнем с най-важното.</p>
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex text-sm font-medium text-gray-500 items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full">
+                    <i data-lucide="globe" class="w-4 h-4"></i>
+                    <span id="db-count-badge">Анализирани: ... имена</span>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                  <button onClick={() => setFormData({...formData, gender: 'm'})} className={`p-4 rounded-2xl border-2 transition-all ${formData.gender === 'm' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-100 hover:border-blue-200 hover:bg-blue-50/50'}`}>
-                    <div className="text-xl font-semibold mb-1">Момче 👦🏻</div>
-                  </button>
-                  <button onClick={() => setFormData({...formData, gender: 'f'})} className={`p-4 rounded-2xl border-2 transition-all ${formData.gender === 'f' ? 'border-pink-500 bg-pink-50 text-pink-700' : 'border-gray-100 hover:border-pink-200 hover:bg-pink-50/50'}`}>
-                    <div className="text-xl font-semibold mb-1">Момиче 👧🏻</div>
-                  </button>
-                  <button onClick={() => setFormData({...formData, gender: 'any'})} className={`p-4 rounded-2xl border-2 transition-all ${formData.gender === 'any' ? 'border-purple-500 bg-purple-50 text-purple-700' : 'border-gray-100 hover:border-purple-200 hover:bg-purple-50/50'}`}>
-                    <div className="text-xl font-semibold mb-1">Изненада 🎁</div>
-                  </button>
-                </div>
-                <div className="flex justify-end">
-                  <button onClick={() => setStep(2)} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full font-medium transition-colors">
-                    Напред <ArrowRight className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Стъпка 2: Култура и Произход */}
-            {step === 2 && (
-              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="text-center mb-8">
-                  <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Globe className="w-8 h-8" />
-                  </div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">Произход на името</h2>
-                  <p className="text-gray-500">Разполагаме с над 25 000 имена от различни краища на света.</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                  {CULTURES.map((option) => (
-                    <label key={option.val} className={`flex items-center p-4 rounded-2xl border-2 cursor-pointer transition-all ${formData.culture === option.val ? 'border-purple-500 bg-purple-50' : 'border-gray-100 hover:bg-gray-50'}`}>
-                      <input type="radio" name="culture" value={option.val} checked={formData.culture === option.val} onChange={handleInputChange} className="w-5 h-5 text-purple-600 border-gray-300 focus:ring-purple-500"/>
-                      <span className="ml-3 font-medium text-gray-700">{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-                <div className="flex justify-between">
-                  <button onClick={() => setStep(1)} className="text-gray-500 hover:text-gray-700 px-6 py-3 font-medium transition-colors">Назад</button>
-                  <button onClick={() => setStep(3)} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full font-medium transition-colors">
-                    Напред <ArrowRight className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Стъпка 3: Род и Фамилия */}
-            {step === 3 && (
-              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="text-center mb-8">
-                  <div className="w-16 h-16 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="w-8 h-8" />
-                  </div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">Фамилия и Род</h2>
-                  <p className="text-gray-500">Алгоритъмът ни автоматично ще преобразува името на бащата в правилно презиме според българската граматика.</p>
-                </div>
-
-                <div className="space-y-6 mb-8 text-left">
-                  <div className="bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100">
-                    <h3 className="text-lg font-semibold text-indigo-900 mb-4 flex items-center gap-2">
-                      <FileText className="w-5 h-5 text-indigo-500" /> Основна Информация (За пълното име)
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                      <div className="sm:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Фамилия на детето</label>
-                        <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" placeholder="напр. Георгиев / Георгиева"/>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Име на бащата (за Презиме)</label>
-                        <input type="text" name="fatherName" value={formData.fatherName} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="напр. Янчо (ще стане Янчев)"/>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Име на майката (по желание)</label>
-                        <input type="text" name="motherName" value={formData.motherName} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="напр. Мария"/>
-                      </div>
-                      <div className="sm:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Желана първа буква (по избор)</label>
-                        <input type="text" name="preferredLetter" maxLength="1" value={formData.preferredLetter} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all uppercase" placeholder="напр. А"/>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                      <Heart className="w-5 h-5 text-pink-500" /> Имена на баби и дядовци
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <input type="text" name="grandparent1" value={formData.grandparent1} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-400 outline-none" placeholder="Баба/Дядо 1"/>
-                      <input type="text" name="grandparent2" value={formData.grandparent2} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-400 outline-none" placeholder="Баба/Дядо 2"/>
-                      <input type="text" name="grandparent3" value={formData.grandparent3} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-400 outline-none" placeholder="Баба/Дядо 3"/>
-                      <input type="text" name="grandparent4" value={formData.grandparent4} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-400 outline-none" placeholder="Баба/Дядо 4"/>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <button onClick={() => setStep(2)} className="text-gray-500 hover:text-gray-700 px-6 py-3 font-medium transition-colors">Назад</button>
-                  <button onClick={generateNames} disabled={isGenerating} className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-3 rounded-full font-bold shadow-lg shadow-indigo-200 transition-all transform hover:scale-105 disabled:opacity-70 disabled:scale-100">
-                    {isGenerating ? 'Анализиране...' : 'Генерирай Имена'} <Sparkles className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Зареждане */}
-            {isGenerating && (
-              <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-3xl">
-                <Search className="w-12 h-12 text-indigo-500 animate-bounce mb-4" />
-                <h3 className="text-2xl font-bold text-gray-800 mb-2 animate-pulse">Сканиране на базите...</h3>
-                <p className="text-gray-500">Филтриране на над {NAMES_DB.length.toLocaleString('bg-BG')} имена от цял свят</p>
-                <div className="w-48 h-2 bg-gray-200 rounded-full mt-6 overflow-hidden">
-                  <div className="h-full bg-indigo-500 rounded-full animate-[progress_3.5s_ease-in-out]"></div>
-                </div>
-              </div>
-            )}
-
-            {/* Стъпка 4: Резултати */}
-            {step === 4 && !isGenerating && (
-              <div className="animate-in fade-in zoom-in-95 duration-500">
-                <div className="text-center mb-10">
-                  <div className="inline-block px-4 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-bold mb-4">
-                    Открити перфектни съвпадения!
-                  </div>
-                  <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Ето нашите предложения</h2>
-                  <p className="text-gray-600 max-w-lg mx-auto">
-                    Разгледайте най-подходящите имена, подбрани от международната ни база данни.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-                  {generatedNames.map((nameData, index) => {
-                    const isFav = favorites.some(f => f.fullName === nameData.fullName);
-                    return (
-                    <div key={index} className={`relative p-6 rounded-3xl border-2 shadow-sm transition-all hover:shadow-md ${nameData.gender === 'm' ? 'border-blue-100 bg-gradient-to-br from-white to-blue-50/50' : 'border-pink-100 bg-gradient-to-br from-white to-pink-50/50'}`}>
-                      {index === 0 && (
-                         <div className="absolute -top-3 -right-3 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full flex items-center shadow-sm z-10">
-                           <Sparkles className="w-3 h-3 mr-1" /> Топ избор
-                         </div>
-                      )}
-
-                      <button 
-                        onClick={() => toggleFavorite(nameData)}
-                        className={`absolute top-4 right-4 p-2 rounded-full transition-colors z-10 ${isFav ? 'bg-pink-100 text-pink-500' : 'bg-white/50 text-gray-400 hover:bg-white hover:text-pink-400'}`}
-                        title={isFav ? "Премахни от любими" : "Добави в любими"}
-                      >
-                        <Heart className="w-5 h-5" fill={isFav ? "currentColor" : "none"} />
-                      </button>
-                      
-                      <div className="mb-4 pb-4 border-b border-gray-100/80 pr-10">
-                         <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Пълно име</p>
-                         <h3 className={`text-2xl sm:text-3xl font-bold ${nameData.gender === 'm' ? 'text-blue-900' : 'text-pink-900'}`}>
-                           {nameData.fullName}
-                         </h3>
-                      </div>
-
-                      <p className="text-sm font-medium text-gray-600 mb-4">
-                        Характеристика: <span className="text-gray-900">{nameData.meaning}</span>
-                      </p>
-                      
-                      <div className="space-y-2">
-                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Защо този избор?</p>
-                        <ul className="space-y-1">
-                          {nameData.reasons.map((reason, i) => (
-                            <li key={i} className="text-sm text-gray-700 flex items-start gap-2 leading-tight">
-                              <span className={`${nameData.gender === 'm' ? 'text-blue-400' : 'text-pink-400'} mt-0.5`}>•</span> {reason}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  )})}
-                </div>
-
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
-                  <button onClick={generateNames} className="flex items-center justify-center gap-2 bg-white border-2 border-indigo-100 hover:border-indigo-300 text-indigo-700 px-6 py-3 rounded-full font-medium transition-colors">
-                    <RefreshCw className="w-5 h-5" /> Други комбинации
-                  </button>
-                  <button onClick={resetForm} className="flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-full font-medium transition-colors">
-                    Започни отначало
-                  </button>
-                </div>
-              </div>
-            )}
-
-          </div>
-        </div>
-
-        {/* Модал за Любими имена */}
-        {showFavorites && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col overflow-hidden">
-              <div className="p-6 border-b flex items-center justify-between bg-pink-50">
-                <div className="flex items-center gap-2 text-pink-700">
-                  <Heart className="w-6 h-6" fill="currentColor" />
-                  <h2 className="text-2xl font-bold">Любими имена</h2>
-                </div>
-                <button onClick={() => setShowFavorites(false)} className="p-2 text-gray-500 hover:bg-white rounded-full transition-colors">
-                  <X className="w-6 h-6" />
+                <button onclick="openFavorites()" class="relative flex items-center gap-1 bg-pink-100 hover:bg-pink-200 text-pink-700 px-3 py-1.5 rounded-full transition-colors font-medium">
+                    <i data-lucide="heart" class="w-4 h-4" id="header-heart-icon"></i>
+                    <span class="hidden sm:inline">Любими</span>
+                    <span id="fav-count-badge" class="hidden absolute -top-1 -right-1 bg-pink-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
                 </button>
-              </div>
-              
-              <div className="p-6 overflow-y-auto flex-1">
-                {favorites.length === 0 ? (
-                  <div className="text-center py-12 text-gray-400">
-                    <Heart className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                    <p>Все още нямате запазени любими имена.</p>
-                    <button onClick={() => setShowFavorites(false)} className="mt-4 text-pink-600 font-medium hover:underline">
-                      Върнете се и изберете
-                    </button>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {favorites.map((fav, i) => (
-                      <div key={i} className="p-4 rounded-2xl border border-gray-100 bg-gray-50 relative group">
-                        <button 
-                          onClick={() => toggleFavorite(fav)}
-                          className="absolute top-3 right-3 p-1.5 text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-full shadow-sm"
-                          title="Премахни"
-                        >
-                          <Heart className="w-4 h-4" fill="currentColor" />
-                        </button>
-                        <h4 className={`text-lg font-bold mb-1 ${fav.gender === 'm' ? 'text-blue-800' : 'text-pink-800'} pr-6`}>
-                          {fav.fullName}
-                        </h4>
-                        <p className="text-xs text-gray-500 line-clamp-2">{fav.meaning}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
             </div>
-          </div>
-        )}
+        </div>
+    </header>
 
-      </main>
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        
+        <!-- Progress Bar (Visible steps 1-3) -->
+        <div id="progress-section" class="mb-8">
+            <div class="flex justify-between text-xs font-medium text-gray-400 mb-2 px-1">
+                <span id="prog-text-1" class="text-indigo-600">Основи</span>
+                <span id="prog-text-2">Произход</span>
+                <span id="prog-text-3">Род и Фамилия</span>
+            </div>
+            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-indigo-600 transition-all duration-500 ease-out" style="width: 33.33%;"></div>
+            </div>
+        </div>
 
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes progress {
-          0% { width: 0%; }
-          50% { width: 60%; }
-          80% { width: 85%; }
-          100% { width: 100%; }
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-white">
+            <div class="p-8 sm:p-12 relative">
+                
+                <!-- Стъпка 1: Пол -->
+                <div id="step-1" class="step-container active fade-in">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="baby" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">Кого очаквате?</h2>
+                        <p class="text-gray-500">Нека започнем с най-важното.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                        <button onclick="selectGender('m')" id="btn-gender-m" class="p-4 rounded-2xl border-2 transition-all border-gray-100 hover:border-blue-200 hover:bg-blue-50/50">
+                            <div class="text-xl font-semibold mb-1">Момче 👦🏻</div>
+                        </button>
+                        <button onclick="selectGender('f')" id="btn-gender-f" class="p-4 rounded-2xl border-2 transition-all border-gray-100 hover:border-pink-200 hover:bg-pink-50/50">
+                            <div class="text-xl font-semibold mb-1">Момиче 👧🏻</div>
+                        </button>
+                        <button onclick="selectGender('any')" id="btn-gender-any" class="p-4 rounded-2xl border-2 transition-all border-purple-500 bg-purple-50 text-purple-700">
+                            <div class="text-xl font-semibold mb-1">Изненада 🎁</div>
+                        </button>
+                    </div>
+                    <div class="flex justify-end">
+                        <button onclick="goToStep(2)" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full font-medium transition-colors">
+                            Напред <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Стъпка 2: Култура и Произход -->
+                <div id="step-2" class="step-container fade-in">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="globe" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">Произход на името</h2>
+                        <p class="text-gray-500">Разполагаме с над 25 000 имена от различни краища на света.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" id="culture-options">
+                        <!-- Options generated via JS -->
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button onclick="goToStep(1)" class="text-gray-500 hover:text-gray-700 px-6 py-3 font-medium transition-colors">Назад</button>
+                        <button onclick="goToStep(3)" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full font-medium transition-colors">
+                            Напред <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Стъпка 3: Род и Фамилия -->
+                <div id="step-3" class="step-container fade-in">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="users" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">Фамилия и Род</h2>
+                        <p class="text-gray-500">Алгоритъмът ни автоматично ще преобразува името на бащата в правилно презиме според българската граматика.</p>
+                    </div>
+
+                    <div class="space-y-6 mb-8 text-left">
+                        <!-- Фамилия и Родители -->
+                        <div class="bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100">
+                            <h3 class="text-lg font-semibold text-indigo-900 mb-4 flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-5 h-5 text-indigo-500"></i> Основна Информация
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div class="sm:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Фамилия на детето</label>
+                                    <input type="text" id="inp-lastName" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="напр. Георгиев / Георгиева"/>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Име на бащата (за Презиме)</label>
+                                    <input type="text" id="inp-fatherName" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="напр. Янчо"/>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Име на майката (по желание)</label>
+                                    <input type="text" id="inp-motherName" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="напр. Мария"/>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Желана първа буква (по избор)</label>
+                                    <input type="text" id="inp-preferredLetter" maxlength="1" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all uppercase" placeholder="напр. А"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Баби и дядовци -->
+                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="heart" class="w-5 h-5 text-pink-500"></i> Имена на баби и дядовци
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <input type="text" id="inp-gp1" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-400 outline-none" placeholder="Баба/Дядо 1"/>
+                                <input type="text" id="inp-gp2" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-400 outline-none" placeholder="Баба/Дядо 2"/>
+                                <input type="text" id="inp-gp3" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-400 outline-none" placeholder="Баба/Дядо 3"/>
+                                <input type="text" id="inp-gp4" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-400 outline-none" placeholder="Баба/Дядо 4"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <button onclick="goToStep(2)" class="text-gray-500 hover:text-gray-700 px-6 py-3 font-medium transition-colors">Назад</button>
+                        <button onclick="generateNamesBtnClick()" id="btn-generate" class="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-3 rounded-full font-bold shadow-lg shadow-indigo-200 transition-all transform hover:scale-105">
+                            <span id="btn-generate-text">Генерирай Имена</span> <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Екран за зареждане -->
+                <div id="loading-screen" class="hidden absolute inset-0 bg-white/95 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-3xl">
+                    <i data-lucide="search" class="w-12 h-12 text-indigo-500 animate-bounce mb-4"></i>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2 animate-pulse">Сканиране на базите...</h3>
+                    <p class="text-gray-500" id="loading-text">Филтриране на над 25 000 имена от цял свят</p>
+                    <div class="w-48 h-2 bg-gray-200 rounded-full mt-6 overflow-hidden">
+                        <div class="h-full bg-indigo-500 rounded-full animate-progress-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Стъпка 4: Резултати -->
+                <div id="step-4" class="step-container fade-in">
+                    <div class="text-center mb-10">
+                        <div class="inline-block px-4 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-bold mb-4">
+                            Открити перфектни съвпадения!
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Ето нашите предложения</h2>
+                        <p class="text-gray-600 max-w-lg mx-auto">
+                            Разгледайте най-подходящите имена, подбрани от международната ни база данни.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10" id="results-container">
+                        <!-- Резултатите се генерират тук -->
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button onclick="generateNamesBtnClick()" class="flex items-center justify-center gap-2 bg-white border-2 border-indigo-100 hover:border-indigo-300 text-indigo-700 px-6 py-3 rounded-full font-medium transition-colors">
+                            <i data-lucide="refresh-cw" class="w-5 h-5"></i> Други комбинации
+                        </button>
+                        <button onclick="resetForm()" class="flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-full font-medium transition-colors">
+                            Започни отначало
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Модал за Любими имена -->
+        <div id="favorites-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm fade-in">
+            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col overflow-hidden">
+                <div class="p-6 border-b flex items-center justify-between bg-pink-50">
+                    <div class="flex items-center gap-2 text-pink-700">
+                        <i data-lucide="heart" class="w-6 h-6 fill-current"></i>
+                        <h2 class="text-2xl font-bold">Любими имена</h2>
+                    </div>
+                    <button onclick="closeFavorites()" class="p-2 text-gray-500 hover:bg-white rounded-full transition-colors">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <div id="favorites-container" class="p-6 overflow-y-auto flex-1">
+                    <!-- Любимите имена се показват тук -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Скрипт за логиката (Vanilla JS) -->
+    <script>
+        // ==========================================
+        // 1. ДАННИ И ГЕНЕРАТОР НА БАЗА
+        // ==========================================
+        
+        const BG_ROOTS = [
+            { r: 'Рад', m: 'радост' }, { r: 'Мил', m: 'милост и доброта' }, { r: 'Бож', m: 'божественост' }, { r: 'Слав', m: 'слава' },
+            { r: 'Свет', m: 'светлина' }, { r: 'Добр', m: 'доброта' }, { r: 'Крас', m: 'красота' }, { r: 'Влад', m: 'власт и сила' },
+            { r: 'Драг', m: 'скъпоценност' }, { r: 'Злат', m: 'злато и богатство' }, { r: 'Стан', m: 'устойчивост' }, { r: 'Цвет', m: 'цветя' },
+            { r: 'Вен', m: 'венци и победа' }, { r: 'Вес', m: 'веселие' }, { r: 'Тихо', m: 'спокойствие' }, { r: 'Жив', m: 'живот' },
+            { r: 'Здрав', m: 'здраве' }, { r: 'Искр', m: 'искра' }, { r: 'Плам', m: 'пламък' }, { r: 'Рум', m: 'руменина' },
+            { r: 'Спас', m: 'спасение' }, { r: 'Стой', m: 'постоянство' }, { r: 'Благо', m: 'благост' }, { r: 'Бого', m: 'божия благодат' },
+            { r: 'Брани', m: 'защита' }, { r: 'Вели', m: 'величие' }, { r: 'Жел', m: 'желание' }, { r: 'Лъч', m: 'светлина' },
+            { r: 'Огн', m: 'огън' }, { r: 'Прав', m: 'справедливост' }, { r: 'Ясн', m: 'яснота' }, { r: 'Люб', m: 'любов' },
+            { r: 'Мир', m: 'мир и хармония' }, { r: 'Деси', m: 'надежда' }, { r: 'Боян', m: 'богатство' }, { r: 'Камен', m: 'твърдост' },
+            { r: 'Росен', m: 'роса, свежест' }, { r: 'Явор', m: 'дърво явор (сила)' }, { r: 'Елен', m: 'грация' }, { r: 'Бист', m: 'бистрота' },
+            { r: 'Сребр', m: 'сребро' }, { r: 'Трай', m: 'дълголетие' }, { r: 'Кръст', m: 'вяра' }, { r: 'Малин', m: 'сладост' }
+        ];
+
+        const BG_SUF_M = ['омир', 'ослав', 'ан', 'ин', 'ен', 'емир', 'ко', 'чо', 'ил', 'им', 'ьо', 'ю', 'дан', 'дар', 'люб', 'зар', 'мир', 'слав', 'адин', 'иян', 'елин', 'ений', 'арий', 'имир', 'аслав', 'одар', 'олюб', 'озар', 'ислав', 'ец', 'ой', 'уш', 'енко', 'анко'];
+        const BG_SUF_F = ['омира', 'ослава', 'ана', 'ина', 'ена', 'емира', 'ка', 'чка', 'ила', 'има', 'я', 'яна', 'дана', 'дара', 'люба', 'зара', 'мира', 'слава', 'ияна', 'елина', 'ения', 'ария', 'имири', 'аслава', 'одара', 'олюба', 'ета', 'уша', 'енка', 'анка'];
+
+        const WEST_ROOTS_M = ['Ал', 'Ел', 'Крис', 'Лео', 'Дан', 'Сам', 'Оли', 'Бен', 'Габ', 'Ник', 'Тео', 'Макс', 'Лук', 'Мар', 'Фел', 'Ант', 'Вал', 'Ром', 'Сил', 'Флор', 'Юл', 'Авг', 'Ед', 'Рич', 'Ар', 'Джей', 'Джон', 'Роб', 'Уил', 'Рик'];
+        const WEST_SUF_M = ['бърт', 'кс', 'с', 'н', 'ам', 'и', 'иан', 'ел', 'ас', 'о', 'ард', 'ър', 'ий', 'ик', 'ъс', 'ен', 'он', 'ърд', 'ман', 'валд', 'мънд', 'сън', 'тън', 'рик', 'вън'];
+
+        const WEST_ROOTS_F = ['Ал', 'Ел', 'Ем', 'Ам', 'Иза', 'Оли', 'Ми', 'Ка', 'Со', 'Джу', 'Кло', 'Лили', 'Ро', 'Ма', 'Ев', 'Ари', 'Са', 'Ва', 'Ле', 'Да', 'Ни', 'Ви', 'Гло', 'Дже', 'Шар', 'Каро'];
+        const WEST_SUF_F = ['а', 'ия', 'ма', 'бела', 'вия', 'нда', 'лин', 'ра', 'са', 'на', 'ета', 'ина', 'лия', 'риса', 'бел', 'ана', 'ора', 'ела', 'ника', 'си', 'сика', 'лайн', 'лет'];
+
+        const MED_ROOTS_M = ['Мат', 'Алес', 'Леон', 'Лор', 'Габр', 'Рик', 'Том', 'Едо', 'Дие', 'Сант', 'Себ', 'Алех', 'Хуан', 'Карл', 'Пед', 'Луис', 'Игн', 'Андр', 'Кост', 'Ник', 'Ян', 'Дим', 'Спир'];
+        const MED_SUF_M = ['ео', 'андро', 'ардо', 'енцо', 'иеле', 'ардо', 'азо', 'его', 'яго', 'астиан', 'ас', 'ос', 'ис', 'рос', 'йотис', 'о', 'арос'];
+
+        const MED_ROOTS_F = ['Джу', 'Аур', 'Али', 'Джин', 'Еле', 'Джор', 'Мар', 'Киа', 'Лу', 'Иза', 'Кам', 'Вале', 'Кар', 'Бла', 'Тере', 'Пау', 'Еле', 'Анаст', 'Десп', 'Васил'];
+        const MED_SUF_F = ['лия', 'ора', 'че', 'евра', 'онора', 'джия', 'тина', 'ра', 'чия', 'сия', 'мен', 'са', 'нка', 'за', 'ла', 'лота', 'ни', 'асия', 'ина', 'ики'];
+
+        const NORDIC_ROOTS = ['Бьорн', 'Рагнар', 'Ивар', 'Ерик', 'Олаф', 'Свен', 'Харалд', 'Тор', 'Лейф', 'Роло', 'Фрейр', 'Хенрик', 'Ларс', 'Нилс', 'Магнус', 'Густав', 'Фрея', 'Астрид', 'Сигрид', 'Ингрид', 'Герда', 'Хелга', 'Силвия', 'Идун', 'Матилде'];
+        const MUSLIM_ROOTS = ['Мохамед', 'Ахмед', 'Али', 'Омар', 'Юсуф', 'Ибрахим', 'Хасан', 'Хюсеин', 'Мустафа', 'Амир', 'Тарик', 'Халид', 'Заид', 'Карим', 'Джамал', 'Самир', 'Ясин', 'Фатима', 'Айше', 'Хадиджа', 'Зайнаб', 'Мариям', 'Амина', 'Лейла', 'Ясмин', 'Нура', 'Алия', 'Зара', 'Мелек', 'Дефне'];
+        const MYTH_ROOTS = ['Ахил', 'Хектор', 'Парис', 'Аполон', 'Арес', 'Хермес', 'Персей', 'Тезей', 'Язон', 'Одисей', 'Еней', 'Орфей', 'Локи', 'Один', 'Атина', 'Афродита', 'Хера', 'Артемида', 'Деметра', 'Елена', 'Касандра', 'Пенелопа', 'Калипсо', 'Кирка', 'Дафне'];
+
+        const CULTURES = [
+            { val: 'any', label: 'Всички (Глобално)' },
+            { val: 'bg', label: 'Български / Славянски' },
+            { val: 'western', label: 'Западни (Англ, Немски...)' },
+            { val: 'mediterranean', label: 'Средиземноморски' },
+            { val: 'nordic', label: 'Скандинавски' },
+            { val: 'muslim', label: 'Ислямски / Арабски' },
+            { val: 'myth', label: 'Митологични' }
+        ];
+
+        let NAMES_DB = [];
+
+        function generateMassiveDB() {
+            let db = [];
+            BG_ROOTS.forEach(root => {
+                BG_SUF_M.forEach(suf => db.push({ name: root.r + suf, gender: 'm', culture: ['bg', 'any'], meaning: `Носещ ${root.m} (Славянски корен)` }));
+                BG_SUF_F.forEach(suf => db.push({ name: root.r + suf, gender: 'f', culture: ['bg', 'any'], meaning: `Носеща ${root.m} (Славянски корен)` }));
+            });
+            WEST_ROOTS_M.forEach(root => WEST_SUF_M.forEach(suf => db.push({ name: root + suf, gender: 'm', culture: ['western', 'any'], meaning: 'Модерно западно име' })));
+            WEST_ROOTS_F.forEach(root => WEST_SUF_F.forEach(suf => db.push({ name: root + suf, gender: 'f', culture: ['western', 'any'], meaning: 'Модерно западно име' })));
+            MED_ROOTS_M.forEach(root => MED_SUF_M.forEach(suf => db.push({ name: root + suf, gender: 'm', culture: ['mediterranean', 'any'], meaning: 'Средиземноморски / Южен произход' })));
+            MED_ROOTS_F.forEach(root => MED_SUF_F.forEach(suf => db.push({ name: root + suf, gender: 'f', culture: ['mediterranean', 'any'], meaning: 'Средиземноморски / Южен произход' })));
+            NORDIC_ROOTS.forEach((name, i) => db.push({ name, gender: i < 16 ? 'm' : 'f', culture: ['nordic', 'any'], meaning: 'Скандинавско / Северно име' }));
+            MUSLIM_ROOTS.forEach((name, i) => db.push({ name, gender: i < 17 ? 'm' : 'f', culture: ['muslim', 'any'], meaning: 'Ислямски / Арабски произход' }));
+            MYTH_ROOTS.forEach((name, i) => db.push({ name, gender: i < 14 ? 'm' : 'f', culture: ['myth', 'any'], meaning: 'Древно митологично име' }));
+            return db;
         }
-      `}} />
-    </div>
-  );
-}
+
+        // ==========================================
+        // 2. СЪСТОЯНИЕ НА ПРИЛОЖЕНИЕТО (STATE)
+        // ==========================================
+        
+        let currentState = {
+            step: 1,
+            formData: {
+                gender: 'any',
+                culture: 'any',
+                motherName: '',
+                fatherName: '',
+                lastName: '',
+                grandparent1: '',
+                grandparent2: '',
+                grandparent3: '',
+                grandparent4: '',
+                preferredLetter: ''
+            },
+            generatedNames: [],
+            favorites: []
+        };
+
+        // ==========================================
+        // 3. ПОМОЩНИ ФУНКЦИИ
+        // ==========================================
+        
+        function getPatronymic(fatherName, childGender) {
+            if (!fatherName) return '';
+            const name = fatherName.trim();
+            if (name.length < 2) return '';
+            
+            const lowerName = name.toLowerCase();
+            let base = name;
+            let suffixM = 'ов';
+            let suffixF = 'ова';
+
+            if (lowerName.endsWith('ър')) {
+                base = name.slice(0, -2) + 'р';
+            } else if (lowerName.endsWith('чо')) {
+                base = name.slice(0, -1);
+                suffixM = 'ев'; suffixF = 'ева';
+            } else if (lowerName.endsWith('ьо')) {
+                base = name.slice(0, -2);
+                suffixM = 'ев'; suffixF = 'ева';
+            } else if (lowerName.endsWith('о')) {
+                base = name.slice(0, -1);
+            } else if (lowerName.endsWith('е')) {
+                base = name.slice(0, -1);
+                suffixM = 'ев'; suffixF = 'ева';
+            } else if (lowerName.endsWith('й')) {
+                base = name.slice(0, -1);
+                suffixM = 'ев'; suffixF = 'ева';
+            } else if (lowerName.endsWith('и')) {
+                base = name.slice(0, -1);
+                suffixM = 'иев'; suffixF = 'иева';
+            } else if (lowerName.endsWith('я')) {
+                base = name.slice(0, -1);
+                suffixM = 'ев'; suffixF = 'ева';
+            } else if (lowerName.endsWith('а')) {
+                base = name.slice(0, -1);
+            }
+            
+            return childGender === 'm' ? base + suffixM : base + suffixF;
+        }
+
+        const isVowel = (char) => /[аеиоуяюАЕИОУЯЮ]/i.test(char);
+
+        // ==========================================
+        // 4. UI И ЛОГИКА
+        // ==========================================
+
+        function initApp() {
+            NAMES_DB = generateMassiveDB();
+            document.getElementById('db-count-badge').textContent = `Анализирани: ${NAMES_DB.length.toLocaleString('bg-BG')} имена от цял свят`;
+            
+            // Render culture options
+            const cultureContainer = document.getElementById('culture-options');
+            cultureContainer.innerHTML = CULTURES.map(opt => `
+                <label class="flex items-center p-4 rounded-2xl border-2 cursor-pointer transition-all ${currentState.formData.culture === opt.val ? 'border-purple-500 bg-purple-50' : 'border-gray-100 hover:bg-gray-50'}" onclick="selectCulture('${opt.val}')" id="cult-lbl-${opt.val}">
+                    <input type="radio" name="culture" value="${opt.val}" ${currentState.formData.culture === opt.val ? 'checked' : ''} class="w-5 h-5 text-purple-600 border-gray-300 focus:ring-purple-500"/>
+                    <span class="ml-3 font-medium text-gray-700">${opt.label}</span>
+                </label>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function selectGender(val) {
+            currentState.formData.gender = val;
+            
+            // Reset styles
+            ['m', 'f', 'any'].forEach(g => {
+                const btn = document.getElementById(`btn-gender-${g}`);
+                btn.className = 'p-4 rounded-2xl border-2 transition-all border-gray-100';
+                if(g === 'm') btn.classList.add('hover:border-blue-200', 'hover:bg-blue-50/50');
+                if(g === 'f') btn.classList.add('hover:border-pink-200', 'hover:bg-pink-50/50');
+                if(g === 'any') btn.classList.add('hover:border-purple-200', 'hover:bg-purple-50/50');
+            });
+
+            // Set active style
+            const activeBtn = document.getElementById(`btn-gender-${val}`);
+            if(val === 'm') activeBtn.className = 'p-4 rounded-2xl border-2 transition-all border-blue-500 bg-blue-50 text-blue-700';
+            if(val === 'f') activeBtn.className = 'p-4 rounded-2xl border-2 transition-all border-pink-500 bg-pink-50 text-pink-700';
+            if(val === 'any') activeBtn.className = 'p-4 rounded-2xl border-2 transition-all border-purple-500 bg-purple-50 text-purple-700';
+        }
+
+        function selectCulture(val) {
+            currentState.formData.culture = val;
+            
+            // Update UI for radio buttons
+            CULTURES.forEach(opt => {
+                const lbl = document.getElementById(`cult-lbl-${opt.val}`);
+                const radio = lbl.querySelector('input');
+                if (opt.val === val) {
+                    lbl.className = 'flex items-center p-4 rounded-2xl border-2 cursor-pointer transition-all border-purple-500 bg-purple-50';
+                    radio.checked = true;
+                } else {
+                    lbl.className = 'flex items-center p-4 rounded-2xl border-2 cursor-pointer transition-all border-gray-100 hover:bg-gray-50';
+                    radio.checked = false;
+                }
+            });
+        }
+
+        function goToStep(stepNum) {
+            // Hide all steps
+            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+            
+            // Check if step is 4 to hide progress bar
+            if (stepNum === 4) {
+                document.getElementById('progress-section').style.display = 'none';
+            } else {
+                document.getElementById('progress-section').style.display = 'block';
+                // Update Progress bar
+                document.getElementById('progress-bar').style.width = `${(stepNum / 3) * 100}%`;
+                for(let i=1; i<=3; i++) {
+                    const txt = document.getElementById(`prog-text-${i}`);
+                    if(stepNum >= i) txt.classList.add('text-indigo-600');
+                    else txt.classList.remove('text-indigo-600');
+                }
+            }
+
+            // Show target step
+            document.getElementById(`step-${stepNum}`).classList.add('active');
+            currentState.step = stepNum;
+        }
+
+        function readInputs() {
+            currentState.formData.lastName = document.getElementById('inp-lastName').value;
+            currentState.formData.fatherName = document.getElementById('inp-fatherName').value;
+            currentState.formData.motherName = document.getElementById('inp-motherName').value;
+            currentState.formData.preferredLetter = document.getElementById('inp-preferredLetter').value;
+            currentState.formData.grandparent1 = document.getElementById('inp-gp1').value;
+            currentState.formData.grandparent2 = document.getElementById('inp-gp2').value;
+            currentState.formData.grandparent3 = document.getElementById('inp-gp3').value;
+            currentState.formData.grandparent4 = document.getElementById('inp-gp4').value;
+        }
+
+        function generateNamesBtnClick() {
+            readInputs();
+            
+            // Show loading
+            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+            document.getElementById('progress-section').style.display = 'none';
+            document.getElementById('loading-screen').classList.remove('hidden');
+            
+            setTimeout(() => {
+                runAlgorithm();
+                
+                document.getElementById('loading-screen').classList.add('hidden');
+                renderResults();
+                goToStep(4);
+            }, 3500); // Симулиране на време за тежък анализ
+        }
+
+        function runAlgorithm() {
+            let results = [];
+            const formData = currentState.formData;
+            
+            const grandparents = [
+                formData.grandparent1.trim(), formData.grandparent2.trim(),
+                formData.grandparent3.trim(), formData.grandparent4.trim()
+            ].filter(Boolean);
+
+            const parents = [
+                formData.motherName.trim(), formData.fatherName.trim()
+            ].filter(Boolean);
+
+            let pool = NAMES_DB;
+            if (formData.gender !== 'any') {
+                pool = pool.filter(n => n.gender === formData.gender);
+            }
+            if (formData.culture !== 'any') {
+                pool = pool.filter(n => n.culture.includes(formData.culture));
+            }
+
+            const lastName = formData.lastName.trim();
+            const prefLetter = formData.preferredLetter.trim().charAt(0).toUpperCase();
+
+            pool.forEach(nameObj => {
+                let score = 0;
+                let reasons = [];
+                const nameStr = nameObj.name;
+                const firstLetter = nameStr.charAt(0).toUpperCase();
+                
+                const patronymic = getPatronymic(formData.fatherName, nameObj.gender);
+                
+                if (prefLetter && firstLetter === prefLetter) {
+                    score += 150;
+                    reasons.push(`Започва с желаната от вас буква "${prefLetter}".`);
+                }
+
+                grandparents.forEach(gp => {
+                    const gpFirstLetter = gp.charAt(0).toUpperCase();
+                    const gpPrefix3 = gp.substring(0, 3).toLowerCase();
+                    const namePrefix3 = nameStr.substring(0, 3).toLowerCase();
+                    
+                    if (gp.length >= 3 && gpPrefix3 === namePrefix3) {
+                        score += 80;
+                        if (!reasons.some(r => r.includes(gp))) reasons.push(`Фонетично продължение на ${gp}.`);
+                    } else if (gpFirstLetter === firstLetter) {
+                        score += 50;
+                        if (!reasons.some(r => r.includes(gpFirstLetter))) reasons.push(`Започва с "${firstLetter}", кръстено на ${gp}.`);
+                    }
+                });
+
+                parents.forEach(p => {
+                    if (p.charAt(0).toUpperCase() === firstLetter) {
+                        score += 20;
+                        reasons.push(`Носи началната буква на родител ("${firstLetter}").`);
+                    }
+                });
+
+                if (lastName) {
+                    const firstEndsWithVowel = isVowel(nameStr.slice(-1));
+                    const lastStartsWithVowel = isVowel(lastName.charAt(0));
+                    
+                    if (firstEndsWithVowel !== lastStartsWithVowel) {
+                        score += 15;
+                        reasons.push("Създава плавен преход с фамилията.");
+                    } else {
+                        score -= 5;
+                    }
+                    
+                    if (lastName.length > 8 && nameStr.length <= 5) {
+                        score += 10;
+                        reasons.push("Краткото име балансира дългата фамилия.");
+                    } else if (lastName.length <= 5 && nameStr.length > 6) {
+                        score += 10;
+                        reasons.push("Дългото име придава тежест на кратката фамилия.");
+                    }
+                }
+
+                score += Math.floor(Math.random() * 25);
+
+                results.push({ 
+                    ...nameObj, 
+                    score, 
+                    reasons, 
+                    fullName: `${nameStr} ${patronymic} ${lastName}`.trim().replace(/\s+/g, ' ')
+                });
+            });
+
+            results.sort((a, b) => b.score - a.score);
+            
+            const uniqueResults = [];
+            const seenNames = new Set();
+            for(let r of results) {
+                if(!seenNames.has(r.name)) {
+                    seenNames.add(r.name);
+                    uniqueResults.push(r);
+                }
+            }
+            
+            const topResults = uniqueResults.slice(0, 6).map(r => {
+                if(r.reasons.length === 0) {
+                    r.reasons.push(`Благозвучно име от избраната категория.`);
+                    if(formData.lastName) r.reasons.push(`Звучи хармонично с ${formData.lastName}.`);
+                }
+                // Взимаме само уникални причини, макс 3
+                r.reasons = [...new Set(r.reasons)].slice(0, 3);
+                return r;
+            });
+
+            currentState.generatedNames = topResults;
+        }
+
+        function toggleFavorite(fullName) {
+            // Find full object from either generated names or already in favorites
+            let nameData = currentState.generatedNames.find(n => n.fullName === fullName) 
+                        || currentState.favorites.find(n => n.fullName === fullName);
+            
+            if (!nameData) return;
+
+            const index = currentState.favorites.findIndex(n => n.fullName === fullName);
+            if (index > -1) {
+                currentState.favorites.splice(index, 1);
+            } else {
+                currentState.favorites.push(nameData);
+            }
+            
+            updateFavoritesBadge();
+            renderResults(); // Re-render to update heart icons in step 4
+            if(!document.getElementById('favorites-modal').classList.contains('hidden')) {
+                renderFavoritesList(); // Update modal if open
+            }
+        }
+
+        function updateFavoritesBadge() {
+            const count = currentState.favorites.length;
+            const badge = document.getElementById('fav-count-badge');
+            const heartIcon = document.getElementById('header-heart-icon');
+            
+            if (count > 0) {
+                badge.textContent = count;
+                badge.classList.remove('hidden');
+                heartIcon.classList.add('fill-current');
+            } else {
+                badge.classList.add('hidden');
+                heartIcon.classList.remove('fill-current');
+            }
+        }
+
+        function renderResults() {
+            const container = document.getElementById('results-container');
+            container.innerHTML = currentState.generatedNames.map((nameData, index) => {
+                const isFav = currentState.favorites.some(f => f.fullName === nameData.fullName);
+                const colorTheme = nameData.gender === 'm' ? 'blue' : 'pink';
+                const bgTheme = nameData.gender === 'm' ? 'border-blue-100 bg-gradient-to-br from-white to-blue-50/50' : 'border-pink-100 bg-gradient-to-br from-white to-pink-50/50';
+                const heartClass = isFav ? 'bg-pink-100 text-pink-500' : 'bg-white/50 text-gray-400 hover:bg-white hover:text-pink-400';
+                const heartFill = isFav ? 'fill-current' : 'none';
+                
+                let reasonsHtml = nameData.reasons.map(reason => `
+                    <li class="text-sm text-gray-700 flex items-start gap-2 leading-tight">
+                        <span class="text-${colorTheme}-400 mt-0.5">•</span> ${reason}
+                    </li>
+                `).join('');
+
+                let topChoiceBadge = index === 0 ? `
+                    <div class="absolute -top-3 -right-3 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full flex items-center shadow-sm z-10">
+                        <i data-lucide="sparkles" class="w-3 h-3 mr-1"></i> Топ избор
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="relative p-6 rounded-3xl border-2 shadow-sm transition-all hover:shadow-md ${bgTheme}">
+                        ${topChoiceBadge}
+                        <button onclick="toggleFavorite('${nameData.fullName}')" class="absolute top-4 right-4 p-2 rounded-full transition-colors z-10 ${heartClass}" title="Добави/Премахни от любими">
+                            <i data-lucide="heart" class="w-5 h-5 ${heartFill}"></i>
+                        </button>
+                        
+                        <div class="mb-4 pb-4 border-b border-gray-100/80 pr-10">
+                            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Пълно име</p>
+                            <h3 class="text-2xl sm:text-3xl font-bold text-${colorTheme}-900">${nameData.fullName}</h3>
+                        </div>
+
+                        <p class="text-sm font-medium text-gray-600 mb-4">
+                            Характеристика: <span class="text-gray-900">${nameData.meaning}</span>
+                        </p>
+                        
+                        <div class="space-y-2">
+                            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Защо този избор?</p>
+                            <ul class="space-y-1">${reasonsHtml}</ul>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            lucide.createIcons(); // Re-init icons for newly added elements
+        }
+
+        function renderFavoritesList() {
+            const container = document.getElementById('favorites-container');
+            if (currentState.favorites.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-400">
+                        <i data-lucide="heart" class="w-12 h-12 mx-auto mb-4 opacity-20"></i>
+                        <p>Все още нямате запазени любими имена.</p>
+                        <button onclick="closeFavorites()" class="mt-4 text-pink-600 font-medium hover:underline">
+                            Върнете се и изберете
+                        </button>
+                    </div>
+                `;
+            } else {
+                let listHtml = currentState.favorites.map(fav => `
+                    <div class="p-4 rounded-2xl border border-gray-100 bg-gray-50 relative group">
+                        <button onclick="toggleFavorite('${fav.fullName}')" class="absolute top-3 right-3 p-1.5 text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-full shadow-sm" title="Премахни">
+                            <i data-lucide="heart" class="w-4 h-4 fill-current"></i>
+                        </button>
+                        <h4 class="text-lg font-bold mb-1 ${fav.gender === 'm' ? 'text-blue-800' : 'text-pink-800'} pr-6">
+                            ${fav.fullName}
+                        </h4>
+                        <p class="text-xs text-gray-500 line-clamp-2">${fav.meaning}</p>
+                    </div>
+                `).join('');
+                container.innerHTML = `<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">${listHtml}</div>`;
+            }
+            lucide.createIcons();
+        }
+
+        function openFavorites() {
+            renderFavoritesList();
+            document.getElementById('favorites-modal').classList.remove('hidden');
+        }
+
+        function closeFavorites() {
+            document.getElementById('favorites-modal').classList.add('hidden');
+        }
+
+        function resetForm() {
+            // Изчистване на input полетата
+            document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
+            selectGender('any');
+            selectCulture('any');
+            currentState.generatedNames = [];
+            goToStep(1);
+        }
+
+        // Initialize on load
+        window.onload = initApp;
+
+    </script>
+</body>
+</html>
