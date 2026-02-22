@@ -318,8 +318,6 @@
         // 1. ДАННИ И ГЕНЕРАТОР НА МАСИВНА БАЗА (100k+)
         // ==========================================
         
-        // Разширени корени с тагове за "Усещане/Vibe"
-        // Значението съдържа ключови думи, по които алгоритъмът ще търси
         const BG_ROOTS = [
             { r: "Рад", m: "радост, щастие, любов" }, { r: "Мил", m: "милост, любов, доброта" }, { r: "Бож", m: "божественост, вяра" },
             { r: "Слав", m: "слава, величие, сила" }, { r: "Свет", m: "светлина, яснота" }, { r: "Добр", m: "доброта, любов" },
@@ -343,7 +341,6 @@
         const BG_SUF_M = ['омир', 'ослав', 'ан', 'ин', 'ен', 'емир', 'ко', 'чо', 'ил', 'им', 'ьо', 'ю', 'дан', 'дар', 'люб', 'зар', 'мир', 'слав', 'адин', 'иян', 'елин', 'ений', 'арий', 'имир', 'аслав', 'одар', 'олюб', 'озар', 'ислав', 'ец', 'ой', 'уш', 'енко', 'анко', 'илин', 'овест', 'овид', 'арин', 'оман'];
         const BG_SUF_F = ['омира', 'ослава', 'ана', 'ина', 'ена', 'емира', 'ка', 'чка', 'ила', 'има', 'я', 'яна', 'дана', 'дара', 'люба', 'зара', 'мира', 'слава', 'ияна', 'елина', 'ения', 'ария', 'имири', 'аслава', 'одара', 'олюба', 'ета', 'уша', 'енка', 'анка', 'илина', 'овеста', 'овида', 'арина', 'омана'];
 
-        // Добавени Френски и Латински
         const WEST_ROOTS = ["Ал", "Ел", "Крис", "Лео", "Дан", "Сам", "Оли", "Бен", "Габ", "Ник", "Тео", "Макс", "Лук", "Мар", "Фел", "Ант", "Вал", "Ром", "Сил", "Флор", "Юл", "Авг", "Ед", "Рич", "Ар", "Джей", "Джон", "Роб", "Уил", "Рик", "Жак", "Шарл", "Амел", "Луи"];
         const WEST_SUF_M = ['бърт', 'кс', 'с', 'н', 'ам', 'и', 'иан', 'ел', 'ас', 'о', 'ард', 'ър', 'ий', 'ик', 'ъс', 'ен', 'он', 'ърд', 'ман', 'валд', 'мънд', 'сън', 'тън', 'рик', 'вън', 'стър'];
         const WEST_SUF_F = ['а', 'ия', 'ма', 'бела', 'вия', 'нда', 'лин', 'ра', 'са', 'на', 'ета', 'ина', 'лия', 'риса', 'бел', 'ана', 'ора', 'ела', 'ника', 'си', 'сика', 'лайн', 'лет', 'олет'];
@@ -358,7 +355,6 @@
         const ASIAN_ROOTS = ["Аки", "Хиро", "Кен", "Така", "Рю", "Дай", "Казу", "Маю", "Юки", "Саку", "Мин", "Ха", "Джин"];
         const ASIAN_SUF = ["ро", "ши", "джи", "та", "ки", "то", "ми", "на", "ра", "ко", "су", "юн"];
         
-        // Нови: Библейски/Еврейски
         const HEBREW_ROOTS = ["Мих", "Гавр", "Дан", "Саму", "Раф", "Еман", "Йо", "Ил", "Авр", "Дав", "Як", "Сар", "Рут", "Ест"];
         const HEBREW_SUF_M = ["аил", "иил", "иел", "уил", "аел", "ов", "ам", "ид", "ов"];
         const HEBREW_SUF_F = ["аела", "иела", "а", "ара", "ут", "ер"];
@@ -406,9 +402,9 @@
             CELTIC_ROOTS.forEach(root => {
                 CELTIC_SUF.forEach(suf => db.push({ name: root + suf, gender: Math.random() < 0.5 ? 'm' : 'f', culture: 'celtic', meaning: 'Древна мистика, природа, сила' }));
             });
-            // 5. Азиатски
+            // 5. Азиатски (ГРЕШКАТА БЕШЕ ТУК, 'top' е заменено със 'suf')
             ASIAN_ROOTS.forEach(root => {
-                ASIAN_SUF.forEach(suf => db.push({ name: root + top, gender: Math.random() < 0.5 ? 'm' : 'f', culture: 'asian', meaning: 'Източна мъдрост, хармония, мир' }));
+                ASIAN_SUF.forEach(suf => db.push({ name: root + suf, gender: Math.random() < 0.5 ? 'm' : 'f', culture: 'asian', meaning: 'Източна мъдрост, хармония, мир' }));
             });
             // 6. Библейски
             HEBREW_ROOTS.forEach(root => {
@@ -451,7 +447,8 @@
             },
             generatedNames: [],
             favorites: [],
-            shownNames: new Set()
+            shownNames: new Set(),
+            dislikedNames: new Set() // Нова памет за отхвърлени имена
         };
 
         // ==========================================
@@ -495,13 +492,11 @@
         // ==========================================
 
         function initApp() {
-            // Масивна генерация с setTimeout за да не блокира UI веднага
             setTimeout(() => {
                 NAMES_DB = generateMassiveDB();
                 document.getElementById('db-count-badge').innerHTML = `<strong class="text-indigo-600">${NAMES_DB.length.toLocaleString('bg-BG')}</strong> имена`;
             }, 100);
             
-            // Рендиране на Културите
             const cultureContainer = document.getElementById('culture-options');
             cultureContainer.innerHTML = CULTURES.map(opt => `
                 <label class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border-2 cursor-pointer transition-all ${currentState.formData.culture === opt.val ? 'border-indigo-500 bg-indigo-50 shadow-sm' : 'border-gray-100 bg-white hover:bg-gray-50'}" id="cult-lbl-${opt.val}" onclick="selectCulture('${opt.val}')">
@@ -511,7 +506,6 @@
                 </label>
             `).join('');
 
-            // Рендиране на Vibe
             const vibeContainer = document.getElementById('vibe-options');
             vibeContainer.innerHTML = VIBES.map(opt => `
                 <label class="flex items-center justify-center p-2.5 sm:p-3 rounded-xl border-2 cursor-pointer transition-all ${currentState.formData.vibe === opt.val ? 'border-pink-500 bg-pink-50 shadow-sm' : 'border-gray-100 bg-white hover:bg-gray-50'}" id="vibe-lbl-${opt.val}" onclick="selectVibe('${opt.val}')">
@@ -523,7 +517,6 @@
             lucide.createIcons();
         }
 
-        // Селектори за Step 1 и 2
         function selectGender(val) {
             currentState.formData.gender = val;
             ['m', 'f', 'any'].forEach(g => {
@@ -630,7 +623,7 @@
                 document.getElementById('loading-screen').classList.add('hidden');
                 renderResults();
                 goToStep(4);
-            }, 3000); // 3 секунди анимация за "Тежък анализ"
+            }, 3000);
         }
 
         function runExpertAlgorithm() {
@@ -642,11 +635,9 @@
             const lastName = prefs.lastName.trim();
             const prefLetter = prefs.preferredLetter.trim().toUpperCase();
             
-            // Вземаме ключовите думи за избрания vibe
             const vibeObj = VIBES.find(v => v.val === prefs.vibe);
             const vibeKeywords = vibeObj ? vibeObj.keywords : [];
 
-            // Бърз филтър
             let pool = NAMES_DB;
             if (prefs.gender !== 'any') pool = pool.filter(n => n.gender === prefs.gender);
             if (prefs.culture !== 'any') pool = pool.filter(n => n.culture === prefs.culture);
@@ -662,16 +653,12 @@
                 const patronymic = getPatronymic(prefs.fatherName, nameObj.gender);
                 const fullNameArr = [nameStr, patronymic, lastName].filter(Boolean);
                 const fullName = fullNameArr.join(' ');
-                
-                // --- СИСТЕМА ЗА ОЦЕНЯВАНЕ V3 ---
 
-                // 1. Желана буква (Огромен приоритет: +200)
                 if (prefLetter && firstLetter === prefLetter.charAt(0)) {
                     score += 200;
                     reasons.push(`Перфектно! Започва с желаната буква '${prefLetter.charAt(0)}'.`);
                 }
 
-                // 2. Усещане / Значение (+60)
                 if (prefs.vibe !== 'any' && vibeKeywords.length > 0) {
                     const matchesVibe = vibeKeywords.some(kw => meaningLower.includes(kw));
                     if (matchesVibe) {
@@ -680,7 +667,6 @@
                     }
                 }
 
-                // 3. Дължина (+40)
                 if (prefs.length === 'short' && nameLen <= 5) {
                     score += 40;
                     reasons.push("Отговаря на избора ви за кратко и модерно име.");
@@ -689,7 +675,6 @@
                     reasons.push("Отговаря на избора ви за дълго и аристократично име.");
                 }
 
-                // 4. Анализ на баби и дядовци (Срички)
                 grandparents.forEach(gp => {
                     const gpClean = gp.toLowerCase();
                     const nameClean = nameStr.toLowerCase();
@@ -709,7 +694,6 @@
                     }
                 });
 
-                // 5. Родители (+30)
                 parents.forEach(p => {
                     if (p.charAt(0).toUpperCase() === firstLetter) {
                         score += 30;
@@ -717,16 +701,13 @@
                     }
                 });
 
-                // 6. Фонетичен ритъм с фамилията (Напреднал)
                 if (lastName) {
                     const firstEndsWithVowel = isVowel(nameStr.slice(-1));
                     const lastStartsWithVowel = isVowel(lastName.charAt(0));
                     
-                    // Сблъсък на еднакви букви (напр. Ана Атанасова -> лошо)
                     if (nameStr.slice(-1).toLowerCase() === lastName.charAt(0).toLowerCase()) {
-                        score -= 30; // Голямо наказание
+                        score -= 30;
                     }
-                    // Преход Гласна <-> Съгласна (+20)
                     else if (firstEndsWithVowel !== lastStartsWithVowel) {
                         score += 20;
                         if (!reasons.some(r => r.includes("Плавен фонетичен преход"))) reasons.push("Плавен фонетичен преход (гласна-съгласна) към фамилията.");
@@ -734,7 +715,6 @@
                         score -= 5;
                     }
                     
-                    // Баланс на дължината (+15)
                     if (lastName.length > 8 && nameLen <= 5) {
                         score += 15;
                         if (!reasons.some(r => r.includes("балансира дългата фамилия"))) reasons.push("Краткото име балансира елегантно дългата фамилия.");
@@ -744,7 +724,6 @@
                     }
                 }
 
-                // Лек произвол за разнообразие (0-20 точки)
                 score += Math.floor(Math.random() * 21);
 
                 results.push({ 
@@ -753,37 +732,35 @@
                     gender: nameObj.gender,
                     meaning: nameObj.meaning,
                     score: score,
-                    reasons: [...new Set(reasons)].slice(0, 3) // Макс 3 причини
+                    reasons: [...new Set(reasons)].slice(0, 3)
                 });
             });
 
-            // Сортиране
             results.sort((a, b) => b.score - a.score);
             
-            // Премахване на дубликати и вече показани
+            // Премахване на дубликати, вече показани И ОТХВЪРЛЕНИ (disliked) имена
             let uniqueResults = [];
             let seenNames = new Set();
             for(let r of results) {
-                if(!seenNames.has(r.name) && !currentState.shownNames.has(r.name)) {
+                if(!seenNames.has(r.name) && !currentState.shownNames.has(r.name) && !currentState.dislikedNames.has(r.name)) {
                     seenNames.add(r.name);
                     uniqueResults.push(r);
                 }
             }
             
-            // Защита от изчерпване
             if (uniqueResults.length < 6) {
                 currentState.shownNames.clear();
                 uniqueResults = [];
                 seenNames.clear();
                 for(let r of results) {
-                    if(!seenNames.has(r.name)) {
+                    // Когато изчерпим базата и започнем отначало, ОТХВЪРЛЕНИТЕ остават отхвърлени!
+                    if(!seenNames.has(r.name) && !currentState.dislikedNames.has(r.name)) {
                         seenNames.add(r.name);
                         uniqueResults.push(r);
                     }
                 }
             }
             
-            // Вземане на Топ 6
             const topResults = uniqueResults.slice(0, 6).map(r => {
                 if(r.reasons.length === 0) r.reasons.push(`Изключително благозвучно име с красиво значение.`);
                 currentState.shownNames.add(r.name);
@@ -793,7 +770,30 @@
             currentState.generatedNames = topResults;
         }
 
-        // --- Копиране в клипборда ---
+        // --- Функция за НЕ ХАРЕСВАНЕ (Dislike) ---
+        function dislikeName(fullName, shortName) {
+            // Добавяме името към списъка с отхвърлени
+            currentState.dislikedNames.add(shortName);
+            
+            // Премахваме го от текущите визуализирани имена
+            currentState.generatedNames = currentState.generatedNames.filter(n => n.fullName !== fullName);
+            
+            // Премахваме го от любимите (ако случайно е било там)
+            currentState.favorites = currentState.favorites.filter(n => n.fullName !== fullName);
+            updateFavoritesBadge();
+            
+            // Ако след премахването не остане нито 1 име на екрана, генерираме нови
+            if(currentState.generatedNames.length === 0) {
+                generateNamesBtnClick(true);
+            } else {
+                renderResults(); 
+            }
+            
+            if(!document.getElementById('favorites-modal').classList.contains('hidden')) {
+                renderFavoritesList();
+            }
+        }
+
         function copyToClipboard(text, btnId) {
             navigator.clipboard.writeText(text).then(() => {
                 const btn = document.getElementById(btnId);
@@ -872,11 +872,18 @@
                 return `
                     <div class="relative p-6 sm:p-8 rounded-[2rem] border-2 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1 ${bgTheme} group flex flex-col h-full">
                         ${topChoiceBadge}
-                        <button onclick="toggleFavorite('${nameData.fullName}')" class="absolute top-5 right-5 p-2.5 rounded-full border shadow-sm transition-all z-10 ${heartBg} hover:shadow-md hover:scale-110" title="Добави в Любими">
-                            <i data-lucide="heart" class="w-5 h-5 ${heartFill}"></i>
-                        </button>
                         
-                        <div class="mb-5 pb-5 border-b border-gray-200/60 pr-14">
+                        <!-- Бутони горе вдясно -->
+                        <div class="absolute top-5 right-5 flex gap-2 z-10">
+                            <button onclick="dislikeName('${nameData.fullName}', '${nameData.name}')" class="p-2.5 rounded-full border shadow-sm transition-all bg-white text-gray-300 hover:text-red-500 border-gray-100 hover:bg-red-50 hover:border-red-200 hover:shadow-md hover:scale-110" title="Не ми харесва (Скрий завинаги)">
+                                <i data-lucide="thumbs-down" class="w-5 h-5"></i>
+                            </button>
+                            <button onclick="toggleFavorite('${nameData.fullName}')" class="p-2.5 rounded-full border shadow-sm transition-all ${heartBg} hover:shadow-md hover:scale-110" title="Добави в Любими">
+                                <i data-lucide="heart" class="w-5 h-5 ${heartFill}"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="mb-5 pb-5 border-b border-gray-200/60 pr-24">
                             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-1">
                                 <i data-lucide="user" class="w-3 h-3"></i> Пълно име
                             </p>
@@ -967,6 +974,7 @@
             selectLength('any');
             currentState.generatedNames = [];
             currentState.shownNames.clear();
+            // НЕ чистим currentState.dislikedNames, за да се помнят отхвърлените имена винаги
             goToStep(1);
         }
 
