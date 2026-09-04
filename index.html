@@ -49,7 +49,25 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; border: 2px solid transparent; background-clip: padding-box; }
         
-        input[type="radio"].hidden-radio { display: none; }
+        /* Скрито визуално, но достъпно с клавиатура и екранен четец */
+        input[type="radio"].hidden-radio {
+            position: absolute;
+            width: 1px; height: 1px;
+            padding: 0; margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        label:focus-within {
+            outline: 3px solid #6366f1;
+            outline-offset: 2px;
+        }
+        [role="radio"]:focus-visible, button:focus-visible, a:focus-visible,
+        input:focus-visible, select:focus-visible {
+            outline: 3px solid #6366f1;
+            outline-offset: 2px;
+        }
 
         /* Критичен стил: не зависи от CDN.
            Без него диалозите остават отворени, ако Tailwind се зареди бавно. */
@@ -77,11 +95,11 @@
 
     <header class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-10 border-b border-white/20">
         <div class="max-w-5xl mx-auto px-3 sm:px-4 py-4 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2 text-indigo-600 hover:scale-105 transition-transform cursor-pointer min-w-0 shrink" onclick="resetForm()">
+            <button type="button" class="flex items-center gap-2 text-indigo-600 hover:scale-105 transition-transform cursor-pointer min-w-0 shrink text-left" onclick="resetForm()" aria-label="Начало - започни отначало">
                 <i data-lucide="baby" class="w-8 h-8"></i>
                 <h1 class="text-2xl font-black tracking-tight hidden sm:block bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-pink-500">Името на Чудото</h1>
                 <h1 class="text-lg font-bold tracking-tight sm:hidden text-indigo-600 truncate" id="logo-mobile">Генератор</h1>
-            </div>
+            </button>
             <div class="flex items-center gap-1.5 sm:gap-4 shrink-0">
                 <button type="button" onclick="openExplorer()" title="Разгледай всички имена"
                         class="hidden md:flex text-xs font-semibold text-gray-600 items-center gap-1.5 bg-gray-100/80 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 px-4 py-2 rounded-full border border-gray-200 shadow-inner mr-2 transition-colors">
@@ -197,19 +215,19 @@
                                 <label class="flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all border-gray-200 hover:bg-white bg-gray-50/50" id="uniq-lbl-traditional" onclick="selectUniqueness('traditional')">
                                     <input type="radio" name="uniqueness" value="traditional" class="hidden-radio">
                                     <span class="font-bold text-gray-800 mb-1">Традиционно</span>
-                                    <span class="text-[10px] text-gray-500 leading-tight">Само реални, познати и утвърдени имена.</span>
+                                    <span class="text-[10px] text-gray-500 leading-tight">Класически имена, които всички познават.</span>
                                 </label>
                                 <label class="flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all border-amber-500 bg-amber-50 shadow-sm transform scale-105" id="uniq-lbl-balanced" onclick="selectUniqueness('balanced')">
                                     <input type="radio" name="uniqueness" value="balanced" checked class="hidden-radio">
                                     <span class="font-bold text-amber-900 mb-1">Балансирано</span>
-                                    <span class="text-[10px] text-amber-700/70 leading-tight">Микс от популярни и красиво звучащи редки имена.</span>
+                                    <span class="text-[10px] text-amber-700/70 leading-tight">Микс от класически и по-рядко срещани имена.</span>
                                 </label>
                                 <label class="flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all border-gray-200 hover:bg-white bg-gray-50/50 relative overflow-hidden group" id="uniq-lbl-unique" onclick="selectUniqueness('unique')">
                                     <!-- PRO Badge -->
                                     <div id="uniq-pro-badge" class="absolute top-0 right-0 bg-amber-400 text-amber-900 text-[9px] font-black px-2 py-0.5 rounded-bl-lg flex items-center gap-0.5"><i data-lucide="lock" class="w-2.5 h-2.5"></i> PRO</div>
                                     <input type="radio" name="uniqueness" value="unique" class="hidden-radio">
-                                    <span class="font-bold text-gray-800 mb-1">Екзотично</span>
-                                    <span class="text-[10px] text-gray-500 leading-tight">Силно уникални, новосъздадени имена от древни корени.</span>
+                                    <span class="font-bold text-gray-800 mb-1">Рядко</span>
+                                    <span class="text-[10px] text-gray-500 leading-tight">Рядко срещани, но напълно истински имена.</span>
                                 </label>
                             </div>
                         </div>
@@ -323,7 +341,7 @@
                         <i data-lucide="moon-star" class="w-10 h-10 text-indigo-600 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></i>
                     </div>
                     <h3 class="text-3xl font-black text-gray-900 mb-3 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">Експертен Анализ</h3>
-                    <p class="text-lg text-gray-500 max-w-sm font-medium" id="loading-text">Търсене сред десетки хиляди комбинации...</p>
+                    <p class="text-lg text-gray-500 max-w-sm font-medium" id="loading-text">Претърсваме цялата база с имена...</p>
                     <div class="w-full max-w-sm h-3 bg-gray-100 rounded-full mt-8 overflow-hidden shadow-inner p-0.5">
                         <div class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full animate-progress-bar"></div>
                     </div>
@@ -391,7 +409,7 @@
                         <i data-lucide="crown" class="w-8 h-8"></i>
                     </div>
                     <h2 class="text-3xl sm:text-5xl font-black text-gray-900 mb-4 tracking-tight">Отключи Пълния Потенциал</h2>
-                    <p class="text-lg text-gray-500 max-w-2xl mx-auto mb-10">Изберете най-доброто име за вашето дете с достъп до древни архиви, нумерология и специализирани филтри.</p>
+                    <p class="text-lg text-gray-500 max-w-2xl mx-auto mb-10">Изберете най-доброто име за вашето дете с пълен достъп до всички култури, нумерология и специализирани филтри.</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto text-left">
                         
@@ -401,10 +419,10 @@
                             <p class="text-gray-500 mb-6">Перфектен за старт.</p>
                             <div class="text-4xl font-black text-gray-900 mb-8">Безплатно</div>
                             <ul class="space-y-4 mb-8">
-                                <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500 shrink-0"></i> <span class="text-gray-600">Над 5,000 реални имена</span></li>
+                                <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500 shrink-0"></i> <span class="text-gray-600">Всички <span id="pricing-count">1&nbsp;537</span> реални имена</span></li>
                                 <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500 shrink-0"></i> <span class="text-gray-600">Традиционен и Балансиран филтър</span></li>
                                 <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500 shrink-0"></i> <span class="text-gray-600">Основни зодиакални съвпадения</span></li>
-                                <li class="flex items-start gap-3 opacity-40"><i data-lucide="x" class="w-5 h-5 text-gray-400 shrink-0"></i> <span class="text-gray-500 line-through">Екзотични и Библейски корени</span></li>
+                                <li class="flex items-start gap-3 opacity-40"><i data-lucide="x" class="w-5 h-5 text-gray-400 shrink-0"></i> <span class="text-gray-500 line-through">Библейски, скандинавски, келтски и азиатски</span></li>
                                 <li class="flex items-start gap-3 opacity-40"><i data-lucide="x" class="w-5 h-5 text-gray-400 shrink-0"></i> <span class="text-gray-500 line-through">Пълна Нумерология</span></li>
                             </ul>
                             <button onclick="closePricing()" class="w-full py-4 rounded-xl font-bold text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors">Текущ План</button>
@@ -420,8 +438,8 @@
                             <div class="text-4xl font-black text-gray-900 mb-2">9.90 лв. <span class="text-lg font-normal text-gray-500">/ еднократно</span></div>
                             <p class="text-sm text-gray-500 mb-6">Доживотен достъп</p>
                             <ul class="space-y-4 mb-8">
-                                <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-amber-500 shrink-0 border-amber-500"></i> <span class="text-gray-800 font-medium">Отключи "Екзотични" уникални имена</span></li>
-                                <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-amber-500 shrink-0"></i> <span class="text-gray-800 font-medium">Келтски и Библейски архиви</span></li>
+                                <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-amber-500 shrink-0 border-amber-500"></i> <span class="text-gray-800 font-medium">Филтър „Рядко“ за най-редките имена</span></li>
+                                <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-amber-500 shrink-0"></i> <span class="text-gray-800 font-medium">Библейски, скандинавски, келтски, азиатски</span></li>
                                 <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-amber-500 shrink-0"></i> <span class="text-gray-800 font-medium">Напреднал нумерологичен анализ</span></li>
                                 <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-amber-500 shrink-0"></i> <span class="text-gray-800 font-medium">Без реклами и ограничения</span></li>
                             </ul>
@@ -1356,13 +1374,38 @@
                 countBadge.innerHTML = `<strong class="text-indigo-600">${NAMES_DB.length.toLocaleString('bg-BG')}</strong> реални имена със значение`;
             }
 
+            const pricingCount = document.getElementById('pricing-count');
+            if (pricingCount) pricingCount.textContent = NAMES_DB.length.toLocaleString('bg-BG');
+
             loadFavorites();
             updateFavoritesBadge();
 
             const results = document.getElementById('results-container');
             if (results) results.addEventListener('click', handleResultAction);
 
+            const favList = document.getElementById('favorites-container');
+            if (favList) favList.addEventListener('click', handleFavoritesAction);
+
             bindExplorer();
+
+            // Клавиатурна навигация: стрелките местят фокуса между радио
+            // бутоните и промяната трябва да задейства същия избор като клик.
+            const groups = {
+                culture: (v, opt) => selectCulture(v, opt && opt.isPro),
+                vibe: selectVibe,
+                uniqueness: selectUniqueness,
+                length: selectLength
+            };
+            document.addEventListener('change', (e) => {
+                const input = e.target;
+                if (!input || input.type !== 'radio' || !groups[input.name]) return;
+                if (input.name === 'culture') {
+                    const opt = CULTURES.find(c => c.val === input.value);
+                    groups.culture(input.value, opt);
+                } else {
+                    groups[input.name](input.value);
+                }
+            });
 
             // Escape затваря отворения диалог
             document.addEventListener('keydown', (e) => {
@@ -1383,7 +1426,9 @@
                     const textColor = isSelected ? 'text-indigo-900' : 'text-gray-600';
                     
                     // PRO Badge logic
-                    const proBadge = (opt.isPro && !currentState.isPro) ? `<div class="absolute top-0 right-0 bg-amber-400 text-amber-900 text-[9px] font-black px-2 py-0.5 rounded-bl-lg rounded-tr-lg flex items-center gap-0.5"><i data-lucide="lock" class="w-2.5 h-2.5"></i> PRO</div>` : '';
+                    const proBadge = opt.isPro
+                        ? `<div data-pro-badge class="absolute top-0 right-0 bg-amber-400 text-amber-900 text-[9px] font-black px-2 py-0.5 rounded-bl-lg rounded-tr-lg flex items-center gap-0.5" ${currentState.isPro ? 'style="display:none"' : ''}><i data-lucide="lock" class="w-2.5 h-2.5"></i> PRO</div>`
+                        : '';
                     
                     return `
                         <label class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border-2 cursor-pointer transition-all relative overflow-hidden group ${bgClass}" id="cult-lbl-${opt.val}" onclick="selectCulture('${opt.val}', ${opt.isPro})">
@@ -1431,6 +1476,7 @@
         function selectUniqueness(val) {
             // PRO CHECK
             if (val === 'unique' && !currentState.isPro) {
+                syncRadio('uniqueness', currentState.formData.uniqueness);
                 openPricing();
                 return;
             }
@@ -1458,8 +1504,8 @@
         }
 
         function selectCulture(val, isProRequired = false) {
-            // PRO CHECK
             if (isProRequired && !currentState.isPro) {
+                syncRadio('culture', currentState.formData.culture);
                 openPricing();
                 return;
             }
@@ -1468,23 +1514,37 @@
             CULTURES.forEach(opt => {
                 const lbl = document.getElementById(`cult-lbl-${opt.val}`);
                 if (!lbl) return;
-                
+
                 const isSelected = (opt.val === val);
-                const bgClass = isSelected ? 'border-indigo-500 bg-indigo-50 shadow-sm transform scale-105' : 'border-gray-100 bg-white hover:bg-gray-50 transform scale-100';
-                const iconColor = isSelected ? 'text-indigo-600' : 'text-gray-400';
-                const textColor = isSelected ? 'text-indigo-900' : 'text-gray-600';
-                
-                const proBadge = (opt.isPro && !currentState.isPro) ? `<div class="absolute top-0 right-0 bg-amber-400 text-amber-900 text-[9px] font-black px-2 py-0.5 rounded-bl-lg rounded-tr-lg flex items-center gap-0.5"><i data-lucide="lock" class="w-2.5 h-2.5"></i> PRO</div>` : '';
+                const bgClass = isSelected
+                    ? 'border-indigo-500 bg-indigo-50 shadow-sm transform scale-105'
+                    : 'border-gray-100 bg-white hover:bg-gray-50 transform scale-100';
 
                 lbl.className = `flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border-2 cursor-pointer transition-all relative overflow-hidden group ${bgClass}`;
-                lbl.innerHTML = `
-                    ${proBadge}
-                    <input type="radio" name="culture" value="${opt.val}" ${isSelected ? 'checked' : ''} class="hidden-radio"/>
-                    <i data-lucide="${opt.icon}" class="w-6 h-6 mb-2 ${iconColor}"></i>
-                    <span class="text-[11px] sm:text-xs font-bold text-center ${textColor}">${opt.label}</span>
-                `;
+
+                const radio = lbl.querySelector('input');
+                if (radio) radio.checked = isSelected;
+
+                const icon = lbl.querySelector('i, svg');
+                if (icon) icon.classList.toggle('text-indigo-600', isSelected);
+                if (icon) icon.classList.toggle('text-gray-400', !isSelected);
+
+                const text = lbl.querySelector('span.text-\\[11px\\], span:last-of-type');
+                if (text) {
+                    text.classList.toggle('text-indigo-900', isSelected);
+                    text.classList.toggle('text-gray-600', !isSelected);
+                }
+
+                const badge = lbl.querySelector('[data-pro-badge]');
+                if (badge) badge.style.display = (opt.isPro && !currentState.isPro) ? '' : 'none';
             });
-            refreshIcons(); 
+        }
+
+        // Връща радио бутоните към действителния избор, ако даден
+        // вариант е отказан (например заключен зад PRO).
+        function syncRadio(groupName, value) {
+            document.querySelectorAll(`input[type="radio"][name="${groupName}"]`)
+                .forEach(input => { input.checked = (input.value === value); });
         }
 
         function selectVibe(val) {
@@ -1492,16 +1552,19 @@
             VIBES.forEach(opt => {
                 const lbl = document.getElementById(`vibe-lbl-${opt.val}`);
                 if (!lbl) return;
-                
+
                 const isSelected = (opt.val === val);
-                const bgClass = isSelected ? 'border-pink-500 bg-pink-50 shadow-sm' : 'border-gray-100 bg-white hover:bg-gray-50';
-                const textColor = isSelected ? 'text-pink-700' : 'text-gray-600';
-                
-                lbl.className = `flex items-center justify-center p-2.5 sm:p-3 rounded-xl border-2 cursor-pointer transition-all ${bgClass}`;
-                lbl.innerHTML = `
-                    <input type="radio" name="vibe" value="${opt.val}" ${isSelected ? 'checked' : ''} class="hidden-radio"/>
-                    <span class="text-xs font-bold text-center ${textColor}">${opt.label}</span>
-                `;
+                lbl.className = `flex items-center justify-center p-2.5 sm:p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                    isSelected ? 'border-pink-500 bg-pink-50 shadow-sm' : 'border-gray-100 bg-white hover:bg-gray-50'}`;
+
+                const radio = lbl.querySelector('input');
+                if (radio) radio.checked = isSelected;
+
+                const text = lbl.querySelector('span');
+                if (text) {
+                    text.classList.toggle('text-pink-700', isSelected);
+                    text.classList.toggle('text-gray-600', !isSelected);
+                }
             });
         }
 
@@ -2195,8 +2258,8 @@
 
         function renderFavoritesList() {
             const container = document.getElementById('favorites-container');
-            if(!container) return;
-            
+            if (!container) return;
+
             if (currentState.favorites.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-16 text-gray-400 flex flex-col items-center">
@@ -2205,34 +2268,81 @@
                         </div>
                         <p class="text-xl font-bold text-gray-500 mb-2">Списъкът е празен.</p>
                         <p class="text-sm font-medium">Кликнете върху сърцето на някое име, за да го запазите тук.</p>
-                        <button onclick="closeFavorites()" class="mt-8 px-8 py-3 bg-pink-50 text-pink-600 font-bold rounded-full hover:bg-pink-100 transition-colors shadow-sm">
+                        <button type="button" onclick="closeFavorites()" class="mt-8 px-8 py-3 bg-pink-50 text-pink-600 font-bold rounded-full hover:bg-pink-100 transition-colors shadow-sm">
                             Разбрах
                         </button>
-                    </div>
-                `;
-            } else {
-                let listHtml = currentState.favorites.map(fav => {
-                    const colorTxt = fav.gender === 'm' ? 'text-blue-900' : 'text-pink-900';
-                    const iconType = fav.gender === 'm' ? '👦🏻' : '👧🏻';
-                    
-                    return `
-                    <div class="p-5 rounded-3xl border-2 border-gray-100 bg-white shadow-sm relative group hover:shadow-md transition-shadow hover:border-pink-100">
-                        <button onclick="toggleFavorite('${fav.fullName}')" class="absolute top-4 right-4 p-2.5 text-pink-500 bg-pink-50 hover:bg-pink-100 rounded-full transition-colors shadow-sm" title="Премахни">
+                    </div>`;
+                refreshIcons();
+                return;
+            }
+
+            const listHtml = currentState.favorites.map((fav, index) => {
+                const nameColor = fav.gender === 'm' ? 'text-blue-900' : 'text-pink-900';
+                const avatar = fav.gender === 'm' ? '👦🏻' : '👧🏻';
+                const rarity = RARITY_BADGES[fav.rarity];
+
+                return `
+                    <div class="p-5 rounded-3xl border-2 border-gray-100 bg-white shadow-sm relative hover:shadow-md transition-shadow hover:border-pink-100">
+                        <button type="button" data-fav-action="remove" data-index="${index}"
+                            class="absolute top-4 right-4 p-2.5 text-pink-500 bg-pink-50 hover:bg-pink-100 rounded-full transition-colors shadow-sm"
+                            title="Премахни" aria-label="Премахни ${escapeHtml(fav.name)} от любими">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                         <div class="flex items-start gap-4 pr-12">
-                            <div class="text-3xl pt-1 bg-gray-50 p-2 rounded-2xl border border-gray-100">${iconType}</div>
-                            <div>
-                                <h4 class="text-xl font-black mb-1.5 ${colorTxt} leading-tight">${fav.fullName}</h4>
-                                <p class="text-xs text-gray-500 font-medium leading-relaxed">${fav.meaning}</p>
+                            <div class="text-3xl pt-1 bg-gray-50 p-2 rounded-2xl border border-gray-100">${avatar}</div>
+                            <div class="min-w-0">
+                                <h4 class="text-xl font-black mb-1.5 ${nameColor} leading-tight">${escapeHtml(fav.fullName)}</h4>
+                                <p class="text-xs text-gray-500 font-medium leading-relaxed">${escapeHtml(fav.meaning)}</p>
+                                ${rarity ? `<span class="inline-block mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full border ${rarity.class}">${rarity.label}</span>` : ''}
                             </div>
                         </div>
-                    </div>
-                    `;
-                }).join('');
-                container.innerHTML = `<div class="grid grid-cols-1 gap-4">${listHtml}</div>`;
-            }
+                    </div>`;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="flex flex-wrap gap-2 mb-5">
+                    <button type="button" data-fav-action="copy-all"
+                        class="flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-200 rounded-full text-xs font-bold text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm">
+                        <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i> Копирай списъка
+                    </button>
+                    <button type="button" data-fav-action="clear-all"
+                        class="flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-200 rounded-full text-xs font-bold text-gray-500 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors shadow-sm">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Изчисти всички
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 gap-4">${listHtml}</div>`;
+
             refreshIcons();
+        }
+
+        function handleFavoritesAction(event) {
+            const btn = event.target.closest('button[data-fav-action]');
+            if (!btn) return;
+
+            const action = btn.dataset.favAction;
+
+            if (action === 'copy-all') {
+                const text = currentState.favorites
+                    .map(f => `${f.fullName} - ${f.meaning}`).join('\n');
+                copyToClipboard(text, btn);
+                return;
+            }
+
+            if (action === 'clear-all') {
+                if (!confirm('Да изчистим ли всички запазени имена?')) return;
+                currentState.favorites = [];
+                saveFavorites();
+                updateFavoritesBadge();
+                renderResults();
+                renderFavoritesList();
+                showToast('Списъкът е изчистен');
+                return;
+            }
+
+            if (action === 'remove') {
+                const fav = currentState.favorites[Number(btn.dataset.index)];
+                if (fav) toggleFavorite(fav.fullName);
+            }
         }
 
         function openFavorites() {
@@ -2270,7 +2380,7 @@
             const amount410 = document.getElementById('res-410');
             
             if (!grossInput || isNaN(grossInput) || grossInput <= 0) {
-                alert('Моля, въведете валидна сума за брутен доход.');
+                showToast('Моля, въведете валидна сума за брутен доход.');
                 return;
             }
 
@@ -2316,7 +2426,7 @@
             
             // 4. Показваме съобщение за успех
             setTimeout(() => {
-                alert('🎉 Успешно активирахте PRO версията!\n\nВсички екзотични имена, келтски и библейски бази данни вече са отключени.');
+                showToast('🎉 PRO е активиран - всички култури и филтри са отключени');
             }, 300);
         }
 
